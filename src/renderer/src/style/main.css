@@ -1,0 +1,33 @@
+body, html {
+  margin: 0;
+  padding: 0;
+}
+/*字体*/
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../assets/font/JetBrainsMono-Regular.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+.fontSize {
+  font-family: 'CustomFont', 'Microsoft YaHei', sans-serif !important;
+}
+.cursorPointer {
+  cursor: pointer !important;
+}
+.app-drag {
+/*可拖动*/
+  app-region: drag;
+}
+:root {
+  --scrollbar-track-color: 'transparent';
+}
+::-webkit-scrollbar {
+  background: var(--scrollbar-track-color);
+  width: 10px;
+  transition: background 0.3s ease;
+}
+::-webkit-scrollbar-thumb {
+  background: #888; /* 显式设置滑块颜色，避免继承 */
+  border-radius: 20px;
+}
