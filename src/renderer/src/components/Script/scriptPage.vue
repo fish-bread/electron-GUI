@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AllSelect from '@renderer/components/allSelect.vue'
 import ScriptControl from '@renderer/components/Script/scriptControl.vue'
-import PuppeteerControl from '@renderer/components/Script/puppeteer/puppeteerControl.vue'
+import PuppeteerPixivControl from '@renderer/components/Script/puppeteerPixiv/puppeteerPixivControl.vue'
 import OtherControl from '@renderer/components/Script/othoer/otherControl.vue'
 import AllPrint from '@renderer/components/allPrint.vue'
 import { onMounted, provide, ref } from 'vue'
@@ -14,7 +14,7 @@ provide('mess', jsMess)
 provide('all_file', puppeteer_file)
 provide('time', time)
 //设置components
-const JsComponents = [PuppeteerControl, OtherControl]
+const JsComponents = [PuppeteerPixivControl, OtherControl]
 const puppeteerOptions = ref([
   {
     label: 'pixiv爬虫',

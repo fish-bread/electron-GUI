@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, ref, Ref } from 'vue'
 import { useMessage } from 'naive-ui'
-import {pythonMessageInter} from "../../../../types/mian";
+import { pythonMessageInter } from '../../../../types/mian'
 const message = useMessage()
 //注入
 const mess = inject<Ref<pythonMessageInter[]>>('mess')
