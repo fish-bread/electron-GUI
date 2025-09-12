@@ -40,3 +40,7 @@ export interface searchPixivInter {
   urlsArray: string[]
   PageUrl: pixivHrefInter
 }
+export interface selectInter {
+  label: string
+  value: number
+}

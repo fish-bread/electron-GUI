@@ -2,11 +2,13 @@ import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import { pythonApi } from './pythonApi'
 import { PuppeteerApi } from './puppeteerApi'
+import { outPutApi } from './outputApi'
 
 // Custom APIs for renderer
 const api = {
   ...pythonApi,
   ...PuppeteerApi,
+  ...outPutApi,
   maxSizeFunc: () => ipcRenderer.send('maxSizeFunc'), //最大化
   minimizeFunc: () => ipcRenderer.send('minimizeFunc'), //最小化
   closeWindowFunc: () => ipcRenderer.send('closeWindowFunc') //关闭
