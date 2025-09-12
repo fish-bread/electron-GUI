@@ -1,7 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import icon from '../../resources/icon3.png?asset'
 import { getLock } from './func/gotTheLock'
 import { registerPythonIpcHandlers } from './pythonIpcMian/pythonProcessManager'
 import { registerPixivPuppeteerIpcHandlers } from './puppeteerIpcMain/puppeteerPixivProcessManager'
@@ -15,7 +15,7 @@ function createWindow(): void {
     show: false,
     autoHideMenuBar: true,
     titleBarStyle: 'hidden', //删除自定义
-    ...(process.platform === 'linux' ? { icon } : {}),
+    ...(process.platform === 'linux' ? { icon } : { icon }), //图标
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
