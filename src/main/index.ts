@@ -2,10 +2,9 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-
 import { getLock } from './func/gotTheLock'
 import { registerPythonIpcHandlers } from './pythonIpcMian/pythonProcessManager'
-import { registerPuppeteerIpcHandlers } from './puppeteerIpcMain/puppeteerProcessManager'
+import { registerPixivPuppeteerIpcHandlers } from './puppeteerIpcMain/puppeteerPixivProcessManager'
 // 检测并阻止多实例
 getLock()
 function createWindow(): void {
@@ -59,7 +58,7 @@ app.whenReady().then(() => {
   //python的ipc函数
   registerPythonIpcHandlers()
   //puppeteer
-  registerPuppeteerIpcHandlers()
+  registerPixivPuppeteerIpcHandlers()
   //最大化或恢复窗体
   ipcMain.on('maxSizeFunc', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)

@@ -1,6 +1,6 @@
 import { app } from 'electron'
 import { join } from 'path'
-import BasePath from '../../general/BasePath'
+import BasePath from '../../../general/BasePath'
 
 class pixivPathClass extends BasePath {
   constructor(path: string) {

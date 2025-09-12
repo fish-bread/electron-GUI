@@ -5,7 +5,7 @@ import { onMounted, provide, ref } from 'vue'
 import type { pythonMessageInter } from '../../../../types/mian'
 const mess = ref<pythonMessageInter[]>([])
 const python_file = ref<string>()
-const time = ref<string>('5')
+const time = ref<string>('3')
 //依赖
 provide('mess', mess)
 provide('all_file', python_file)

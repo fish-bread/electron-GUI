@@ -1,9 +1,11 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
-import { puppeteerDataInter, pythonFilePath, pythonMessageInter } from '../types/mian'
+import {
+  puppeteerDataInter,
+  pythonFilePath,
+  pythonMessageInter,
+  allProgressInter
+} from '../types/mian'
 declare global {
-  export interface RunPythonResult {
-    pythonScriptPath: string
-  }
   interface Window {
     electron: ElectronAPI
     api: {
@@ -16,12 +18,15 @@ declare global {
       runPuppeteer: (data: puppeteerDataInter) => Promise<void>
       killPuppeteer: () => Promise<void>
       puppeteerOutput: (callback: (message: pythonMessageInter) => void) => void
+      puppeteerOutProgress: (callback: (message: allProgressInter) => void) => void
       getChromePath: () => Promise<string>
       changePuppeteer: () => Promise<pythonFilePath>
       restorePuppeteerPath: () => Promise<string>
       getPixivFilePath: () => Promise<string>
       changePixivFilePath: () => Promise<pythonFilePath>
       restorePixivPath: () => Promise<string>
+      getPixivCookie: () => Promise<string>
+      changePixivCookie: (cookieData: string) => Promise<string>
       maxSizeFunc: () => void
       minimizeFunc: () => void
       closeWindowFunc: () => void

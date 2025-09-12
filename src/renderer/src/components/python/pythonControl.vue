@@ -7,7 +7,7 @@ const message = useMessage()
 //注入
 const python_file = inject<Ref<string>>('all_file', ref(''))
 const mess = inject<Ref<pythonMessageInter[]>>('mess')
-const python_time = inject<Ref<string>>('time', ref('5'))
+const python_time = inject<Ref<string>>('time', ref('3'))
 const python = async (): Promise<void> => {
   const result = await window.api.runPython(Number(python_time.value))
   console.log(result)

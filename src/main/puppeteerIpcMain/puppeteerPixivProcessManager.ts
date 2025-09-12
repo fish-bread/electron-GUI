@@ -1,12 +1,13 @@
-import runPuppeteer from '../puppeteerIpcMain/puppeteer/puppeteerCore'
+import runPuppeteer from '../puppeteerIpcMain/puppeteer/pixiv/puppeteerCore'
 import puppeteerPath from '../puppeteerIpcMain/puppeteer/puppeteerpath'
-import pixivPath from '../puppeteerIpcMain/puppeteer/pixivPath'
+import pixivPath from '../puppeteerIpcMain/puppeteer/pixiv/pixivPath'
 import { ipcMain } from 'electron'
 import { puppeteerPrintFunc } from '../general/allPrint'
 import { pathDialog } from '../dialog/pythonDialog'
 import { pythonFilePath } from '../../types/mian'
 import { savePathDialog } from '../dialog/fileSaveDialog'
-export const registerPuppeteerIpcHandlers = (): void => {
+import PixivCookie from './puppeteer/pixiv/pixivCookie'
+export const registerPixivPuppeteerIpcHandlers = (): void => {
   //运行puppeteer
   ipcMain.handle('runPuppeteer', async (_event, data): Promise<void> => {
     await runPuppeteer.runPuppeteer(data)
@@ -69,5 +70,13 @@ export const registerPuppeteerIpcHandlers = (): void => {
   //还原pixiv默认路径
   ipcMain.handle('restorePixivPath', async (): Promise<string> => {
     return pixivPath.restorePixivPathFunc()
+  })
+  //获取pixivCookie
+  ipcMain.handle('getPixivCookie', async (): Promise<string> => {
+    return PixivCookie.getCookies()
+  })
+  //修改pixivCookie
+  ipcMain.handle('changePixivCookie', async (_event, cookie: string): Promise<string> => {
+    return PixivCookie.setLocalCookie(cookie)
   })
 }

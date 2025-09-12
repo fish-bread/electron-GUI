@@ -21,6 +21,7 @@ declare module 'vue' {
     NIcon: typeof import('naive-ui')['NIcon']
     NInput: typeof import('naive-ui')['NInput']
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
+    NProgress: typeof import('naive-ui')['NProgress']
     NSwitch: typeof import('naive-ui')['NSwitch']
     NTooltip: typeof import('naive-ui')['NTooltip']
     PuppeteerControl: typeof import('./src/components/puppeteer/puppeteerControl.vue')['default']

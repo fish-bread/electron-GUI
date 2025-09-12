@@ -6,7 +6,7 @@ import { useMessage } from 'naive-ui'
 const message = useMessage()
 //注入
 const mess = inject<Ref<pythonMessageInter[]>>('mess')
-const time = inject<Ref<string>>('time', ref('5'))
+const time = inject<Ref<string>>('time', ref(''))
 const chrome_file = inject<Ref<string>>('all_file', ref(''))
 const href = ref('')
 const headless = ref<boolean>(true)

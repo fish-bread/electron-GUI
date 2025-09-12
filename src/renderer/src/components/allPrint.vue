@@ -3,12 +3,12 @@ import AllFilePath from '@renderer/components/allFilePath.vue'
 import { onMounted, ref, inject, Ref } from 'vue'
 import { watchThrottled, useElementSize } from '@vueuse/core'
 import { theme } from '@renderer/func/themeChange'
-import type { pythonMessageInter } from '../../../types/mian'
+import { allProgressInter, pythonMessageInter, UnifiedMessage } from '../../../types/mian'
 const messageListContainer = ref<HTMLElement | null>(null)
 const pythonPrintRef = ref<HTMLElement | null>(null)
 const viewportHeightInPixels = window.innerHeight
 //引入mess
-const mess = inject<Ref<pythonMessageInter[]>>('mess', ref([]))
+const mess = inject<Ref<UnifiedMessage[]>>('mess', ref([]))
 //滚动
 const scrollToBottom = (): void => {
   if (messageListContainer.value) {
@@ -47,18 +47,30 @@ onMounted(() => {
     <div ref="messageListContainer" class="ul-box">
       <ul ref="pythonPrintRef" class="message-list">
         <li
-          v-for="(msg, index) in mess"
+          v-for="(item, index) in mess"
           :key="index"
           :class="{
-            error: mess[index].status === 'error',
-            success: mess[index].status === 'success',
-            closed: mess[index].status === 'closed'
+            error: mess[index].data.status === 'error',
+            success: mess[index].data.status === 'success',
+            closed: mess[index].data.status === 'closed'
           }"
           :style="{
             '--success-color': theme === null ? '#2c2c2c' : '#ffffff'
           }"
         >
-          {{ msg.message }}
+          <template v-if="item.type === 'text'">
+            {{ (item.data as pythonMessageInter).message }}
+          </template>
+          <template v-if="item.type === 'progress'">
+            <n-progress
+              :style="{
+              maxWidth: '90%'
+              }"
+              type="line"
+              color="#8064a9"
+              :percentage="(item.data as allProgressInter).progress"
+            />
+          </template>
         </li>
       </ul>
     </div>
