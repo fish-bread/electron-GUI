@@ -1,6 +1,6 @@
 import { allProgressInter } from '../../types/mian'
 import { BrowserWindow } from 'electron'
-type ChannelType = 'pythonOutProgress' | 'puppeteerOutProgress'
+type ChannelType = 'puppeteerOutProgress' | 'pythonOutProgress'
 
 const createProgressSender = (channel: ChannelType) => {
   return (
@@ -24,3 +24,4 @@ const createProgressSender = (channel: ChannelType) => {
   }
 }
 export const puppeteerProgressFunc = createProgressSender('puppeteerOutProgress')
+export const pythonProgressFunc = createProgressSender('pythonOutProgress')
