@@ -6,16 +6,20 @@ class PythonPath extends BasePath {
     super()
     this.pythonScriptPathFunc(pythonFile)
   }
-  //还原python路径
-  restorePythonScriptPathFunc = (): string => {
-    return this.pythonScriptPathFunc('main.py')
-  }
   //python路径
   private pythonScriptPathFunc(pythonFile: string): string {
+    const pythonPath = this.getLocalPath('pythonPath')
+    if (pythonPath) {
+      this.currentPath = pythonPath
+      return this.currentPath
+    }
     if (app.isPackaged) {
-      this.currentPath = join(app.getAppPath(), '../app.asar.unpacked/python/src', `${pythonFile}`)
+      this.setLocalPath(
+        'pythonPath',
+        join(app.getAppPath(), '../app.asar.unpacked/python/src', `${pythonFile}`)
+      )
     } else {
-      this.currentPath = join(__dirname, '..', '..', 'python', 'src', `${pythonFile}`)
+      this.setLocalPath('pythonPath', join(__dirname, '..', '..', 'python', 'src', `${pythonFile}`))
     }
     return this.currentPath
   }

@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron'
-import { puppeteerDataInter, pythonMessageInter, allProgressInter } from '../types/mian'
+import { puppeteerDataInter } from '../types/mian'
 export const PuppeteerApi = {
   runPuppeteer: (data: puppeteerDataInter) => ipcRenderer.invoke('runPuppeteer', data),
   killPuppeteer: () => ipcRenderer.invoke('killPuppeteer'),

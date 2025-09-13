@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import SettingPython from '@renderer/components/settings/settingPython.vue'
 import SettingsPuppeteer from '@renderer/components/settings/settingPuppeteer.vue'
+import settingsGlobal from '@renderer/components/settings/settingGlobal.vue'
 import { ref, onMounted, provide } from 'vue'
 const pixivPath = ref<string>()
 const pixivCookie = ref<string>()
 provide('filePath', pixivPath)
-provide('pixivCookie',pixivCookie)
+provide('pixivCookie', pixivCookie)
 onMounted(async () => {
   pixivPath.value = await window.api.getPixivFilePath()
   pixivCookie.value = await window.api.getPixivCookie()
@@ -15,8 +16,9 @@ onMounted(async () => {
 <template>
   <div class="setting-page">
     <div class="scroll-box">
-    <SettingPython />
-    <SettingsPuppeteer />
+      <settingsGlobal />
+      <SettingPython />
+      <SettingsPuppeteer />
     </div>
   </div>
 </template>
@@ -29,7 +31,7 @@ onMounted(async () => {
   margin-left: 10px;
 }
 .scroll-box {
-  height: calc(100vh - 50px - 23px);
+  height: calc(100vh - 50px);
   overflow: auto;
 }
 </style>

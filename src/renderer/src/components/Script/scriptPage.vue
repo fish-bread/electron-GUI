@@ -10,6 +10,8 @@ import { theme } from '@renderer/func/themeChange'
 const jsMess = ref<UnifiedMessage[]>([])
 const puppeteer_file = ref<string>()
 const time = ref<string>('3')
+const pathName = ref<string>('谷歌浏览器')
+provide('pathName', pathName)
 provide('mess', jsMess)
 provide('all_file', puppeteer_file)
 provide('time', time)
@@ -45,6 +47,7 @@ const handleProgressUpdate = (message: allProgressInter): void => {
   if (existingTaskIndex >= 0) {
     // 更新现有任务
     ;(jsMess.value[existingTaskIndex].data as allProgressInter).progress = message.progress
+    ;(jsMess.value[existingTaskIndex].data as allProgressInter).message = message.message
     jsMess.value[existingTaskIndex].data.status = message.status
   } else {
     // 添加新任务
@@ -70,19 +73,28 @@ onMounted(() => {
     class="script-page"
     :style="{ borderRight: theme === null ? '1px solid #4e4e4e' : '1px solid  #2c2c2c' }"
   >
-    <AllSelect name="js" />
-    <ScriptControl />
-    <KeepAlive>
-      <Component :is="JsComponents[num]" />
-    </KeepAlive>
+    <div class="script-box">
+      <AllSelect name="js" />
+      <ScriptControl />
+      <KeepAlive>
+        <Component :is="JsComponents[num]" />
+      </KeepAlive>
+    </div>
   </div>
   <AllPrint />
 </template>
 
 <style scoped>
 .script-page {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: 320px;
+  overflow: auto;
+  height: calc(100vh - 50px);
+  padding: 0 10px;
+}
+.script-page::-webkit-scrollbar {
+  width: 5px;
 }
 </style>

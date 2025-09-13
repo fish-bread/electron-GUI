@@ -3,12 +3,16 @@ import { electronAPI } from '@electron-toolkit/preload'
 import { pythonApi } from './pythonApi'
 import { PuppeteerApi } from './puppeteerApi'
 import { outPutApi } from './outputApi'
+import { pythonCustomApi } from './pythonCustomApi'
+import { globalSettingApi } from './globalSettingApi'
 
 // Custom APIs for renderer
 const api = {
   ...pythonApi,
   ...PuppeteerApi,
+  ...pythonCustomApi,
   ...outPutApi,
+  ...globalSettingApi,
   maxSizeFunc: () => ipcRenderer.send('maxSizeFunc'), //最大化
   minimizeFunc: () => ipcRenderer.send('minimizeFunc'), //最小化
   closeWindowFunc: () => ipcRenderer.send('closeWindowFunc') //关闭

@@ -32,7 +32,7 @@ export const registerPixivPuppeteerIpcHandlers = (): void => {
       }
       const pathFile = await pathDialog()
       if (pathFile.filePaths[0]) {
-        puppeteerPath.changePath(pathFile.filePaths[0])
+        puppeteerPath.setLocalPath('chromePath', pathFile.filePaths[0])
       }
       return {
         canceled: pathFile.canceled,
@@ -56,7 +56,7 @@ export const registerPixivPuppeteerIpcHandlers = (): void => {
     try {
       const pathFile = await savePathDialog()
       if (pathFile.filePaths[0]) {
-        pixivPath.changePath(pathFile.filePaths[0])
+        pixivPath.setLocalPath('pixivPath', pathFile.filePaths[0])
       }
       return {
         canceled: pathFile.canceled,

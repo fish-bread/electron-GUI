@@ -9,14 +9,20 @@ declare global {
   interface Window {
     electron: ElectronAPI
     api: {
-      runPython: (time: number) => Promise<void>
-      killPython: () => Promise<void>
+      //airtestPython
+      runPython: (time: number) => void
+      killPython: () => void
       pythonOutput: (callback: (message: pythonMessageInter) => void) => void
-      choosePython: () => Promise<pythonFilePath>
-      restorePythonPath: () => Promise<string>
       getPythonPath: () => Promise<string>
       runPuppeteer: (data: puppeteerDataInter) => Promise<void>
       killPuppeteer: () => Promise<void>
+      //自定义python
+      runCustomPython: () => void
+      killCustomPython: () => void
+      choosePython: () => Promise<pythonFilePath>
+      restorePythonPath: () => Promise<string>
+      getCustomPythonPath: () => Promise<string>
+      //PixivPuppeteer爬虫
       puppeteerOutput: (callback: (message: pythonMessageInter) => void) => void
       puppeteerOutProgress: (callback: (message: allProgressInter) => void) => void
       getChromePath: () => Promise<string>
@@ -27,9 +33,13 @@ declare global {
       restorePixivPath: () => Promise<string>
       getPixivCookie: () => Promise<string>
       changePixivCookie: (cookieData: string) => Promise<string>
+      //导航栏设置
       maxSizeFunc: () => void
       minimizeFunc: () => void
       closeWindowFunc: () => void
+      //获取全局设置
+      getPort: () => Promise<string>
+      setPort: (port: string) => void
     }
   }
 }

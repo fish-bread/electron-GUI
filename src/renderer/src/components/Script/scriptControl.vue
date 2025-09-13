@@ -34,8 +34,8 @@ const clean_puppeteer = (): void => {
     <h3>puppeteer控制台</h3>
     <n-button @click="clean_puppeteer">清除控制台</n-button>
     <h3>puppeteer浏览器启动路径</h3>
-    <n-button @click="choose_chrome">选择谷歌浏览器路径</n-button>
-    <n-button @click="restore_chrome">还原谷歌浏览器路径</n-button>
+    <n-button @click="choose_chrome">选择浏览器路径</n-button>
+    <n-button @click="restore_chrome">还原浏览器路径</n-button>
   </div>
 </template>
 

@@ -5,6 +5,8 @@ import icon from '../../resources/icon3.png?asset'
 import { getLock } from './func/gotTheLock'
 import { registerPythonIpcHandlers } from './pythonIpcMian/pythonProcessManager'
 import { registerPixivPuppeteerIpcHandlers } from './puppeteerIpcMain/puppeteerPixivProcessManager'
+import { registerCustomPythonIpcHandlers } from './pythonIpcMian/pythonCustomManager'
+import { allSettingManager } from './manager/allSettingManager'
 // 检测并阻止多实例
 getLock()
 function createWindow(): void {
@@ -55,10 +57,14 @@ app.whenReady().then(() => {
   })
 
   // IPC 中间件
-  //python的ipc函数
+  //airtest的ipc函数
   registerPythonIpcHandlers()
-  //puppeteer
+  //python自定义ipc函数
+  registerCustomPythonIpcHandlers()
+  //puppeteer的pixiv
   registerPixivPuppeteerIpcHandlers()
+  //全局设置获取
+  allSettingManager()
   //最大化或恢复窗体
   ipcMain.on('maxSizeFunc', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)

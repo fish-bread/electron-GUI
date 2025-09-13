@@ -8,9 +8,11 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AirtestControl: typeof import('./src/components/python/airtest/airtestControl.vue')['default']
     AllFilePath: typeof import('./src/components/allFilePath.vue')['default']
     AllPrint: typeof import('./src/components/allPrint.vue')['default']
     AllSelect: typeof import('./src/components/allSelect.vue')['default']
+    CustomPyControl: typeof import('./src/components/python/custom/customPyControl.vue')['default']
     HeaderIndex: typeof import('./src/components/headerIndex.vue')['default']
     HomePage: typeof import('./src/components/home/homePage.vue')['default']
     HomeSidebar: typeof import('./src/components/sidebar/homeSidebar.vue')['default']
@@ -27,7 +29,7 @@ declare module 'vue' {
     NSwitch: typeof import('naive-ui')['NSwitch']
     NTooltip: typeof import('naive-ui')['NTooltip']
     OtherControl: typeof import('./src/components/Script/othoer/otherControl.vue')['default']
-    OtherPyControl: typeof import('./src/components/python/other/otherPyControl.vue')['default']
+    OtherPyControl: typeof import('./src/components/python/custom/otherPyControl.vue')['default']
     OthoerControl: typeof import('./src/components/Script/othoer/othoerControl.vue')['default']
     PuppeteerControl: typeof import('./src/components/Script/puppeteerPixiv/puppeteerControl.vue')['default']
     PuppeteerPage: typeof import('./src/components/Script/puppeteerPage.vue')['default']
@@ -42,6 +44,8 @@ declare module 'vue' {
     ScriptControl: typeof import('./src/components/Script/scriptControl.vue')['default']
     ScriptPage: typeof import('./src/components/Script/scriptPage.vue')['default']
     ScriptSelect: typeof import('./src/components/scriptSelect.vue')['default']
+    SettingAll: typeof import('./src/components/settings/settingAll.vue')['default']
+    SettingGlobal: typeof import('./src/components/settings/settingGlobal.vue')['default']
     SettingPuppeteer: typeof import('./src/components/settings/settingPuppeteer.vue')['default']
     SettingPython: typeof import('./src/components/settings/settingPython.vue')['default']
     SettingsPage: typeof import('./src/components/settings/settingsPage.vue')['default']

@@ -1,12 +1,37 @@
-//python进程
-import { PythonShell } from 'python-shell'
 import { ipcMain } from 'electron'
+import customPythonPath from '../pythonIpcMian/customPathon/CustomPythonPath'
+import { pythonFilePath } from '../../types/mian'
+import { pathDialog } from '../dialog/pythonDialog'
+import { PythonShell } from 'python-shell'
 import { pythonPrintFunc } from '../general/allPrint'
-import airtestPythonPath from '../pythonIpcMian/airtestPython/airtestPythonPath'
 let PyShell: PythonShell | null = null
-export const registerPythonIpcHandlers = (): void => {
-  // 运行python
-  ipcMain.on('runPython', async (_event, time): Promise<void> => {
+export const registerCustomPythonIpcHandlers = (): void => {
+  //获取自定义python路径
+  ipcMain.handle('getCustomPythonPath', () => {
+    return customPythonPath.getPath()
+  })
+  //自定义选择python文件
+  ipcMain.handle('choosePython', async (): Promise<pythonFilePath> => {
+    try {
+      const pathFile = await pathDialog()
+      if (pathFile.filePaths[0]) {
+        customPythonPath.setLocalPath('customPythonPath', pathFile.filePaths[0])
+      }
+      return {
+        canceled: pathFile.canceled,
+        filePath: pathFile.filePaths[0]
+      }
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
+  })
+  //还原python路径
+  ipcMain.handle('restorePythonPath', async (): Promise<string> => {
+    return customPythonPath.restorePythonScriptPathFunc()
+  })
+  //运行自定义python脚本
+  ipcMain.on('runCustomPython', () => {
     //检测是否存在进程
     if (PyShell) {
       pythonPrintFunc('error', 'python脚本正在执行,请勿重复启动')
@@ -14,7 +39,7 @@ export const registerPythonIpcHandlers = (): void => {
     }
     //开始运行python
     //获取python路径
-    const pythonScriptPath = airtestPythonPath.getPath()
+    const pythonScriptPath = customPythonPath.getPath()
     if (!pythonScriptPath || !pythonScriptPath.endsWith('.py')) {
       pythonPrintFunc('error', `该路径不是一个有效的python脚本路径`)
       return
@@ -25,8 +50,6 @@ export const registerPythonIpcHandlers = (): void => {
       encoding: 'utf-8',
       pythonOptions: ['-u'] //让打印流直接打印
     })
-    //发送消息
-    PyShell.send(time)
     //接收消息
     PyShell.on('message', function (message) {
       console.log('监听事件', message)
@@ -53,8 +76,8 @@ export const registerPythonIpcHandlers = (): void => {
       PyShell = null
     })
   })
-  //killPython进程
-  ipcMain.on('killPython', (): void => {
+  //kill自定义python脚本
+  ipcMain.on('killCustomPython', () => {
     if (PyShell) {
       PyShell.kill()
       PyShell = null
@@ -62,9 +85,5 @@ export const registerPythonIpcHandlers = (): void => {
     } else {
       pythonPrintFunc('success', 'python子进程未启动')
     }
-  })
-  //获取python路径
-  ipcMain.handle('getPythonPath', async (): Promise<string> => {
-    return airtestPythonPath.getPath()
   })
 }

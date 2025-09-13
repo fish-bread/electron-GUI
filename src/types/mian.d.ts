@@ -4,6 +4,7 @@ export interface pythonMessageInter {
 }
 export interface allProgressInter {
   status: 'success' | 'error' | 'closed'
+  message: string
   progress: number
   taskId: string
 }
@@ -15,10 +16,13 @@ export interface pythonFilePath {
   canceled: boolean
   filePath: string
 }
+//puppeteerPixiv向主进程传值
 export interface puppeteerDataInter {
   time: number
   href: string
   headless: boolean
+  useProxy: boolean
+  port: string
 }
 export interface pixivHrefInter {
   ajaxHref: string

@@ -1,16 +1,28 @@
+import Store from 'electron-store'
+const store = new Store()
+type keyInter = 'pythonPath' | 'customPythonPath' | 'chromePath' | 'pixivPath'
 class BasePathManager {
   protected currentPath: string = ''
-  // 改变路径
-  changePath(filePath: string): void {
-    this.currentPath = filePath
-    console.log('当前改变路径', this.currentPath)
-  }
+
   // 返回当前路径
   getPath(): string {
     console.log('当前获取路径', this.currentPath)
     return this.currentPath
   }
-  // 一个更通用的路径重置方法，可选
+  //本地存储文件path
+  setLocalPath = (key: keyInter, path: string): void => {
+    store.set(key, path)
+    this.currentPath = path
+  }
+  //本地获取文件path
+  getLocalPath = (key: keyInter): string | null => {
+    const path = store.get(key)
+    if (path) {
+      return String(path)
+    }
+    return null
+  }
+  //一个更通用的路径重置方法
   restorePath(defaultPath: string): string {
     this.currentPath = defaultPath
     return this.currentPath

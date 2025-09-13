@@ -62,9 +62,10 @@ onMounted(() => {
             {{ (item.data as pythonMessageInter).message }}
           </template>
           <template v-if="item.type === 'progress'">
+            <div>{{ (item.data as allProgressInter).message }}</div>
             <n-progress
               :style="{
-              maxWidth: '90%'
+                maxWidth: '90%'
               }"
               type="line"
               color="#8064a9"
@@ -102,7 +103,7 @@ li {
   padding: 0;
 }
 ul {
-  margin: 0 0 0 20px;
+  padding: 0 0 0 20px;
 }
 li {
   margin-bottom: 5px;

@@ -4,10 +4,15 @@ import HomePage from '@renderer/components/home/homePage.vue'
 import PythonPage from '@renderer/components/python/pythonPage.vue'
 import ScriptPage from '@renderer/components/Script/scriptPage.vue'
 import SettingPage from '@renderer/components/settings/settingsPage.vue'
-import { ref, provide } from 'vue'
+import { ref, provide, onMounted } from 'vue'
 const PyComponents = [HomePage, PythonPage, ScriptPage, SettingPage]
 const num = ref<number>(0)
+const port = ref<string>('7897')
 provide('HomeComponentNum', num)
+provide('port', port)
+onMounted(async () => {
+  port.value = await window.api.getPort()
+})
 </script>
 
 <template>

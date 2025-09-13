@@ -1,30 +1,34 @@
 <script setup lang="ts">
 import { theme } from '@renderer/func/themeChange'
 import AllPrint from '@renderer/components/allPrint.vue'
-import PythonorControl from '@renderer/components/python/other/pythonorControl.vue'
-import OtherPyControl from '@renderer/components/python/other/otherPyControl.vue'
-import PythonControl from  '@renderer/components/python/pythonControl.vue'
+import AirtestControl from '@renderer/components/python/airtest/airtestControl.vue'
+import CustomPyControl from '@renderer/components/python/custom/customPyControl.vue'
+import PythonControl from '@renderer/components/python/pythonControl.vue'
 import { onMounted, provide, ref } from 'vue'
 import type { pythonMessageInter, UnifiedMessage } from '../../../../types/mian'
 import AllSelect from '@renderer/components/allSelect.vue'
+import { watchThrottled } from '@vueuse/core'
 const mess = ref<UnifiedMessage[]>([])
 const python_file = ref<string>()
 const time = ref<string>('3')
 //设置components
-const pyComponents = [PythonorControl, OtherPyControl]
+const pyComponents = [AirtestControl, CustomPyControl]
 const puppeteerOptions = ref([
   {
     label: 'python爬虫',
     value: 0
   },
   {
-    label: '其他',
+    label: '自定义爬虫',
     value: 1
   }
 ])
 const num = ref<number>(0)
 provide('num', num)
 provide('options', puppeteerOptions)
+//设置路径名
+const pathName = ref<string>('python')
+provide('pathName',pathName)
 //依赖
 provide('mess', mess)
 provide('all_file', python_file)
@@ -40,10 +44,31 @@ const handlePythonOutputMessage = (message: pythonMessageInter): void => {
 const get_python_path = async (): Promise<void> => {
   python_file.value = await window.api.getPythonPath()
 }
+const get_custom_path = async (): Promise<void> => {
+  python_file.value = await window.api.getCustomPythonPath()
+}
+//监听num
+const watchNum = (): void => {
+  watchThrottled(
+    num,
+    (newValue: number): void => {
+      switch (newValue) {
+        case 0:
+          get_python_path()
+          break
+        case 1:
+          get_custom_path()
+          break
+      }
+    },
+    { immediate: true, throttle: 100 }
+  )
+}
 onMounted(() => {
   // 注册监听器，持续接收主进程发来的 pythonOutput 消息
   window.api.pythonOutput(handlePythonOutputMessage)
-  get_python_path()
+
+  watchNum()
 })
 </script>
 
@@ -52,19 +77,28 @@ onMounted(() => {
     class="python-page"
     :style="{ borderRight: theme === null ? '1px solid #4e4e4e' : '1px solid  #2c2c2c' }"
   >
-    <AllSelect name="python" />
-    <PythonControl />
-    <KeepAlive>
-      <component :is="pyComponents[num]" />
-    </KeepAlive>
+    <div class="script-box">
+      <AllSelect name="python" />
+      <PythonControl />
+      <KeepAlive>
+        <component :is="pyComponents[num]" />
+      </KeepAlive>
+    </div>
   </div>
   <AllPrint></AllPrint>
 </template>
 
 <style scoped>
 .python-page {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: 320px;
+  overflow: auto;
+  height: calc(100vh - 50px);
+  padding: 0 10px;
+}
+.python-page::-webkit-scrollbar {
+  width: 5px;
 }
 </style>
