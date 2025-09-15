@@ -1,13 +1,11 @@
-import type { Browser, Page } from 'puppeteer-core'
-import puppeteer from 'puppeteer-core'
 import { puppeteerPrintFunc } from '../../../general/allPrint'
 import {
   pixivBodyInter,
   pixivHrefInter,
   puppeteerDataInter,
-  searchPixivInter
+  searchPixivInter,
+  cookieInter
 } from '../../../../types/mian'
-import puppeteerPath from '../puppeteerpath'
 import PixivCookie from './pixivCookie'
 import pixivPath from './pixivPath'
 import baseAxios from '../../../general/BaseAxios'
@@ -16,76 +14,50 @@ import { join } from 'path'
 import { puppeteerProgressFunc } from '../../../general/allProgerss'
 import { v4 as uuidv4 } from 'uuid'
 import pLimit from 'p-limit'
-class PuppeteerCore {
-  browser: Browser | null = null
-  countdownInterval: NodeJS.Timeout | null = null
-  //定时启动
-  setTime = async (data: puppeteerDataInter): Promise<void> => {
-    if (!data.time) data.time = 3
-    await new Promise<void>((resolve) => {
-      let remainingTime = data.time
-      this.countdownInterval = setInterval(() => {
-        puppeteerPrintFunc('success', `puppeteer脚本${remainingTime}秒后启动`)
-        remainingTime--
-        if (remainingTime < 0) {
-          clearInterval(this.countdownInterval as NodeJS.Timeout)
-          this.countdownInterval = null
-          resolve()
-        }
-      }, 1000)
-    })
-  }
+import BasePuppeteer from '../../../general/BasePuppeteer'
+class PuppeteerCore extends BasePuppeteer {
   //启动
   runPuppeteer = async (data: puppeteerDataInter): Promise<void> => {
     try {
       //设置代理端口
-      baseAxios.setLocalPort('basePort', data.port)
+      this.setPort(data.port)
       //获取浏览器路径
-      const chromePath = puppeteerPath.getPath()
-      if (this.browser) {
-        puppeteerPrintFunc('error', 'puppeteer已启动,请勿重复启动')
+      const chromePath = this.getChromePath()
+      //检测
+      const isRunPuppeteer = this.lockedPuppeteer(chromePath)
+      if (!isRunPuppeteer) {
         return
       }
-      if (!chromePath || !chromePath.endsWith('chrome.exe')) {
-        puppeteerPrintFunc('error', '该浏览器不是一个有效的浏览器')
-        return
+      //网址和cookie
+      const cookieData: cookieInter = {
+        cookie: PixivCookie.getCookies(),
+        href: '.pixiv.net'
       }
       //启动浏览器
-      this.browser = await puppeteer.launch({
-        executablePath: chromePath,
-        headless: data.headless,
-        defaultViewport: {
-          width: 1500,
-          height: 720
-        }
-      })
-      //设置cookies
-      this.setPixivCookie(PixivCookie.getCookies())
-      const page = await this.browser.newPage()
-      await page.setUserAgent(
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-      )
-      //延迟启动
-      await this.setTime(data)
-      puppeteerPrintFunc('success', 'puppeteer已成功启动')
+      await this.startPuppeteer(data, chromePath, cookieData)
       //解析pid网址
       const PageUrl = await this.analyzeHrefFunc(data.href)
       if (!PageUrl) {
         puppeteerPrintFunc('error', `puppeteer报错,链接无效或找不到图片`)
+        await this.exitPuppeteer()
         return
       }
       //查询图片函数
-      const searchData = await this.searchPixivFunc(page, PageUrl)
+      const searchData = await this.searchPixivFunc(PageUrl)
       if (!searchData) {
         puppeteerPrintFunc('error', '未查询到图片,请确认链接是否正确或网络是否畅通')
         await this.exitPuppeteer()
         return
       }
       //查询pid名字函数
-      const PidName = await this.searchNamePixivFunc(page, PageUrl)
-      //下载图片
-      const allTime = await this.downloadPixivAxios(searchData, PidName, data.useProxy)
-      puppeteerPrintFunc('success', `puppeteer执行完成,共耗时${allTime}秒`)
+      const PidName = await this.searchNamePixivFunc(PageUrl)
+      if (!PidName) {
+        await this.exitPuppeteer()
+      } else {
+        //下载图片
+        const allTime = await this.downloadPixivAxios(searchData, PidName, data.useProxy)
+        puppeteerPrintFunc('success', `puppeteer执行完成,共耗时${allTime}秒`)
+      }
       //关闭浏览器实例
       await this.exitPuppeteer()
     } catch (e) {
@@ -93,37 +65,13 @@ class PuppeteerCore {
       await this.exitPuppeteer()
     }
   }
-  //设置pixivCookie
-  setPixivCookie = (cookieSet: string): void => {
-    const cookies = cookieSet.split('; ').map((pair) => {
-      const [name, ...valueParts] = pair.split('=')
-      const value = valueParts.join('=')
-      // 对URL编码的值进行解码
-      const decodedValue = decodeURIComponent(value || '')
-      // 返回完整的Cookie对象
-      return {
-        name: name.trim(),
-        value: decodedValue,
-        domain: '.pixiv.net',
-        path: '/',
-        secure: true,
-        httpOnly: false,
-        sameSite: 'Lax' as const
-      }
-    })
-    this.browser?.setCookie(...cookies)
-  }
   //查询图片函数
-  searchPixivFunc = async (
-    page: Page,
-    PageUrl: pixivHrefInter
-  ): Promise<searchPixivInter | null> => {
-    //监听请求,获取全部图片链接
+  searchPixivFunc = async (PageUrl: pixivHrefInter): Promise<searchPixivInter | null> => {
     let pageText: pixivBodyInter
     let urlsArray: string[] = []
-    page.on('response', async (response) => {
+    //网络监听
+    this.page?.on('response', async (response) => {
       if (response.url() === PageUrl.ajaxHref) {
-        console.log('请求', response.url())
         pageText = await response.json()
         urlsArray = pageText.body.map((allUrl) => {
           return allUrl.urls.original
@@ -132,29 +80,34 @@ class PuppeteerCore {
           'success',
           `成功获取到${urlsArray.length}张图片,所有原始图片链接数组, ${urlsArray}`
         )
-        return
       }
     })
     //打开页面
-    await page.goto(PageUrl.ajaxHref, { waitUntil: 'domcontentloaded' })
-    await page.waitForSelector('body')
+    await this.page?.goto(PageUrl.ajaxHref, { waitUntil: 'domcontentloaded' })
+    await this.page?.waitForSelector('body')
     puppeteerPrintFunc('success', '成功查询到当前pid图片网址,请稍后')
-    //前往page页面
-    await page.goto(PageUrl.imgHref, { waitUntil: 'domcontentloaded' })
-    await page.waitForSelector('body')
+    //前往图片原页面
+    await this.page?.goto(PageUrl.imgHref, { waitUntil: 'domcontentloaded' })
+    await this.page?.waitForSelector('body')
     return {
       urlsArray: urlsArray,
       PageUrl: PageUrl
     }
   }
   //查询pid图片名称函数
-  searchNamePixivFunc = async (page: Page, href: pixivHrefInter): Promise<string> => {
-    await page.goto(href.imgHref, { waitUntil: 'domcontentloaded' })
-    await page.waitForSelector('body')
-    await page.waitForSelector('h1')
-    return await page.$eval('h1', (h1) => {
-      return h1.innerHTML
-    })
+  searchNamePixivFunc = async (href: pixivHrefInter): Promise<string | null> => {
+    await this.page?.goto(href.imgHref, { waitUntil: 'domcontentloaded' })
+    await this.page?.waitForSelector('body')
+    await this.page?.waitForSelector('h1')
+    if (this.page) {
+      const fileName = await this.page?.$eval('h1', (h1) => {
+        return h1.innerHTML
+      })
+      return this.sanitizeFilename(fileName)
+    } else {
+      puppeteerPrintFunc('error', `无法获取图片名称`)
+      return null
+    }
   }
   //分析用户输入的网址或pid
   analyzeHrefFunc = async (href: string): Promise<pixivHrefInter | null> => {
@@ -175,7 +128,7 @@ class PuppeteerCore {
       }
     } else {
       // 如果输入无法识别，可以根据需要返回默认值或抛出异常
-      console.error('无法从输入中提取有效的Pixiv艺术作品ID:', href)
+      console.error('无法从输入中提取有效链接:', href)
       return null
     }
   }
@@ -200,7 +153,7 @@ class PuppeteerCore {
     for (let i = 0; i < searchData.urlsArray.length; i++) {
       const promise = limit(async () => {
         try {
-          //获取信息
+          //获取时间
           const dataTime: number = Date.now()
           //将url作为文件名
           const imageUrl = searchData.urlsArray[i]
@@ -272,30 +225,6 @@ class PuppeteerCore {
     await Promise.all(downloadPromises)
     puppeteerPrintFunc('success', '所有图片下载任务已完成！')
     return allTime
-  }
-  //杀死
-  killPuppeteer = async (): Promise<void> => {
-    if (this.browser) {
-      puppeteerPrintFunc('success', 'puppeteer正在强制关闭')
-      await this.browser.close()
-      puppeteerPrintFunc('closed', 'puppeteer已成功关闭')
-      this.browser = null
-      clearInterval(this.countdownInterval as NodeJS.Timeout)
-    } else {
-      puppeteerPrintFunc('success', 'puppeteer未启动')
-    }
-  }
-  //退出puppeteer
-  exitPuppeteer = async (): Promise<void> => {
-    if (this.browser) {
-      clearInterval(this.countdownInterval as NodeJS.Timeout)
-      await this.browser.close()
-      this.browser = null
-      puppeteerPrintFunc('closed', 'puppeteer已停止运行')
-    } else {
-      clearInterval(this.countdownInterval as NodeJS.Timeout)
-      puppeteerPrintFunc('closed', 'puppeteer已停止运行')
-    }
   }
 }
 export default new PuppeteerCore()

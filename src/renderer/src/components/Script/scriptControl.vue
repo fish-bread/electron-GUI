@@ -6,6 +6,7 @@ const message = useMessage()
 //注入
 const mess = inject<Ref<pythonMessageInter[]>>('mess')
 const chrome_file = inject<Ref<string>>('all_file', ref(''))
+const time = inject<Ref<string>>('time', ref(''))
 //选择浏览器
 const choose_chrome = async (): Promise<void> => {
   const newPath = await window.api.changePuppeteer()
@@ -36,6 +37,8 @@ const clean_puppeteer = (): void => {
     <h3>puppeteer浏览器启动路径</h3>
     <n-button @click="choose_chrome">选择浏览器路径</n-button>
     <n-button @click="restore_chrome">还原浏览器路径</n-button>
+    <h3>脚本预启动时间</h3>
+    <n-input v-model:value="time" placeholder="请输入puppeteer预启动时间,默认3秒"></n-input>
   </div>
 </template>
 

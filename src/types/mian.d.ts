@@ -24,6 +24,11 @@ export interface puppeteerDataInter {
   useProxy: boolean
   port: string
 }
+//cookie设置
+export interface cookieInter {
+  cookie: string
+  href: string
+}
 export interface pixivHrefInter {
   ajaxHref: string
   imgHref: string
@@ -43,6 +48,26 @@ export interface pixivUrlInter {
 export interface searchPixivInter {
   urlsArray: string[]
   PageUrl: pixivHrefInter
+}
+//bilibili
+export interface searchBilibiliInter {
+  videoHref: string
+  audioHref: string
+  videoName: string
+}
+export interface bilibiliResInter {
+  audio: bilibiliResAudioInter[]
+  video: bilibiliResVideoInter[]
+}
+export interface bilibiliResAudioInter {
+  baseUrl: string
+}
+export interface bilibiliResVideoInter {
+  baseUrl: string
+}
+export interface bilibiliFfmpegInter {
+  filePath: string
+  allTime: number
 }
 export interface selectInter {
   label: string

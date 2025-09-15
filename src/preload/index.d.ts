@@ -14,8 +14,6 @@ declare global {
       killPython: () => void
       pythonOutput: (callback: (message: pythonMessageInter) => void) => void
       getPythonPath: () => Promise<string>
-      runPuppeteer: (data: puppeteerDataInter) => Promise<void>
-      killPuppeteer: () => Promise<void>
       //自定义python
       runCustomPython: () => void
       killCustomPython: () => void
@@ -23,6 +21,8 @@ declare global {
       restorePythonPath: () => Promise<string>
       getCustomPythonPath: () => Promise<string>
       //PixivPuppeteer爬虫
+      runPuppeteer: (data: puppeteerDataInter) => Promise<void>
+      killPuppeteer: () => Promise<void>
       puppeteerOutput: (callback: (message: pythonMessageInter) => void) => void
       puppeteerOutProgress: (callback: (message: allProgressInter) => void) => void
       getChromePath: () => Promise<string>
@@ -33,6 +33,14 @@ declare global {
       restorePixivPath: () => Promise<string>
       getPixivCookie: () => Promise<string>
       changePixivCookie: (cookieData: string) => Promise<string>
+      //bilibiliPuppeteer爬虫
+      runBilibiliPuppeteer: (data: puppeteerDataInter) => void
+      killBilibiliPuppeteer: () => void
+      getBilibiliCookie: () => Promise<string>
+      setBilibiliCookie: (cookie: string) => Promise<string>
+      getBilibiliFilePath: () => Promise<string>
+      setBilibiliFilePath: () => Promise<pythonFilePath>
+      restoreBilibiliFilePath: () => Promise<string>
       //导航栏设置
       maxSizeFunc: () => void
       minimizeFunc: () => void

@@ -2,7 +2,7 @@
 import AllSelect from '@renderer/components/allSelect.vue'
 import ScriptControl from '@renderer/components/Script/scriptControl.vue'
 import PuppeteerPixivControl from '@renderer/components/Script/puppeteerPixiv/puppeteerPixivControl.vue'
-import OtherControl from '@renderer/components/Script/othoer/otherControl.vue'
+import puppeteerBilibiliControl from '@renderer/components/Script/puppeteerBilibili/puppeteerBilibiliControl.vue'
 import AllPrint from '@renderer/components/allPrint.vue'
 import { onMounted, provide, ref } from 'vue'
 import type { pythonMessageInter, allProgressInter, UnifiedMessage } from '../../../../types/mian'
@@ -16,14 +16,14 @@ provide('mess', jsMess)
 provide('all_file', puppeteer_file)
 provide('time', time)
 //设置components
-const JsComponents = [PuppeteerPixivControl, OtherControl]
+const JsComponents = [PuppeteerPixivControl, puppeteerBilibiliControl]
 const puppeteerOptions = ref([
   {
     label: 'pixiv爬虫',
     value: 0
   },
   {
-    label: '其他',
+    label: 'bilibili爬虫',
     value: 1
   }
 ])

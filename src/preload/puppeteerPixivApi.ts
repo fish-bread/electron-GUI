@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron'
 import { puppeteerDataInter } from '../types/mian'
-export const PuppeteerApi = {
+export const PuppeteerPixivApi = {
   runPuppeteer: (data: puppeteerDataInter) => ipcRenderer.invoke('runPuppeteer', data),
   killPuppeteer: () => ipcRenderer.invoke('killPuppeteer'),
   getChromePath: () => ipcRenderer.invoke('getChromePath'),

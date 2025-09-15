@@ -84,6 +84,7 @@ onMounted(() => {
 }
 .python-print {
   flex: 1;
+  max-width: calc(100vw - 320px - 70px);
 }
 .ul-box {
   height: calc(100vh - 50px - 23px);

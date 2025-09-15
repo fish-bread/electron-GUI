@@ -1,32 +1,30 @@
 <script setup lang="ts">
 import { inject, Ref, ref } from 'vue'
-import { useMessage } from 'naive-ui'
+import puppeteerLocalSettings, { PuppeteerSettingsApi } from '@renderer/func/puppeteerLocalSetting'
+//pixiv
+const pixivApi: PuppeteerSettingsApi = {
+  changeFilePath: window.api.changePixivFilePath, // 你的Pixiv修改路径API
+  restorePath: window.api.restorePixivPath, // 你的Pixiv恢复路径API
+  changeCookie: window.api.changePixivCookie // 你的Pixiv修改Cookie API
+}
 const pixivPath = inject<Ref<string>>('filePath', ref(''))
 const pixivCookie = inject<Ref<string>>('pixivCookie', ref(''))
-const changeCookie = ref<string>('')
-const message = useMessage()
-const changeFilePath = async (): Promise<void> => {
-  const newPath = await window.api.changePixivFilePath()
-  if (newPath.canceled) {
-    message.error('未选择pixiv图片保存路径')
-  } else {
-    console.log('文件路径', newPath)
-    pixivPath.value = newPath.filePath
-    message.success('路径选择成功')
-  }
+const pixivSettings = new puppeteerLocalSettings(pixivApi, pixivPath, pixivCookie)
+//bilibili
+const BilibiliApi: PuppeteerSettingsApi = {
+  changeFilePath: window.api.setBilibiliFilePath, // 你的Pixiv修改路径API
+  restorePath: window.api.restoreBilibiliFilePath, // 你的Pixiv恢复路径API
+  changeCookie: window.api.setBilibiliCookie // 你的Pixiv修改Cookie API
 }
-const restorePixivPathFunc = async (): Promise<void> => {
-  pixivPath.value = await window.api.restorePixivPath()
-  message.success('恢复默认下载路径成功')
-}
-const changeCookieFunc = async (): Promise<void> => {
-  pixivCookie.value = await window.api.changePixivCookie(changeCookie.value)
-}
+const bilibiliFilePath = inject<Ref<string>>('bilibiliFilePath', ref(''))
+const bilibiliCookie = inject<Ref<string>>('bilibiliCookie', ref(''))
+const bilibiliSettings = new puppeteerLocalSettings(BilibiliApi, bilibiliFilePath, bilibiliCookie)
 </script>
 
 <template>
   <div class="puppeteer-setting">
     <h2>puppeteer设置</h2>
+    <h3>pixiv爬虫设置</h3>
     <div class="pixiv-cookie">
       <n-tooltip :show-arrow="false" trigger="hover">
         <template #trigger>
@@ -34,13 +32,37 @@ const changeCookieFunc = async (): Promise<void> => {
         </template>
         {{ pixivCookie }}
       </n-tooltip>
-      <n-input v-model:value="changeCookie" />
-      <n-button @click="changeCookieFunc">更换cookie</n-button>
+      <n-input
+        v-model:value="pixivSettings.changeCookie.value"
+        placeholder="请输入pixivCookie"
+        style="max-width: 50%"
+      />
+      <n-button @click="pixivSettings.changeCookieFunc">更换cookie</n-button>
     </div>
     <div class="path">
       pixiv图片保存文件路径:&nbsp;&nbsp;{{ pixivPath }}
-      <n-button @click="changeFilePath">修改文件路径</n-button>
-      <n-button @click="restorePixivPathFunc">恢复默认路径</n-button>
+      <n-button @click="pixivSettings.changeFilePathFunc">修改文件路径</n-button>
+      <n-button @click="pixivSettings.restoreFilePathFunc">恢复默认路径</n-button>
+    </div>
+    <h3>bilibili爬虫设置</h3>
+    <div class="pixiv-cookie">
+      <n-tooltip :show-arrow="false" trigger="hover">
+        <template #trigger>
+          <div class="pixiv-cookie-view">bilibili的cookie:&nbsp;&nbsp;{{ bilibiliCookie }}</div>
+        </template>
+        {{ bilibiliCookie }}
+      </n-tooltip>
+      <n-input
+        v-model:value="bilibiliSettings.changeCookie.value"
+        placeholder="请输入bilibiliCookie"
+        style="max-width: 50%"
+      />
+      <n-button @click="bilibiliSettings.changeCookieFunc">更换cookie</n-button>
+    </div>
+    <div class="path">
+      bilibili视频保存文件路径:&nbsp;&nbsp;{{ bilibiliFilePath }}
+      <n-button @click="bilibiliSettings.changeFilePathFunc">修改文件路径</n-button>
+      <n-button @click="bilibiliSettings.restoreFilePathFunc">恢复默认路径</n-button>
     </div>
   </div>
 </template>

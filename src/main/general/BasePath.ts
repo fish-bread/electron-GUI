@@ -1,6 +1,6 @@
 import Store from 'electron-store'
 const store = new Store()
-type keyInter = 'pythonPath' | 'customPythonPath' | 'chromePath' | 'pixivPath'
+type keyInter = 'pythonPath' | 'customPythonPath' | 'chromePath' | 'pixivPath' | 'bilibiliPath'
 class BasePathManager {
   protected currentPath: string = ''
 

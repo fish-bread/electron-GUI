@@ -1,15 +1,17 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import { pythonApi } from './pythonApi'
-import { PuppeteerApi } from './puppeteerApi'
+import { PuppeteerPixivApi } from './puppeteerPixivApi'
 import { outPutApi } from './outputApi'
 import { pythonCustomApi } from './pythonCustomApi'
 import { globalSettingApi } from './globalSettingApi'
+import { puppeteerBilibiliApi } from './puppeteerBilibiliApi'
 
 // Custom APIs for renderer
 const api = {
   ...pythonApi,
-  ...PuppeteerApi,
+  ...PuppeteerPixivApi,
+  ...puppeteerBilibiliApi,
   ...pythonCustomApi,
   ...outPutApi,
   ...globalSettingApi,

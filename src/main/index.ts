@@ -7,6 +7,7 @@ import { registerPythonIpcHandlers } from './pythonIpcMian/pythonProcessManager'
 import { registerPixivPuppeteerIpcHandlers } from './puppeteerIpcMain/puppeteerPixivProcessManager'
 import { registerCustomPythonIpcHandlers } from './pythonIpcMian/pythonCustomManager'
 import { allSettingManager } from './manager/allSettingManager'
+import {registerBilibiliPuppeteerIpcHandlers} from "./puppeteerIpcMain/puppeteerBilibiliProcessManager";
 // 检测并阻止多实例
 getLock()
 function createWindow(): void {
@@ -63,6 +64,8 @@ app.whenReady().then(() => {
   registerCustomPythonIpcHandlers()
   //puppeteer的pixiv
   registerPixivPuppeteerIpcHandlers()
+  //puppeteer的bilibili
+  registerBilibiliPuppeteerIpcHandlers()
   //全局设置获取
   allSettingManager()
   //最大化或恢复窗体

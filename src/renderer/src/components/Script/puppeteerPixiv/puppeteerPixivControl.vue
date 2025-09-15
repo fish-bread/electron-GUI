@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, onMounted, Ref, ref } from 'vue'
+import { inject, Ref, ref } from 'vue'
 //注入
 const time = inject<Ref<string>>('time', ref(''))
 const port = inject<Ref<string>>('port', ref(''))
@@ -13,7 +13,7 @@ const runPuppeteer = async (): Promise<void> => {
     href: href.value,
     headless: headless.value,
     useProxy: agent.value,
-    port: Number(port.value),
+    port: port.value,
   })
 }
 //killPuppeteer
@@ -41,8 +41,6 @@ const killPuppeteer = async (): Promise<void> => {
         </div>
       </div>
     </div>
-    <h3>pixiv脚本预启动时间</h3>
-    <n-input v-model:value="time" placeholder="请输入puppeteer预启动时间,默认3秒"></n-input>
     <h3>pixiv的图片pid/图片网址</h3>
     <n-input v-model:value="href" placeholder="请输入你想搜索的图片pid"></n-input>
   </div>

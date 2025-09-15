@@ -16,9 +16,9 @@ const setPort = (): void => {
 
 <template>
   <div>
-    <h3>全局设置</h3>
+    <h2>全局设置</h2>
     <div class="port-setting">
-      全局代理端口:&nbsp;
+      全局代理端口:&nbsp;{{ port }}
       <n-input v-model:value="port" placeholder="端口号" style="max-width: 30%" />
       <n-button @click="setPort">修改全局端口</n-button>
     </div>
