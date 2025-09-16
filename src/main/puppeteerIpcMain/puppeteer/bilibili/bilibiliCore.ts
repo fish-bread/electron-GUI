@@ -2,6 +2,7 @@ import BilibiliCookie from './bilibiliCookie'
 import {
   bilibiliFfmpegInter,
   cookieInter,
+  netSpeedInter,
   puppeteerDataInter,
   searchBilibiliInter
 } from '../../../../types/mian'
@@ -14,7 +15,7 @@ import { join } from 'path'
 import { v4 as uuidv4 } from 'uuid'
 import { execSync } from 'child_process'
 import { puppeteerProgressFunc } from '../../../general/allProgerss'
-
+import pLimit from 'p-limit'
 class bilibiliCore extends BasePuppeteer {
   runPuppeteer = async (data: puppeteerDataInter): Promise<void> => {
     try {
@@ -48,28 +49,40 @@ class bilibiliCore extends BasePuppeteer {
       console.log('文件名', bilibiliLink?.videoName)
       //下载函数
       if (bilibiliLink) {
-        const videoTime = await this.downloadBilibiliAxios(
-          bilibiliHref,
-          bilibiliLink.videoHref,
-          bilibiliLink.videoName,
-          'mp4',
-          data.useProxy
+        //创建并发限制器,设置最大并发数2
+        const limit = pLimit(2)
+        const downloadPromises: Promise<bilibiliFfmpegInter>[] = []
+        const videoPromise = limit(() =>
+          this.downloadBilibiliAxios(
+            bilibiliHref,
+            bilibiliLink.videoHref,
+            bilibiliLink.videoName,
+            'mp4',
+            data.useProxy
+          )
         )
-        const audioTime = await this.downloadBilibiliAxios(
-          bilibiliHref,
-          bilibiliLink.audioHref,
-          bilibiliLink.videoName,
-          'mp3',
-          data.useProxy
+        downloadPromises.push(videoPromise)
+        // 将音频下载任务包装成Promise
+        const audioPromise = limit(() =>
+          this.downloadBilibiliAxios(
+            bilibiliHref,
+            bilibiliLink.audioHref,
+            bilibiliLink.videoName,
+            'mp3',
+            data.useProxy
+          )
         )
+        downloadPromises.push(audioPromise)
+        //使用Promise.all,并发执行下载,并等待所有结果
+        const [videoResult, audioResult] = await Promise.all(downloadPromises)
         puppeteerPrintFunc(
           'success',
-          `puppeteer执行完成,共耗时${videoTime.allTime + audioTime.allTime}秒`
+          `puppeteer执行完成,共耗时${videoResult.allTime + audioResult.allTime}秒`
         )
         //合并视频
         const ffmpegTime = await this.ffmpegMergeFunc(
-          videoTime.filePath,
-          audioTime.filePath,
+          videoResult.filePath,
+          audioResult.filePath,
           bilibiliLink.videoName
         )
         puppeteerPrintFunc('success', `ffmpeg合并完成,共耗时${ffmpegTime}秒`)
@@ -85,7 +98,7 @@ class bilibiliCore extends BasePuppeteer {
   analyzeHrefFunc = (href: string): string | null => {
     // 定义匹配B站视频链接的正则表达式
     const bilibiliRegex =
-      /^(https:\/\/www\.bilibili\.com\/video\/)?(BV[0-9A-Za-z]{10,12})(\/?\?.*)?$/
+      /^(https:\/\/www\.bilibili\.com\/video\/)?(BV[0-9A-Za-z]{10,12})(\/[^?]*)?(\?.*)?$/
     // 尝试匹配传入的链接
     const match = href.match(bilibiliRegex)
     if (match && match[2]) {
@@ -160,9 +173,17 @@ class bilibiliCore extends BasePuppeteer {
     //获取下载开始时间
     let allTime: number = 0
     const dataTime: number = Date.now()
+    // 用于网速计算的变量
+    const netSpeed: netSpeedInter = {
+      lastUpdateTime: Date.now(), // 初始化为当前时间
+      lastDownloadedSize: 0, // 初始下载量为0
+      lastFormattedSpeed: '0.00 KB/s', // 初始显示值
+      lastReportTime: 0
+    }
     //请求下载
     const pixivAxiosFunc = useProxy ? baseAxios.agentAxios : baseAxios.noAgentAxios
     const response = await pixivAxiosFunc({
+      signal: this.cancelToken.signal,
       headers: {
         Referer: bilibiliHref,
         'User-Agent':
@@ -184,8 +205,20 @@ class bilibiliCore extends BasePuppeteer {
     //更新进度
     response.data.on('data', (chunk: Buffer) => {
       downloadedSize += chunk.length
-      const progress = contentLength > 0 ? Math.round((downloadedSize / contentLength) * 100) : 0
-      puppeteerProgressFunc('success', `文件${fileName}.${fileType}正在下载`, progress, taskId)
+      //计算进度
+      const progress = this.downloadProgress({
+        chunk,
+        downloadedSize,
+        contentLength
+      })
+      // 计算实时网速
+      const formattedSpeed = this.downloadNetSpeed(netSpeed, downloadedSize)
+      puppeteerProgressFunc(
+        'success',
+        `文件${fileName}.${fileType}正在下载,(${formattedSpeed})`,
+        progress,
+        taskId
+      )
     })
     response.data.on('end', () => {
       const taskElapsedTimeMs = Date.now() - dataTime // 计算单个任务耗时（毫秒）
@@ -222,12 +255,12 @@ class bilibiliCore extends BasePuppeteer {
   ): Promise<number> => {
     try {
       const downloadDir = BilibiliPath.getPath()
-      const outputPath = join(downloadDir, `${fileName}_合并.mp4`);
-      puppeteerPrintFunc('success', '使用ffmpeg合并视频,请确报ffmpeg在环境变量中存在')
+      const outputPath = join(downloadDir, `${fileName}_合并.mp4`)
+      puppeteerPrintFunc('success', '正在使用ffmpeg合并视频,请确报ffmpeg在环境变量中存在')
       const dataTime: number = Date.now()
       //执行命令行
       const stdout = execSync(
-        `ffmpeg -i "${videoPath}" -i "${audioPath}" -c:v copy -c:a aac -b:a 192k -map 0:v:0 -map 1:a:0 "${outputPath}"`,
+        `ffmpeg -i "${videoPath}" -i "${audioPath}" -c:v copy -c:a aac -b:a 192k -map 0:v:0 -map 1:a:0 "${outputPath}"`
       )
       console.log(`标准输出:\n${stdout}`)
       const taskElapsedTimeMs = Date.now() - dataTime // 计算单个任务耗时（毫秒）

@@ -3,7 +3,6 @@ const store = new Store()
 type keyInter = 'pythonPath' | 'customPythonPath' | 'chromePath' | 'pixivPath' | 'bilibiliPath'
 class BasePathManager {
   protected currentPath: string = ''
-
   // 返回当前路径
   getPath(): string {
     console.log('当前获取路径', this.currentPath)

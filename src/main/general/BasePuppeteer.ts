@@ -1,12 +1,13 @@
 import { puppeteerPrintFunc } from './allPrint'
 import puppeteer, { Browser, Page } from 'puppeteer-core'
-import { puppeteerDataInter, cookieInter } from '../../types/mian'
+import { puppeteerDataInter, cookieInter, netSpeedInter, progressInter } from '../../types/mian'
 import puppeteerPath from '../puppeteerIpcMain/puppeteer/puppeteerpath'
 import baseAxios from './BaseAxios'
 class BasePuppeteer {
   browser: Browser | null = null
   page: Page | null = null
   countdownInterval: NodeJS.Timeout | null = null
+  cancelToken: AbortController = baseAxios.createCancelToken()
   //设置端口
   setPort = (port: string): void => {
     //设置代理端口
@@ -96,9 +97,13 @@ class BasePuppeteer {
       puppeteerPrintFunc('closed', 'puppeteer已成功关闭')
       this.browser = null
       clearInterval(this.countdownInterval as NodeJS.Timeout)
+      this.cancelToken.abort()
+      this.cancelToken = baseAxios.createCancelToken()
     } else {
       this.browser = null
       clearInterval(this.countdownInterval as NodeJS.Timeout)
+      this.cancelToken.abort()
+      this.cancelToken = baseAxios.createCancelToken()
       puppeteerPrintFunc('success', 'puppeteer未启动')
     }
   }
@@ -127,7 +132,7 @@ class BasePuppeteer {
     //移除开头和结尾的下划线
     cleaned = cleaned.replace(/^_+|_+$/g, '')
     //限制文件名长度（避免过长的文件名）
-    const maxLength = 100;
+    const maxLength = 100
     if (cleaned.length > maxLength) {
       cleaned = cleaned.substring(0, maxLength)
     }
@@ -136,6 +141,43 @@ class BasePuppeteer {
       cleaned = 'untitled'
     }
     return cleaned
+  }
+  //计算网速
+  downloadNetSpeed = (netSpeed: netSpeedInter, downloadedSize: number): string => {
+    const now = Date.now()
+    const timeSinceLastReport = (now - netSpeed.lastReportTime) / 1000 // 转换为秒
+
+    //节流控制:如果距离上次报告不足1秒，直接返回上一次的格式化结果
+    if (timeSinceLastReport < 1) {
+      return netSpeed.lastFormattedSpeed
+    }
+    //计算瞬时速度
+    const timeInterval = (now - netSpeed.lastUpdateTime) / 1000
+    const dataInterval = downloadedSize - netSpeed.lastDownloadedSize
+    const currentSpeed = dataInterval / timeInterval //计算网速 B/s
+    //更新记录
+    netSpeed.lastDownloadedSize = downloadedSize
+    netSpeed.lastUpdateTime = now
+    netSpeed.lastReportTime = now
+    //格式化网速显示
+    const formattedSpeed = this.formatSpeed(currentSpeed)
+    netSpeed.lastFormattedSpeed = formattedSpeed
+    return formattedSpeed
+  }
+  //将格式化函数提取为单独的方法，便于复用
+  private formatSpeed = (speedBytes: number): string => {
+    if (speedBytes <= 0) return `0.00 KB/s`
+    const speedKB = speedBytes / 1024
+    if (speedKB >= 1024) {
+      const speedMB = speedKB / 1024
+      return `${speedMB.toFixed(2)} MB/s`
+    } else {
+      return `${speedKB.toFixed(2)} KB/s`
+    }
+  }
+  //计算进度
+  downloadProgress = (data: progressInter): number => {
+    return data.contentLength > 0 ? Math.round((data.downloadedSize / data.contentLength) * 100) : 0
   }
 }
 export default BasePuppeteer

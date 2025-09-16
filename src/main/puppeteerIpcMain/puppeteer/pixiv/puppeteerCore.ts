@@ -4,7 +4,8 @@ import {
   pixivHrefInter,
   puppeteerDataInter,
   searchPixivInter,
-  cookieInter
+  cookieInter,
+  netSpeedInter
 } from '../../../../types/mian'
 import PixivCookie from './pixivCookie'
 import pixivPath from './pixivPath'
@@ -161,9 +162,16 @@ class PuppeteerCore extends BasePuppeteer {
           const imageName = urlObj.pathname.split('/').pop() || `image_${i}.jpg`
           const fileName = `${PidName}_${imageName}`
           const filePath = join(downloadDir, fileName)
-
+          // 用于网速计算的变量
+          const netSpeed: netSpeedInter = {
+            lastUpdateTime: Date.now(), // 初始化为当前时间
+            lastDownloadedSize: 0, // 初始下载量为0
+            lastFormattedSpeed: '0.00 KB/s', // 初始显示值
+            lastReportTime: 0
+          }
           //请求图片
           const response = await pixivAxiosFunc({
+            signal: this.cancelToken.signal,
             headers: {
               Referer: searchData.PageUrl.imgHref,
               'User-Agent':
@@ -185,9 +193,20 @@ class PuppeteerCore extends BasePuppeteer {
           //更新进度
           response.data.on('data', (chunk: Buffer) => {
             downloadedSize += chunk.length
-            const progress =
-              contentLength > 0 ? Math.round((downloadedSize / contentLength) * 100) : 0
-            puppeteerProgressFunc('success', `图片${fileName}正在下载`, progress, taskId)
+            //计算进度
+            const progress = this.downloadProgress({
+              chunk,
+              downloadedSize,
+              contentLength
+            })
+            // 计算实时网速
+            const formattedSpeed = this.downloadNetSpeed(netSpeed, downloadedSize)
+            puppeteerProgressFunc(
+              'success',
+              `图片${fileName}正在下载,(${formattedSpeed})`,
+              progress,
+              taskId
+            )
           })
           response.data.on('end', () => {
             const taskElapsedTimeMs = Date.now() - dataTime // 计算单个任务耗时（毫秒）

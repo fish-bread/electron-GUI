@@ -42,6 +42,10 @@ class BaseAxios {
     console.log('代理端口', this.port)
     return this.port
   }
+  //创建取消令牌
+  createCancelToken = (): AbortController => {
+    return new AbortController()
+  }
   //使用代理
   agentAxios: AxiosInstance = axios.create({
     proxy: false,

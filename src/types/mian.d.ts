@@ -69,7 +69,19 @@ export interface bilibiliFfmpegInter {
   filePath: string
   allTime: number
 }
+//其他
 export interface selectInter {
   label: string
   value: number
+}
+export interface netSpeedInter {
+  lastUpdateTime: number // 上次计算网速的时间戳
+  lastDownloadedSize: number // 上次计算网速时已下载的字节数
+  lastFormattedSpeed: string // 上一次格式化后的速度显示字符串
+  lastReportTime: number // 上次报告时间戳（用于节流控制）
+}
+export interface progressInter {
+  chunk: Buffer
+  downloadedSize: number
+  contentLength: number
 }
