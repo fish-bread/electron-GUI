@@ -4,8 +4,8 @@ import BilibiliCookie from './puppeteer/bilibili/bilibiliCookie'
 import BilibiliPath from './puppeteer/bilibili/bilibiliPath'
 import runPuppeteer from './puppeteer/pixiv/puppeteerCore'
 import { puppeteerPrintFunc } from '../general/allPrint'
-import { pathDialog } from '../dialog/pythonDialog'
 import { pythonFilePath } from '../../types/mian'
+import { savePathDialog } from '../dialog/fileSaveDialog'
 export const registerBilibiliPuppeteerIpcHandlers = (): void => {
   //启动bilibili
   ipcMain.on('runBilibiliPuppeteer', async (_event, data): Promise<void> => {
@@ -37,7 +37,7 @@ export const registerBilibiliPuppeteerIpcHandlers = (): void => {
           filePath: ''
         }
       }
-      const pathFile = await pathDialog()
+      const pathFile = await savePathDialog()
       if (pathFile.filePaths[0]) {
         BilibiliPath.setLocalPath('bilibiliPath', pathFile.filePaths[0])
       }

@@ -85,3 +85,8 @@ export interface progressInter {
   downloadedSize: number
   contentLength: number
 }
+//设置标题
+export interface settingTitle {
+  pixiv: string
+  bilibili: string
+}

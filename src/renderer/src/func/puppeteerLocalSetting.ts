@@ -9,8 +9,8 @@ class puppeteerLocalSettings {
   public changeCookie: Ref<string> = ref('')
   constructor(
     private api: PuppeteerSettingsApi,
-    private filePath: Ref<string>,
-    private cookie: Ref<string>
+    private filePath: Ref<string> = ref(''),
+    private cookie: Ref<string> = ref('')
   ) {}
   changeFilePathFunc = async (): Promise<void> => {
     const newPath = await this.api.changeFilePath()

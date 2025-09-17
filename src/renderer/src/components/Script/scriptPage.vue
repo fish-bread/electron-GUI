@@ -66,22 +66,29 @@ onMounted(() => {
   window.api.puppeteerOutProgress(handleProgressUpdate)
   get_chrome_path()
 })
+const split = ref(0.265)
 </script>
 
 <template>
-  <div
-    class="script-page"
-    :style="{ borderRight: theme === null ? '1px solid #4e4e4e' : '1px solid  #2c2c2c' }"
-  >
-    <div class="script-box">
-      <AllSelect name="js" />
-      <ScriptControl />
-      <KeepAlive>
-        <Component :is="JsComponents[num]" />
-      </KeepAlive>
-    </div>
-  </div>
-  <AllPrint />
+  <n-split v-model:size="split" direction="horizontal">
+    <template #1>
+      <div
+        class="script-page"
+        :style="{ borderRight: theme === null ? '1px solid #4e4e4e' : '1px solid  #2c2c2c' }"
+      >
+        <div class="script-box">
+          <AllSelect name="js" />
+          <ScriptControl />
+          <KeepAlive>
+            <Component :is="JsComponents[num]" />
+          </KeepAlive>
+        </div>
+      </div>
+    </template>
+    <template #2>
+      <AllPrint />
+    </template>
+  </n-split>
 </template>
 
 <style scoped>
@@ -89,7 +96,6 @@ onMounted(() => {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  width: 320px;
   overflow: auto;
   height: calc(100vh - 50px);
   padding: 0 10px;

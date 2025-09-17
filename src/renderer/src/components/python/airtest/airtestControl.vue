@@ -21,7 +21,4 @@ const kill_python = (): void => {
 </template>
 
 <style scoped>
-.home-control {
-  width: 300px;
-}
 </style>
