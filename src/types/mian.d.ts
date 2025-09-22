@@ -1,16 +1,17 @@
-export interface pythonMessageInter {
-  status: 'success' | 'error' | 'closed'
+export interface allMessageInter {
+  status: 'info' | 'error' | 'closed'
+  dataTime: string
   message: string
 }
 export interface allProgressInter {
-  status: 'success' | 'error' | 'closed'
+  status: 'info' | 'error' | 'closed'
   message: string
   progress: number
   taskId: string
 }
 export interface UnifiedMessage {
   type: 'text' | 'progress'
-  data: pythonMessageInter | allProgressInter
+  data: allMessageInter | allProgressInter
 }
 export interface pythonFilePath {
   canceled: boolean

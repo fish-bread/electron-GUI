@@ -53,7 +53,7 @@ export const registerCustomPythonIpcHandlers = (): void => {
     //接收消息
     PyShell.on('message', function (message) {
       console.log('监听事件', message)
-      pythonPrintFunc('success', message)
+      pythonPrintFunc('info', message)
     })
     //结束发送以执行python
     PyShell.end((res) => {
@@ -81,9 +81,9 @@ export const registerCustomPythonIpcHandlers = (): void => {
     if (PyShell) {
       PyShell.kill()
       PyShell = null
-      pythonPrintFunc('success', 'python脚本已强制终止')
+      pythonPrintFunc('info', 'python脚本已强制终止')
     } else {
-      pythonPrintFunc('success', 'python子进程未启动')
+      pythonPrintFunc('info', 'python子进程未启动')
     }
   })
 }

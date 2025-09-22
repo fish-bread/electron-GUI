@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, Ref } from 'vue'
-import { pythonMessageInter } from '../../../../types/mian'
-const mess = inject<Ref<pythonMessageInter[]>>('mess')
+import { allMessageInter } from '../../../../types/mian'
+const mess = inject<Ref<allMessageInter[]>>('mess')
 const clean_python = (): void => {
   if (mess) mess.value = []
 }

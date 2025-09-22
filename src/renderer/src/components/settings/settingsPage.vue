@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import settingScript from '@renderer/components/settings/settingScript.vue'
 import settingsGlobal from '@renderer/components/settings/settingGlobal.vue'
-import { ref, onMounted, provide, Ref } from 'vue'
+import settingPython from '@renderer/components/settings/settingPython.vue'
+import { ref, onMounted, provide } from 'vue'
 //pixiv
 const pixivPath = ref<string>('')
 const pixivCookie = ref<string>('')
@@ -45,6 +46,7 @@ const title = ref<settingTitle>({
   <div class="setting-page">
     <div class="scroll-box">
       <settingsGlobal />
+      <settingPython />
       <settingScript
         v-model:title="title.pixiv"
         v-model:path="pixivPath"

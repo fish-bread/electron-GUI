@@ -4,7 +4,7 @@ type ChannelType = 'puppeteerOutProgress' | 'pythonOutProgress'
 
 const createProgressSender = (channel: ChannelType) => {
   return (
-    status: 'success' | 'error' | 'closed',
+    status: 'info' | 'error' | 'closed',
     message: string,
     progress: number,
     taskId: string

@@ -1,15 +1,17 @@
 // 获取窗体
-import { pythonMessageInter } from '../../types/mian'
+import dayjs from 'dayjs'
+import { allMessageInter } from '../../types/mian'
 import { BrowserWindow } from 'electron'
 type ChannelType = 'pythonOutput' | 'puppeteerOutput'
 // 创建一个工厂函数
 const createMessageSender = (channel: ChannelType) => {
-  return (status: 'success' | 'error' | 'closed', message: string): void => {
+  return (status: 'info' | 'error' | 'closed', message: string): void => {
     const allWindows = BrowserWindow.getAllWindows()
     const targetWindow = allWindows.find((win) => win.id === 1)
 
-    const msgData: pythonMessageInter = {
+    const msgData: allMessageInter = {
       status: status,
+      dataTime: dayjs().format('YYYY-MM-DD HH:mm:ss.SSS'),
       message: message
     }
 

@@ -60,18 +60,28 @@ const changHomeFunc = (index: number): void => {
   flex-direction: column;
   gap: 5px;
   .sidebar-button {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 5px;
     transition: all 0.2s ease;
     width: 100%;
+    border-left: 5px solid transparent;
   }
   .sidebar-button-active {
-    background-color: var(--sidebar-button-active-back) !important;
+    position: relative;
+  }
+  .sidebar-button-active::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 0;
+    width: 10px;
+    height: 100%;
+    border-left: 5px solid var(--sidebar-button-active-back) !important;
   }
   .sidebar-button:hover {
-    background-color: var(--sidebar-button-active-back) !important;
+    border-left: 5px solid var(--sidebar-button-active-back) !important;
   }
 }
 </style>

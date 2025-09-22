@@ -3,7 +3,7 @@ import { PythonShell } from 'python-shell'
 import { ipcMain } from 'electron'
 import { pythonPrintFunc } from '../general/allPrint'
 import airtestPythonPath from '../pythonIpcMian/airtestPython/airtestPythonPath'
-let PyShell: PythonShell | null = null
+export let PyShell: PythonShell | null = null
 export const registerPythonIpcHandlers = (): void => {
   // 运行python
   ipcMain.on('runPython', async (_event, time): Promise<void> => {
@@ -30,7 +30,7 @@ export const registerPythonIpcHandlers = (): void => {
     //接收消息
     PyShell.on('message', function (message) {
       console.log('监听事件', message)
-      pythonPrintFunc('success', message)
+      pythonPrintFunc('info', message)
     })
     //结束发送以执行python
     PyShell.end((res) => {
@@ -58,9 +58,9 @@ export const registerPythonIpcHandlers = (): void => {
     if (PyShell) {
       PyShell.kill()
       PyShell = null
-      pythonPrintFunc('success', 'python脚本已强制终止')
+      pythonPrintFunc('info', 'python脚本已强制终止')
     } else {
-      pythonPrintFunc('success', 'python子进程未启动')
+      pythonPrintFunc('info', 'python子进程未启动')
     }
   })
   //获取python路径

@@ -35,7 +35,7 @@ class BasePuppeteer {
     await new Promise<void>((resolve) => {
       let remainingTime = data.time
       this.countdownInterval = setInterval(() => {
-        puppeteerPrintFunc('success', `puppeteer脚本${remainingTime}秒后启动`)
+        puppeteerPrintFunc('info', `puppeteer脚本${remainingTime}秒后启动`)
         remainingTime--
         if (remainingTime < 0) {
           clearInterval(this.countdownInterval as NodeJS.Timeout)
@@ -67,7 +67,7 @@ class BasePuppeteer {
     )
     //延迟启动
     await this.setTime(data)
-    puppeteerPrintFunc('success', 'puppeteer已成功启动')
+    puppeteerPrintFunc('info', 'puppeteer已成功启动')
   }
   //设置cookie
   setCookie = (cookieData: cookieInter): void => {
@@ -92,7 +92,7 @@ class BasePuppeteer {
   //杀死
   killPuppeteer = async (): Promise<void> => {
     if (this.browser) {
-      puppeteerPrintFunc('success', 'puppeteer正在强制关闭')
+      puppeteerPrintFunc('info', 'puppeteer正在强制关闭')
       await this.browser.close()
       puppeteerPrintFunc('closed', 'puppeteer已成功关闭')
       this.browser = null
@@ -104,7 +104,7 @@ class BasePuppeteer {
       clearInterval(this.countdownInterval as NodeJS.Timeout)
       this.cancelToken.abort()
       this.cancelToken = baseAxios.createCancelToken()
-      puppeteerPrintFunc('success', 'puppeteer未启动')
+      puppeteerPrintFunc('info', 'puppeteer未启动')
     }
   }
   //退出puppeteer

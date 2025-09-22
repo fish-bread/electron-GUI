@@ -5,7 +5,7 @@ import PuppeteerPixivControl from '@renderer/components/Script/puppeteerPixiv/pu
 import puppeteerBilibiliControl from '@renderer/components/Script/puppeteerBilibili/puppeteerBilibiliControl.vue'
 import AllPrint from '@renderer/components/allPrint.vue'
 import { onMounted, provide, ref } from 'vue'
-import type { pythonMessageInter, allProgressInter, UnifiedMessage } from '../../../../types/mian'
+import type { allMessageInter, allProgressInter, UnifiedMessage } from '../../../../types/mian'
 import { theme } from '@renderer/func/themeChange'
 const jsMess = ref<UnifiedMessage[]>([])
 const puppeteer_file = ref<string>()
@@ -31,7 +31,7 @@ const num = ref<number>(0)
 provide('num', num)
 provide('options', puppeteerOptions)
 //监听message消息和进度条
-const handleOutputMessage = (message: pythonMessageInter): void => {
+const handleOutputMessage = (message: allMessageInter): void => {
   console.log('接收到pythonOutput消息:', message)
   jsMess.value.unshift({
     type: 'text',
@@ -66,29 +66,22 @@ onMounted(() => {
   window.api.puppeteerOutProgress(handleProgressUpdate)
   get_chrome_path()
 })
-const split = ref(0.265)
 </script>
 
 <template>
-  <n-split v-model:size="split" direction="horizontal">
-    <template #1>
-      <div
-        class="script-page"
-        :style="{ borderRight: theme === null ? '1px solid #4e4e4e' : '1px solid  #2c2c2c' }"
-      >
-        <div class="script-box">
-          <AllSelect name="js" />
-          <ScriptControl />
-          <KeepAlive>
-            <Component :is="JsComponents[num]" />
-          </KeepAlive>
-        </div>
-      </div>
-    </template>
-    <template #2>
-      <AllPrint />
-    </template>
-  </n-split>
+  <div
+    class="script-page"
+    :style="{ borderRight: theme === null ? '1px solid #4e4e4e' : '1px solid  #2c2c2c' }"
+  >
+    <div class="script-box">
+      <AllSelect name="js" />
+      <ScriptControl />
+      <KeepAlive>
+        <Component :is="JsComponents[num]" />
+      </KeepAlive>
+    </div>
+  </div>
+  <AllPrint />
 </template>
 
 <style scoped>
@@ -99,6 +92,7 @@ const split = ref(0.265)
   overflow: auto;
   height: calc(100vh - 50px);
   padding: 0 10px;
+  min-width: 320px;
 }
 .script-page::-webkit-scrollbar {
   width: 5px;

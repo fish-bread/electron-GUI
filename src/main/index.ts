@@ -3,11 +3,11 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon3.png?asset'
 import { getLock } from './func/gotTheLock'
-import { registerPythonIpcHandlers } from './pythonIpcMian/pythonProcessManager'
+import { registerPythonIpcHandlers, PyShell } from './pythonIpcMian/pythonProcessManager'
 import { registerPixivPuppeteerIpcHandlers } from './puppeteerIpcMain/puppeteerPixivProcessManager'
 import { registerCustomPythonIpcHandlers } from './pythonIpcMian/pythonCustomManager'
 import { allSettingManager } from './manager/allSettingManager'
-import {registerBilibiliPuppeteerIpcHandlers} from "./puppeteerIpcMain/puppeteerBilibiliProcessManager";
+import { registerBilibiliPuppeteerIpcHandlers } from './puppeteerIpcMain/puppeteerBilibiliProcessManager'
 // 检测并阻止多实例
 getLock()
 function createWindow(): void {
@@ -99,8 +99,13 @@ app.whenReady().then(() => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
+import BilibiliCore from './puppeteerIpcMain/puppeteer/bilibili/bilibiliCore'
+import PuppeteerCore from './puppeteerIpcMain/puppeteer/pixiv/puppeteerCore'
+app.on('window-all-closed', async () => {
   if (process.platform !== 'darwin') {
+    PyShell?.kill()
+    await BilibiliCore.killPuppeteer()
+    await PuppeteerCore.killPuppeteer()
     app.quit()
   }
 })

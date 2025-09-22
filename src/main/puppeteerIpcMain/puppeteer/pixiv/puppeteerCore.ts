@@ -57,7 +57,7 @@ class PuppeteerCore extends BasePuppeteer {
       } else {
         //下载图片
         const allTime = await this.downloadPixivAxios(searchData, PidName, data.useProxy)
-        puppeteerPrintFunc('success', `puppeteer执行完成,共耗时${allTime}秒`)
+        puppeteerPrintFunc('info', `puppeteer执行完成,共耗时${allTime}秒`)
       }
       //关闭浏览器实例
       await this.exitPuppeteer()
@@ -78,7 +78,7 @@ class PuppeteerCore extends BasePuppeteer {
           return allUrl.urls.original
         })
         puppeteerPrintFunc(
-          'success',
+          'info',
           `成功获取到${urlsArray.length}张图片,所有原始图片链接数组, ${urlsArray}`
         )
       }
@@ -86,7 +86,7 @@ class PuppeteerCore extends BasePuppeteer {
     //打开页面
     await this.page?.goto(PageUrl.ajaxHref, { waitUntil: 'domcontentloaded' })
     await this.page?.waitForSelector('body')
-    puppeteerPrintFunc('success', '成功查询到当前pid图片网址,请稍后')
+    puppeteerPrintFunc('info', '成功查询到当前pid图片网址,请稍后')
     //前往图片原页面
     await this.page?.goto(PageUrl.imgHref, { waitUntil: 'domcontentloaded' })
     await this.page?.waitForSelector('body')
@@ -141,7 +141,7 @@ class PuppeteerCore extends BasePuppeteer {
   ): Promise<number> => {
     const downloadDir = pixivPath.getPath()
     let allTime: number = 0
-    puppeteerPrintFunc('success', `图片将保存至目录: ${downloadDir},开始遍历下载图片`)
+    puppeteerPrintFunc('info', `图片将保存至目录: ${downloadDir},开始遍历下载图片`)
     //创建并发限制器,设置最大并发数5
     const limit = pLimit(5)
     const downloadPromises: Promise<void>[] = []
@@ -202,7 +202,7 @@ class PuppeteerCore extends BasePuppeteer {
             // 计算实时网速
             const formattedSpeed = this.downloadNetSpeed(netSpeed, downloadedSize)
             puppeteerProgressFunc(
-              'success',
+              'info',
               `图片${fileName}正在下载,(${formattedSpeed})`,
               progress,
               taskId
@@ -242,7 +242,7 @@ class PuppeteerCore extends BasePuppeteer {
     }
     //等待所有下载任务完成
     await Promise.all(downloadPromises)
-    puppeteerPrintFunc('success', '所有图片下载任务已完成！')
+    puppeteerPrintFunc('info', '所有图片下载任务已完成！')
     return allTime
   }
 }

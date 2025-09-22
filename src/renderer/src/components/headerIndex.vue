@@ -33,7 +33,7 @@ import { routerOpen } from '@renderer/router/routerFunc'
           <n-tooltip :show-arrow="false" trigger="hover">
             <template #trigger>
               <n-icon size="20" class="cursorPointer">
-                <Github @click="routerOpen('https://github.com/fish-bread')" />
+                <Github @click="routerOpen('https://github.com/fish-bread/electron-python')" />
               </n-icon>
             </template>
             github

@@ -5,7 +5,7 @@ import AirtestControl from '@renderer/components/python/airtest/airtestControl.v
 import CustomPyControl from '@renderer/components/python/custom/customPyControl.vue'
 import PythonControl from '@renderer/components/python/pythonControl.vue'
 import { onMounted, provide, ref } from 'vue'
-import type { pythonMessageInter, UnifiedMessage } from '../../../../types/mian'
+import type { allMessageInter, UnifiedMessage } from '../../../../types/mian'
 import AllSelect from '@renderer/components/allSelect.vue'
 import { watchThrottled } from '@vueuse/core'
 const mess = ref<UnifiedMessage[]>([])
@@ -34,7 +34,7 @@ provide('mess', mess)
 provide('all_file', python_file)
 provide('time', time)
 //接收消息
-const handlePythonOutputMessage = (message: pythonMessageInter): void => {
+const handlePythonOutputMessage = (message: allMessageInter): void => {
   console.log('接收到pythonOutput消息:', message)
   mess.value.unshift({
     type: 'text',
@@ -70,29 +70,22 @@ onMounted(() => {
 
   watchNum()
 })
-const split = ref(0.265)
 </script>
 
 <template>
-  <n-split v-model:size="split" direction="horizontal">
-    <template #1>
-      <div
-        class="python-page"
-        :style="{ borderRight: theme === null ? '1px solid #4e4e4e' : '1px solid  #2c2c2c' }"
-      >
-        <div class="script-box">
-          <AllSelect name="python" />
-          <PythonControl />
-          <KeepAlive>
-            <component :is="pyComponents[num]" />
-          </KeepAlive>
-        </div>
-      </div>
-    </template>
-    <template #2>
-      <AllPrint />
-    </template>
-  </n-split>
+  <div
+    class="python-page"
+    :style="{ borderRight: theme === null ? '1px solid #4e4e4e' : '1px solid  #2c2c2c' }"
+  >
+    <div class="script-box">
+      <AllSelect name="python" />
+      <PythonControl />
+      <KeepAlive>
+        <component :is="pyComponents[num]" />
+      </KeepAlive>
+    </div>
+  </div>
+  <AllPrint />
 </template>
 
 <style scoped>
@@ -103,6 +96,7 @@ const split = ref(0.265)
   overflow: auto;
   height: calc(100vh - 50px);
   padding: 0 10px;
+  min-width: 320px;
 }
 .python-page::-webkit-scrollbar {
   width: 5px;

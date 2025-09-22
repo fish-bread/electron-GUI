@@ -3,7 +3,7 @@ import AllFilePath from '@renderer/components/allFilePath.vue'
 import { onMounted, ref, inject, Ref } from 'vue'
 import { watchThrottled, useElementSize } from '@vueuse/core'
 import { theme } from '@renderer/func/themeChange'
-import { allProgressInter, pythonMessageInter, UnifiedMessage } from '../../../types/mian'
+import { allProgressInter, allMessageInter, UnifiedMessage } from '../../../types/mian'
 const messageListContainer = ref<HTMLElement | null>(null)
 const pythonPrintRef = ref<HTMLElement | null>(null)
 const viewportHeightInPixels = window.innerHeight
@@ -35,6 +35,19 @@ const watchUlFunc = (): void => {
     }
   )
 }
+// 为每个消息项获取状态文本
+const getStatusText = (status: string | undefined): string => {
+  switch (status) {
+    case 'error':
+      return 'error'
+    case 'info':
+      return 'info'
+    case 'closed':
+      return 'closed'
+    default:
+      return 'undefined'
+  }
+}
 onMounted(() => {
   watchUlFunc()
 })
@@ -51,7 +64,7 @@ onMounted(() => {
           :key="index"
           :class="{
             error: mess[index].data.status === 'error',
-            success: mess[index].data.status === 'success',
+            success: mess[index].data.status === 'info',
             closed: mess[index].data.status === 'closed'
           }"
           :style="{
@@ -59,10 +72,25 @@ onMounted(() => {
           }"
         >
           <template v-if="item.type === 'text'">
-            {{ (item.data as pythonMessageInter).message }}
+            <div class="text-message">
+              <div class="status-text">
+                {{ getStatusText(item.data.status) }}
+              </div>
+              <div class="dataTime-text">
+                {{ (item.data as allMessageInter).dataTime }}
+              </div>
+              <div class="message-text">
+                {{ (item.data as allMessageInter).message }}
+              </div>
+            </div>
           </template>
           <template v-if="item.type === 'progress'">
-            <div>{{ (item.data as allProgressInter).message }}</div>
+            <div class="text-message">
+              <div class="status-text">
+                {{ getStatusText(item.data.status) }}
+              </div>
+              {{ (item.data as allProgressInter).message }}
+            </div>
             <n-progress
               :style="{
                 maxWidth: '90%'
@@ -78,7 +106,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 :root {
   --success-color: '#2c2c2c';
 }
@@ -102,21 +130,27 @@ li {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  .error {
+    color: red;
+  }
+  .success {
+    color: var(--success-color);
+  }
+  .closed {
+    color: green;
+  }
 }
 ul {
   padding: 0 0 0 20px;
+  font-size: 14px;
+  flex: 1;
 }
 li {
   margin-bottom: 5px;
   transition: color 0.2s ease;
 }
-.error {
-  color: red;
-}
-.success {
-  color: var(--success-color);
-}
-.closed {
-  color: green;
+.text-message {
+  display: grid;
+  grid-template-columns: 60px 190px auto;
 }
 </style>

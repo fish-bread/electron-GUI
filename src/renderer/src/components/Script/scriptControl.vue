@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { inject, ref, Ref } from 'vue'
 import { useMessage } from 'naive-ui'
-import { pythonMessageInter } from '../../../../types/mian'
+import { allMessageInter } from '../../../../types/mian'
 const message = useMessage()
 //注入
-const mess = inject<Ref<pythonMessageInter[]>>('mess')
+const mess = inject<Ref<allMessageInter[]>>('mess')
 const chrome_file = inject<Ref<string>>('all_file', ref(''))
 const time = inject<Ref<string>>('time', ref(''))
 //选择浏览器

@@ -2,7 +2,7 @@ import { ElectronAPI } from '@electron-toolkit/preload'
 import {
   puppeteerDataInter,
   pythonFilePath,
-  pythonMessageInter,
+  allMessageInter,
   allProgressInter
 } from '../types/mian'
 declare global {
@@ -12,7 +12,7 @@ declare global {
       //airtestPython
       runPython: (time: number) => void
       killPython: () => void
-      pythonOutput: (callback: (message: pythonMessageInter) => void) => void
+      pythonOutput: (callback: (message: allMessageInter) => void) => void
       getPythonPath: () => Promise<string>
       //自定义python
       runCustomPython: () => void
@@ -23,7 +23,7 @@ declare global {
       //PixivPuppeteer爬虫
       runPuppeteer: (data: puppeteerDataInter) => Promise<void>
       killPuppeteer: () => Promise<void>
-      puppeteerOutput: (callback: (message: pythonMessageInter) => void) => void
+      puppeteerOutput: (callback: (message: allMessageInter) => void) => void
       puppeteerOutProgress: (callback: (message: allProgressInter) => void) => void
       getChromePath: () => Promise<string>
       changePuppeteer: () => Promise<pythonFilePath>

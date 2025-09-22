@@ -169,7 +169,7 @@ class bilibiliCore extends BasePuppeteer {
     }
     const fileLocalName = `${fileName}.${fileType}`
     const filePath = join(downloadDir, fileLocalName)
-    puppeteerPrintFunc('success', `文件将保存至目录: ${downloadDir},开始下载${fileType}`)
+    puppeteerPrintFunc('info', `文件将保存至目录: ${downloadDir},开始下载${fileType}`)
     //获取下载开始时间
     let allTime: number = 0
     const dataTime: number = Date.now()
@@ -214,7 +214,7 @@ class bilibiliCore extends BasePuppeteer {
       // 计算实时网速
       const formattedSpeed = this.downloadNetSpeed(netSpeed, downloadedSize)
       puppeteerProgressFunc(
-        'success',
+        'info',
         `文件${fileName}.${fileType}正在下载,(${formattedSpeed})`,
         progress,
         taskId
@@ -256,7 +256,7 @@ class bilibiliCore extends BasePuppeteer {
     try {
       const downloadDir = BilibiliPath.getPath()
       const outputPath = join(downloadDir, `${fileName}_合并.mp4`)
-      puppeteerPrintFunc('success', '正在使用ffmpeg合并视频,请确报ffmpeg在环境变量中存在')
+      puppeteerPrintFunc('info', '正在使用ffmpeg合并视频,请确报ffmpeg在环境变量中存在')
       const dataTime: number = Date.now()
       //执行命令行
       const stdout = execSync(
