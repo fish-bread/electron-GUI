@@ -70,6 +70,7 @@ const changHomeFunc = (index: number): void => {
   }
   .sidebar-button-active {
     position: relative;
+    color: var(--sidebar-button-active-back) !important;
   }
   .sidebar-button-active::before {
     content: '';
@@ -79,9 +80,11 @@ const changHomeFunc = (index: number): void => {
     width: 10px;
     height: 100%;
     border-left: 5px solid var(--sidebar-button-active-back) !important;
+
   }
   .sidebar-button:hover {
     border-left: 5px solid var(--sidebar-button-active-back) !important;
+    color: var(--sidebar-button-active-back);
   }
 }
 </style>

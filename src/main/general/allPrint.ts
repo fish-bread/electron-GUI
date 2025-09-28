@@ -5,7 +5,7 @@ import { BrowserWindow } from 'electron'
 type ChannelType = 'pythonOutput' | 'puppeteerOutput'
 // 创建一个工厂函数
 const createMessageSender = (channel: ChannelType) => {
-  return (status: 'info' | 'error' | 'closed', message: string): void => {
+  return (status: 'info' | 'warning' | 'error' | 'closed', message: string): void => {
     const allWindows = BrowserWindow.getAllWindows()
     const targetWindow = allWindows.find((win) => win.id === 1)
 

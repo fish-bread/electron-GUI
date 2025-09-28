@@ -76,7 +76,7 @@ class bilibiliCore extends BasePuppeteer {
         //使用Promise.all,并发执行下载,并等待所有结果
         const [videoResult, audioResult] = await Promise.all(downloadPromises)
         puppeteerPrintFunc(
-          'success',
+          'info',
           `puppeteer执行完成,共耗时${videoResult.allTime + audioResult.allTime}秒`
         )
         //合并视频
@@ -85,7 +85,7 @@ class bilibiliCore extends BasePuppeteer {
           audioResult.filePath,
           bilibiliLink.videoName
         )
-        puppeteerPrintFunc('success', `ffmpeg合并完成,共耗时${ffmpegTime}秒`)
+        puppeteerPrintFunc('info', `ffmpeg合并完成,共耗时${ffmpegTime}秒`)
       }
       //关闭浏览器实例
       await this.exitPuppeteer()
@@ -144,7 +144,7 @@ class bilibiliCore extends BasePuppeteer {
     const cleanVideoHref = videoHref.split('?')[0]
 
     puppeteerPrintFunc(
-      'success',
+      'info',
       `成功查询到音频网址${cleanAudioHref},视频${cleanVideoHref},请稍后`
     )
     return {

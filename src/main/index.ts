@@ -100,7 +100,7 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 import BilibiliCore from './puppeteerIpcMain/puppeteer/bilibili/bilibiliCore'
-import PuppeteerCore from './puppeteerIpcMain/puppeteer/pixiv/puppeteerCore'
+import PuppeteerCore from './puppeteerIpcMain/puppeteer/pixiv/pixivCore'
 app.on('window-all-closed', async () => {
   if (process.platform !== 'darwin') {
     PyShell?.kill()

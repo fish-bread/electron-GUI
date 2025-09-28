@@ -1,4 +1,4 @@
-import runPuppeteer from '../puppeteerIpcMain/puppeteer/pixiv/puppeteerCore'
+import runPuppeteer from '../puppeteerIpcMain/puppeteer/pixiv/pixivCore'
 import puppeteerPath from '../puppeteerIpcMain/puppeteer/puppeteerpath'
 import pixivPath from '../puppeteerIpcMain/puppeteer/pixiv/pixivPath'
 import { ipcMain } from 'electron'

@@ -40,6 +40,8 @@ const getStatusText = (status: string | undefined): string => {
   switch (status) {
     case 'error':
       return 'error'
+    case 'warning':
+      return 'warning'
     case 'info':
       return 'info'
     case 'closed':
@@ -65,7 +67,8 @@ onMounted(() => {
           :class="{
             error: mess[index].data.status === 'error',
             success: mess[index].data.status === 'info',
-            closed: mess[index].data.status === 'closed'
+            closed: mess[index].data.status === 'closed',
+            warning: mess[index].data.status === 'warning'
           }"
           :style="{
             '--success-color': theme === null ? '#2c2c2c' : '#ffffff'
@@ -107,9 +110,6 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-:root {
-  --success-color: '#2c2c2c';
-}
 .python-print {
   flex: 1;
   max-width: calc(100vw - 320px - 70px);
@@ -131,13 +131,16 @@ li {
   margin: 0;
   padding: 0;
   .error {
-    color: red;
+    color: var(--error-color) !important;
   }
   .success {
-    color: var(--success-color);
+    color: var(--success-color) !important;
   }
   .closed {
-    color: green;
+    color: var(--closed-color) !important;
+  }
+  .warning {
+    color: var(--warning-color) !important;
   }
 }
 ul {

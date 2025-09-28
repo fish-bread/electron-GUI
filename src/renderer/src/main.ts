@@ -1,4 +1,5 @@
 import '@renderer/style/main.css'
+import '@renderer/style/printIndex.css'
 
 import { createApp } from 'vue'
 import router from './router'

@@ -1,5 +1,5 @@
 export interface allMessageInter {
-  status: 'info' | 'error' | 'closed'
+  status: 'info' | 'warning' | 'error' | 'closed'
   dataTime: string
   message: string
 }

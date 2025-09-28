@@ -20,7 +20,7 @@ class BasePuppeteer {
   //检测重复启动或浏览器路径错误并返回浏览器路径
   lockedPuppeteer = (chromePath: string): boolean => {
     if (this.browser) {
-      puppeteerPrintFunc('error', 'puppeteer已启动,请勿重复启动')
+      puppeteerPrintFunc('warning', 'puppeteer已启动,请勿重复启动')
       return false
     } else if (!chromePath || !chromePath.endsWith('chrome.exe')) {
       puppeteerPrintFunc('error', '该浏览器不是一个有效的浏览器')
