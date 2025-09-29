@@ -1,48 +1,17 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
-import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon3.png?asset'
+import { app, BrowserWindow, ipcMain } from 'electron'
+import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { getLock } from './func/gotTheLock'
 import { registerPythonIpcHandlers, PyShell } from './pythonIpcMian/pythonProcessManager'
 import { registerPixivPuppeteerIpcHandlers } from './puppeteerIpcMain/puppeteerPixivProcessManager'
 import { registerCustomPythonIpcHandlers } from './pythonIpcMian/pythonCustomManager'
 import { allSettingManager } from './manager/allSettingManager'
 import { registerBilibiliPuppeteerIpcHandlers } from './puppeteerIpcMain/puppeteerBilibiliProcessManager'
+import { createWindow } from './window/mainWindow'
+import BilibiliCore from './puppeteerIpcMain/puppeteer/bilibili/bilibiliCore'
+import PuppeteerCore from './puppeteerIpcMain/puppeteer/pixiv/pixivCore'
+import { registerChromeIpcHandlers } from './chromeIpcMain/chromeManager'
 // 检测并阻止多实例
 getLock()
-function createWindow(): void {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 830,
-    show: false,
-    autoHideMenuBar: true,
-    titleBarStyle: 'hidden', //删除自定义
-    ...(process.platform === 'linux' ? { icon } : { icon }), //图标
-    webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
-    }
-  })
-  console.log('窗体id', mainWindow.id)
-  mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
-  })
-
-  mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url)
-    return { action: 'deny' }
-  })
-
-  // HMR for renderer base on electron-vite cli.
-  // Load the remote URL for development or the local html file for production.
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-  } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
-  }
-}
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -66,6 +35,8 @@ app.whenReady().then(() => {
   registerPixivPuppeteerIpcHandlers()
   //puppeteer的bilibili
   registerBilibiliPuppeteerIpcHandlers()
+  //chrome的ipc
+  registerChromeIpcHandlers()
   //全局设置获取
   allSettingManager()
   //最大化或恢复窗体
@@ -99,8 +70,6 @@ app.whenReady().then(() => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-import BilibiliCore from './puppeteerIpcMain/puppeteer/bilibili/bilibiliCore'
-import PuppeteerCore from './puppeteerIpcMain/puppeteer/pixiv/pixivCore'
 app.on('window-all-closed', async () => {
   if (process.platform !== 'darwin') {
     PyShell?.kill()

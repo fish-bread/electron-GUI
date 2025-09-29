@@ -6,6 +6,7 @@ import { outPutApi } from './outputApi'
 import { pythonCustomApi } from './pythonCustomApi'
 import { globalSettingApi } from './globalSettingApi'
 import { puppeteerBilibiliApi } from './puppeteerBilibiliApi'
+import { chromeApi } from './chromeApi'
 
 // Custom APIs for renderer
 const api = {
@@ -15,6 +16,7 @@ const api = {
   ...pythonCustomApi,
   ...outPutApi,
   ...globalSettingApi,
+  ...chromeApi,
   maxSizeFunc: () => ipcRenderer.send('maxSizeFunc'), //最大化
   minimizeFunc: () => ipcRenderer.send('minimizeFunc'), //最小化
   closeWindowFunc: () => ipcRenderer.send('closeWindowFunc') //关闭

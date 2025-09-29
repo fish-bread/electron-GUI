@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import {zhCN, dateZhCN } from 'naive-ui'
+import { zhCN, dateZhCN } from 'naive-ui'
 import { theme, computedTheme, searchLocalTheme } from '@renderer/func/themeChange'
 import { onBeforeMount } from 'vue'
-import HeaderIndex from '@renderer/components/headerIndex.vue'
 onBeforeMount(() => {
   searchLocalTheme()
 })
@@ -20,7 +19,6 @@ onBeforeMount(() => {
     <n-message-provider>
       <!--返回顶部-->
       <n-back-top :right="30" :bottom="30" />
-      <HeaderIndex></HeaderIndex>
       <router-view></router-view>
       <!--同步颜色-->
       <n-global-style />

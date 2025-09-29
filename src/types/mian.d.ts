@@ -91,3 +91,7 @@ export interface settingTitle {
   pixiv: string
   bilibili: string
 }
+export interface isGoInter {
+  isGOBack: boolean
+  isGoForward: boolean
+}

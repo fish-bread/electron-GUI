@@ -74,7 +74,7 @@ import { routerOpen } from '@renderer/router/routerFunc'
         </div>
       </div>
       <!--控制栏-->
-      <WindowsControl></WindowsControl>
+      <WindowsControl />
     </div>
   </div>
 </template>

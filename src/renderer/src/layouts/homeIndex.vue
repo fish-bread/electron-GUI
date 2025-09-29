@@ -5,6 +5,7 @@ import PythonPage from '@renderer/components/python/pythonPage.vue'
 import ScriptPage from '@renderer/components/Script/scriptPage.vue'
 import SettingPage from '@renderer/components/settings/settingsPage.vue'
 import { ref, provide, onMounted } from 'vue'
+import HeaderIndex from '@renderer/components/headerIndex.vue'
 const PyComponents = [HomePage, PythonPage, ScriptPage, SettingPage]
 const num = ref<number>(0)
 const port = ref<string>('7897')
@@ -16,6 +17,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <HeaderIndex />
   <div class="home-page">
     <Sidebar></Sidebar>
     <KeepAlive>

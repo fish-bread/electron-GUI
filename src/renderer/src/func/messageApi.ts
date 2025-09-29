@@ -1,4 +1,4 @@
-import { createDiscreteApi } from 'naive-ui';
+import { createDiscreteApi } from 'naive-ui'
 import { computed } from 'vue'
 import type { ConfigProviderProps } from 'naive-ui'
 import { computedTheme, theme } from '@renderer/func/themeChange'

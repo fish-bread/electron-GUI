@@ -3,8 +3,9 @@ import {
   puppeteerDataInter,
   pythonFilePath,
   allMessageInter,
-  allProgressInter
+  allProgressInter, isGoInter
 } from '../types/mian'
+import {ipcRenderer} from "electron";
 declare global {
   interface Window {
     electron: ElectronAPI
@@ -41,6 +42,14 @@ declare global {
       getBilibiliFilePath: () => Promise<string>
       setBilibiliFilePath: () => Promise<pythonFilePath>
       restoreBilibiliFilePath: () => Promise<string>
+      //浏览器设置
+      openChromePage: (href: string) => void
+      pageTitleUpdated: (callback: (message: string) => void) => void
+      pageReloaded: (callback: (boolean: boolean) => void) => void
+      pageIsGo: (callback: (status: isGoInter) => void) => void
+      goBack: () => void,
+      goForward: () => void,
+      reload: () => void,
       //导航栏设置
       maxSizeFunc: () => void
       minimizeFunc: () => void
