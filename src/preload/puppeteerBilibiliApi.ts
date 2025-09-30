@@ -8,5 +8,5 @@ export const puppeteerBilibiliApi = {
   setBilibiliCookie: (cookie: string) => ipcRenderer.invoke('setBilibiliCookie', cookie),
   getBilibiliFilePath: () => ipcRenderer.invoke('getBilibiliFilePath'),
   setBilibiliFilePath: () => ipcRenderer.invoke('setBilibiliFilePath'),
-  restoreBilibiliFilePath: () => ipcRenderer.invoke('restoreBilibiliFilePath'),
+  restoreBilibiliFilePath: () => ipcRenderer.invoke('restoreBilibiliFilePath')
 }

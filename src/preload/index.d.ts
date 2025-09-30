@@ -3,7 +3,7 @@ import {
   puppeteerDataInter,
   pythonFilePath,
   allMessageInter,
-  allProgressInter, isGoInter
+  allProgressInter, isGoInter, viewInter, activeInter
 } from '../types/mian'
 import {ipcRenderer} from "electron";
 declare global {
@@ -44,12 +44,20 @@ declare global {
       restoreBilibiliFilePath: () => Promise<string>
       //浏览器设置
       openChromePage: (href: string) => void
-      pageTitleUpdated: (callback: (message: string) => void) => void
+      pageTitleUpdated: (callback: (message: viewInter[]) => void) => void
+      pageMessage: (callback: (message: activeInter) => void) => void
       pageReloaded: (callback: (boolean: boolean) => void) => void
-      pageIsGo: (callback: (status: isGoInter) => void) => void
-      goBack: () => void,
-      goForward: () => void,
-      reload: () => void,
+      //页面基础操作
+      goBack: (tabId: number) => void,
+      goForward: (tabId: number) => void,
+      reload: (tabId: number) => void,
+      pageStop: (tabId: number) => void,
+      //默认浏览器打开
+      pageBrowser: (tabId: number) => void,
+      //tab页设置
+      getViewTab: () => Promise<activeInter>
+      changePageTab: (tabId: number) => void,
+      closePageTab: (tabId: number) => void,
       //导航栏设置
       maxSizeFunc: () => void
       minimizeFunc: () => void

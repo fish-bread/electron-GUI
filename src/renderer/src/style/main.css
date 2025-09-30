@@ -19,6 +19,9 @@ body, html {
 /*可拖动*/
   app-region: drag;
 }
+.app-drag-disable {
+  app-region: no-drag;
+}
 :root {
   --scrollbar-track-color: 'transparent';
 }

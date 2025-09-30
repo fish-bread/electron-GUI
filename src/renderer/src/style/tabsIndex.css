@@ -1,0 +1,14 @@
+:root {
+  --button-hover-color: #ededed;
+  --button-disable-color: #ffffff;
+  --tab-color: #dfdfdf;
+  --tab-active-color: #ffffff;
+  --tab-not-active-color: #bbbbbb;
+}
+[data-theme="dark"] {
+  --button-hover-color: #404040;
+  --button-disable-color: #ffffff;
+  --tab-color: #333333;
+  --tab-active-color: #8064a9;
+  --tab-not-active-color: #4d4d4d;
+}

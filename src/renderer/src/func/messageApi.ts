@@ -10,4 +10,5 @@ export const { message } = createDiscreteApi(
   ['message', 'dialog', 'notification', 'loadingBar', 'modal'],
   {
     configProviderProps: configProviderPropsRef
-  })
+  }
+)

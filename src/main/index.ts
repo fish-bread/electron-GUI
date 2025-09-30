@@ -10,6 +10,7 @@ import { createWindow } from './window/mainWindow'
 import BilibiliCore from './puppeteerIpcMain/puppeteer/bilibili/bilibiliCore'
 import PuppeteerCore from './puppeteerIpcMain/puppeteer/pixiv/pixivCore'
 import { registerChromeIpcHandlers } from './chromeIpcMain/chromeManager'
+import { closeChromeWindow, chromeId } from './chromeIpcMain/chrome/chromeFunc'
 // 检测并阻止多实例
 getLock()
 // This method will be called when Electron has finished
@@ -55,7 +56,13 @@ app.whenReady().then(() => {
   //关闭
   ipcMain.on('closeWindowFunc', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)
-    if (win) win.close()
+    if (win) {
+      if (win.id === chromeId) {
+        closeChromeWindow()
+      } else {
+        win.close()
+      }
+    }
   })
 
   createWindow()

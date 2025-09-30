@@ -1,8 +1,25 @@
-import { BrowserWindow, shell, WebContentsView, ipcMain } from 'electron'
+import { BrowserWindow, shell, WebContentsView } from 'electron'
 import icon from '../../../resources/icon3.png?asset'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
-export const createChromeWindow = (href: string): void => {
+import BaseChromeTab from '../chromeIpcMain/chrome/BaseChromeTab'
+import {
+  getWindow,
+  isGoBack,
+  sendChromeWindow,
+  sendMessageFunc,
+  sendPage
+} from '../chromeIpcMain/chrome/chromeFunc'
+import { activeInter } from '../../types/mian'
+//创建新窗体
+export const createChromeWindow = (): BrowserWindow => {
+  //获取窗体
+  const ElectronWindow = getWindow()
+  if (ElectronWindow) {
+    console.log('窗体已创建')
+    ElectronWindow.focus()
+    return ElectronWindow
+  }
   const chromeWindow = new BrowserWindow({
     width: 1280,
     height: 830,
@@ -18,11 +35,25 @@ export const createChromeWindow = (href: string): void => {
   })
 
   console.log('窗体id', chromeWindow.id)
-
+  // 加载页面
+  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+    chromeWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}#/chrome`)
+  } else {
+    chromeWindow.loadFile(join(__dirname, '../renderer/index.html'), {
+      hash: '#/chrome'
+    })
+  }
+  return chromeWindow
+}
+//创建子窗体
+export const createChildWindow = (
+  chromeWindow: BrowserWindow,
+  href: string,
+  tabId: number
+): WebContentsView => {
   // 添加 WebContentsView
   const view = new WebContentsView()
   chromeWindow.contentView.addChildView(view)
-
   // 更新视图边界函数
   const updateViewBounds = (): void => {
     const bounds = chromeWindow.getBounds()
@@ -54,11 +85,15 @@ export const createChromeWindow = (href: string): void => {
   //监听标题变化
   view.webContents.on('page-title-updated', (_event, title) => {
     console.log('页面标题更新为:', title)
-    const allWindows = BrowserWindow.getAllWindows()
-    const targetWindow = allWindows.find((win) => win.id === 2)
-    if (targetWindow) {
-      targetWindow.webContents.send('page-title-updated', title)
+    // 更新标签页数组中的标题
+    const tabIndex = BaseChromeTab.tabs.findIndex((tab) => tab.id === tabId)
+    if (tabIndex !== -1) {
+      BaseChromeTab.tabs[tabIndex].title = title
+      BaseChromeTab.tabs[tabIndex].url = view.webContents.getURL()
+      console.log('标签页标题已更新', BaseChromeTab.tabs[tabIndex])
     }
+    //发送消息给渲染进程
+    sendPage()
   })
   //监听页面加载完毕
   view.webContents.on('did-finish-load', () => {
@@ -71,62 +106,27 @@ export const createChromeWindow = (href: string): void => {
   //监听 WebContentsView 中的导航事件
   view.webContents.on('did-navigate-in-page', (_event, navigationUrl) => {
     console.log('监听导航', navigationUrl)
-    isGoBack(view)
-  })
-  //处理 WebContentsView 中新开页面的链接，并在当前 view 中加载
-  view.webContents.setWindowOpenHandler((details) => {
-    console.log('新页面导航')
-    // 在当前 WebContentsView 中加载目标 URL
-    view.webContents.loadURL(details.url)
-    isGoBack(view)
-    // 拒绝创建新窗口或新标签页
-    return { action: 'deny' }
-  })
-  //返回上一个
-  ipcMain.on('nav-go-back', (): void => {
-    view.webContents.navigationHistory.goBack()
-    isGoBack(view)
-  })
-  //返回下一个
-  ipcMain.on('nav-go-forward', (): void => {
-    view.webContents.navigationHistory.goForward()
-    isGoBack(view)
-  })
-  //刷新页面
-  ipcMain.on('nav-reload', () => {
-    console.log('刷新页面')
-    view.webContents.reloadIgnoringCache()
-    const targetWindow = getWindow()
-    if (targetWindow) {
-      targetWindow.webContents.send('page-reloaded', false)
+    isGoBack(tabId)
+    const message: activeInter = {
+      viewMessage: sendMessageFunc(),
+      activeId: tabId
     }
+    sendChromeWindow(message)
   })
   // 初始化
   updateViewBounds()
   view.webContents.loadURL(href)
   setupEventListeners()
 
-  // 加载页面
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    chromeWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}#/chrome`)
-  } else {
-    chromeWindow.loadFile(join(__dirname, '../renderer/index.html'), {
-      hash: '#/chrome'
-    })
-  }
-}
-//获取窗体
-const getWindow = (): Electron.BrowserWindow | undefined => {
-  const allWindows = BrowserWindow.getAllWindows()
-  return allWindows.find((win) => win.id === 2)
-}
-//获取是否可以返回或前进
-const isGoBack = (view: WebContentsView): void => {
-  const targetWindow = getWindow()
-  if (targetWindow) {
-    targetWindow.webContents.send('page-is-go', {
-      isGOBack: view.webContents.navigationHistory.canGoBack(),
-      isGoForward: view.webContents.navigationHistory.canGoForward()
-    })
-  }
+  //添加进数组
+  BaseChromeTab.tabs.push({
+    id: tabId,
+    view: view,
+    title: view.webContents.getTitle(),
+    url: view.webContents.getURL(),
+    isGoBack: view.webContents.navigationHistory.canGoBack(),
+    isGoForward: view.webContents.navigationHistory.canGoForward()
+  })
+  //返回
+  return view
 }

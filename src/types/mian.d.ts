@@ -1,3 +1,5 @@
+import { WebContentsView } from 'electron'
+
 export interface allMessageInter {
   status: 'info' | 'warning' | 'error' | 'closed'
   dataTime: string
@@ -56,16 +58,6 @@ export interface searchBilibiliInter {
   audioHref: string
   videoName: string
 }
-export interface bilibiliResInter {
-  audio: bilibiliResAudioInter[]
-  video: bilibiliResVideoInter[]
-}
-export interface bilibiliResAudioInter {
-  baseUrl: string
-}
-export interface bilibiliResVideoInter {
-  baseUrl: string
-}
 export interface bilibiliFfmpegInter {
   filePath: string
   allTime: number
@@ -91,7 +83,22 @@ export interface settingTitle {
   pixiv: string
   bilibili: string
 }
-export interface isGoInter {
-  isGOBack: boolean
+//多个页面设置
+export interface Tab {
+  id: number
+  view: WebContentsView
+  title: string
+  url: string
+  isGoBack: boolean
   isGoForward: boolean
+}
+export interface viewInter {
+  id: number
+  title: string
+  isGoBack: boolean
+  isGoForward: boolean
+}
+export interface activeInter {
+  viewMessage: viewInter[]
+  activeId: number
 }
