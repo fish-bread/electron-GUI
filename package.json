@@ -4,7 +4,7 @@
   "description": "这是尝试用electron制作pythonGUI和jsGUI的项目",
   "main": "./out/main/index.js",
   "author": "3434241933@qq.com",
-  "homepage": "https://github.com/fish-bread/electron-python",
+  "homepage": "https://github.com/fish-bread/electron-GUI",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
