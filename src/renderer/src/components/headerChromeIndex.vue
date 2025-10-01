@@ -111,7 +111,7 @@ onMounted(async () => {
   <div
     class="header"
     :style="{
-      backgroundColor: theme === null ? '#dfdfdf' : '#2c2c2c',
+      backgroundColor: theme === null ? '#ffffff' : '#2c2c2c',
       boxShadow:
         theme === null ? '0 0 5px 1px rgba(0, 0, 0, 0.3)' : '0 0 5px 1px rgba(50, 50, 50, 0.3)'
     }"
@@ -207,7 +207,6 @@ onMounted(async () => {
         </n-icon>
       </div>
     </div>
-
     <!--控制栏-->
     <ChromeWindowControl v-model="PageMessage" icon-size="20" :active-id="activeTabId" />
   </div>
@@ -257,7 +256,7 @@ onMounted(async () => {
   .center {
     @extend %head-box-display-row;
     transition: all 0.2s ease;
-    overflow-x: hidden;
+    overflow: hidden;
     flex: 1;
     gap: 5px;
     align-items: center;
@@ -266,7 +265,7 @@ onMounted(async () => {
       padding: 0 0 0 5px;
       gap: 5px;
       transition: all 0.2s ease;
-      overflow-x: hidden;
+      overflow: hidden;
       .head-center-tab {
         @extend %head-box-display-row;
         overflow: hidden;
