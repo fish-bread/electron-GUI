@@ -2,6 +2,7 @@
 import { zhCN, dateZhCN } from 'naive-ui'
 import { theme, computedTheme, searchLocalTheme } from '@renderer/func/themeChange'
 import { onBeforeMount } from 'vue'
+import { computedThemeColor } from '@renderer/func/themeChange'
 onBeforeMount(() => {
   searchLocalTheme()
 })
@@ -25,3 +26,8 @@ onBeforeMount(() => {
     </n-message-provider>
   </n-config-provider>
 </template>
+<style lang="scss">
+a {
+  color: v-bind(computedThemeColor);
+}
+</style>

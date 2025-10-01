@@ -43,7 +43,7 @@ defineProps<{
         <Maximize20Regular />
       </n-icon>
     </div>
-    <div class="control-button cursorPointer" @click="closeWindowFunc">
+    <div class="control-button cursorPointer close" @click="closeWindowFunc">
       <n-icon :size="iconSize">
         <Dismiss20Regular />
       </n-icon>
@@ -66,6 +66,11 @@ defineProps<{
   transition: all 0.2s ease;
   &:hover {
     background-color: var(--button-hover-color);
+  }
+}
+.close {
+  &:hover {
+    background-color: #c42b1c !important;
   }
 }
 </style>

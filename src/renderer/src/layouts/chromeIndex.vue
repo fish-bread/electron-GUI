@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import HeaderChromeIndex from '@renderer/components/headerChromeIndex.vue'
+import { onBeforeMount } from 'vue'
+import { sendTheme } from '@renderer/func/themeChange'
+onBeforeMount(() => {
+  window.api.sendTheme(sendTheme)
+})
 </script>
 
 <template>

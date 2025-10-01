@@ -59,6 +59,8 @@ app.whenReady().then(() => {
     if (win) {
       if (win.id === chromeId) {
         closeChromeWindow()
+      } else if (win.id === 1) {
+        app.quit()
       } else {
         win.close()
       }

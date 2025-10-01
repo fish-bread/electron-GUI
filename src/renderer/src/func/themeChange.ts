@@ -1,6 +1,7 @@
 import type { GlobalTheme, GlobalThemeOverrides } from 'naive-ui'
 import { darkTheme } from 'naive-ui'
 import { computed, ref } from 'vue'
+import { themeColor } from '../../../types/mian'
 //主题
 export const theme = ref<GlobalTheme | null>(null)
 //自定义主题
@@ -35,19 +36,28 @@ const darkThemeOverrides: GlobalThemeOverrides = {
   }
 }
 //修改主题
-export const whiteTheme = (bool: boolean): void => {
+export const whiteTheme = async (bool: boolean): Promise<void> => {
   if (bool) {
-    localStorage.setItem('theme', 'dark')
-    theme.value = darkTheme
+    window.api.setTheme('dark')
   } else {
-    localStorage.setItem('theme', 'light')
-    theme.value = null
+    window.api.setTheme('light')
   }
-  console.log('主题查询', localStorage.getItem('theme'))
+  console.log('主题查询', await window.api.getTheme())
+}
+//接收主进程主题的函数
+export const sendTheme = (changeTheme: themeColor): void => {
+  switch (changeTheme) {
+    case 'dark':
+      theme.value = darkTheme
+      break
+    case 'light':
+      theme.value = null
+      break
+  }
 }
 //查询本地是否存在主题设置
-export const searchLocalTheme = (): void => {
-  const searchTheme: string | null = localStorage.getItem('theme')
+export const searchLocalTheme = async (): Promise<void> => {
+  const searchTheme: themeColor = await window.api.getTheme()
   console.log('主题存储', searchTheme)
   if (searchTheme === null || searchTheme === 'light') {
     theme.value = null
@@ -60,4 +70,10 @@ export const searchLocalTheme = (): void => {
 //计算主题
 export const computedTheme = computed(() => {
   return theme.value === null ? lightThemeOverrides : darkThemeOverrides
+})
+//返回主题色
+export const computedThemeColor = computed(() => {
+  return theme.value === null
+    ? lightThemeOverrides?.common?.primaryColor
+    : darkThemeOverrides?.common?.primaryColor
 })

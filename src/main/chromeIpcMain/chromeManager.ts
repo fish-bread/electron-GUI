@@ -1,14 +1,15 @@
 import { ipcMain, shell } from 'electron'
-import { createChromeWindow, createChildWindow } from '../window/chromeWindow'
 import {
   sendMessageFunc,
   sendChromeWindow,
   sendMaxMessage,
   hidePageWindow,
   isGoBack,
-  getWindow,
-  closeChromeWindow
+  closeChromeWindow,
+  chromeId,
+  createNewChromeWindow
 } from './chrome/chromeFunc'
+import { getWindow } from '../func/windowFunc'
 import BaseChromeTab from './chrome/BaseChromeTab'
 import { activeInter, Tab } from '../../types/mian'
 import baseChromeTab from './chrome/BaseChromeTab'
@@ -16,10 +17,7 @@ export const registerChromeIpcHandlers = (): void => {
   //创建页面
   ipcMain.on('openChromePage', (_event, href: string): void => {
     console.log('创建新页面')
-    const chromeWindow = createChromeWindow()
-    BaseChromeTab.chromeWindow = chromeWindow
-    createChildWindow(chromeWindow, href, BaseChromeTab.getNextId())
-    sendChromeWindow(sendMaxMessage())
+    createNewChromeWindow(href)
   })
   //获取页面
   ipcMain.handle('getViewTab', (): activeInter => {
@@ -113,7 +111,7 @@ export const registerChromeIpcHandlers = (): void => {
     if (tabIndex !== -1) {
       BaseChromeTab.tabs[tabIndex].view.webContents.reload()
     }
-    const targetWindow = getWindow()
+    const targetWindow = getWindow(chromeId)
     if (targetWindow) {
       targetWindow.webContents.send('page-reloaded', false)
     }
@@ -125,7 +123,7 @@ export const registerChromeIpcHandlers = (): void => {
     if (tabIndex !== -1) {
       BaseChromeTab.tabs[tabIndex].view.webContents.stop()
     }
-    const targetWindow = getWindow()
+    const targetWindow = getWindow(chromeId)
     if (targetWindow) {
       targetWindow.webContents.send('page-reloaded', true)
     }

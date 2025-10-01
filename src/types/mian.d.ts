@@ -7,6 +7,7 @@ export interface allMessageInter {
 }
 export interface allProgressInter {
   status: 'info' | 'error' | 'closed'
+  dataTime: string
   message: string
   progress: number
   taskId: string
@@ -102,3 +103,5 @@ export interface activeInter {
   viewMessage: viewInter[]
   activeId: number
 }
+//主题
+export type themeColor = 'dark' | 'light'

@@ -3,7 +3,7 @@ import {
   puppeteerDataInter,
   pythonFilePath,
   allMessageInter,
-  allProgressInter, isGoInter, viewInter, activeInter
+  allProgressInter, isGoInter, viewInter, activeInter, themeColor
 } from '../types/mian'
 import {ipcRenderer} from "electron";
 declare global {
@@ -65,6 +65,9 @@ declare global {
       //获取全局设置
       getPort: () => Promise<string>
       setPort: (port: string) => void
+      getTheme: () => Promise<themeColor>
+      setTheme: (theme: themeColor) => void
+      sendTheme: (callback: (theme: themeColor) => void) => void
     }
   }
 }

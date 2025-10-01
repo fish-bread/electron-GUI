@@ -115,8 +115,11 @@ onMounted(async () => {
     <div class="head-left">
       <button
         :disabled="isGoBack"
-        class="control-button cursorPointer"
-        title="上一页"
+        class="control-button"
+        :class="{
+          cursorPointer: isGoBack === false
+        }"
+        :title="isGoBack === false ? '上一页' : ''"
         @click="goback"
       >
         <n-icon :size="20">
@@ -125,8 +128,11 @@ onMounted(async () => {
       </button>
       <button
         :disabled="isGoForward"
-        class="control-button cursorPointer"
-        title="下一页"
+        class="control-button"
+        :class="{
+          cursorPointer: isGoForward === false
+        }"
+        :title="isGoForward === false ? '下一页' : ''"
         @click="goForward"
       >
         <n-icon :size="20">
@@ -158,6 +164,7 @@ onMounted(async () => {
         </button>
       </div>
     </div>
+    <!--标签页-->
     <VueDraggable
       v-model="PageMessage"
       class="head-center app-drag"
@@ -222,7 +229,7 @@ onMounted(async () => {
         background-color: var(--button-hover-color);
       }
       &:disabled {
-        color: #656565;
+        color: #888888;
       }
       &:disabled:hover {
         background-color: transparent;
@@ -234,6 +241,7 @@ onMounted(async () => {
     padding: 0 0 0 5px;
     gap: 5px;
     transition: all 0.2s ease;
+    overflow-y: hidden;
     .head-center-tab {
       @extend %head-box-display-row;
       overflow: hidden;

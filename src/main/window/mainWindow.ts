@@ -2,7 +2,7 @@ import { BrowserWindow, shell } from 'electron'
 import icon from '../../../resources/icon3.png?asset'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
-
+import { createNewChromeWindow } from '../chromeIpcMain/chrome/chromeFunc'
 export const createWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -20,6 +20,12 @@ export const createWindow = (): void => {
   console.log('窗体id', mainWindow.id)
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+  })
+
+  mainWindow.webContents.on('will-navigate', (event, navigationUrl) => {
+    event.preventDefault()
+    createNewChromeWindow(navigationUrl)
+    console.log('拦截到导航跳转至: ', navigationUrl)
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {

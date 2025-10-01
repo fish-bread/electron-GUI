@@ -4,18 +4,24 @@ import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
 import BaseChromeTab from '../chromeIpcMain/chrome/BaseChromeTab'
 import {
-  getWindow,
+  chromeId,
   isGoBack,
   sendChromeWindow,
   sendMessageFunc,
-  sendPage
+  sendPage,
+  createNewChromeWindow
 } from '../chromeIpcMain/chrome/chromeFunc'
+import { getWindow } from '../func/windowFunc'
 import { activeInter } from '../../types/mian'
 //创建新窗体
 export const createChromeWindow = (): BrowserWindow => {
-  //获取窗体
-  const ElectronWindow = getWindow()
-  if (ElectronWindow) {
+  //获取窗体,检查窗体是否创建
+  const ElectronWindow = getWindow(chromeId)
+  if (ElectronWindow && ElectronWindow.isMinimized()) {
+    ElectronWindow.restore()
+    ElectronWindow.focus()
+    return ElectronWindow
+  } else if (ElectronWindow) {
     console.log('窗体已创建')
     ElectronWindow.focus()
     return ElectronWindow
@@ -98,7 +104,7 @@ export const createChildWindow = (
   //监听页面加载完毕
   view.webContents.on('did-finish-load', () => {
     console.log('页面已经完全加载完毕')
-    const targetWindow = getWindow()
+    const targetWindow = getWindow(chromeId)
     if (targetWindow) {
       targetWindow.webContents.send('page-reloaded', true)
     }
@@ -112,6 +118,13 @@ export const createChildWindow = (
       activeId: tabId
     }
     sendChromeWindow(message)
+  })
+  //监听子页面中的打开新页面
+  view.webContents.setWindowOpenHandler((details) => {
+    const href = details.url
+    console.log('创建新页面')
+    createNewChromeWindow(href)
+    return { action: 'deny' } //阻止默认的窗口创建行为
   })
   // 初始化
   updateViewBounds()

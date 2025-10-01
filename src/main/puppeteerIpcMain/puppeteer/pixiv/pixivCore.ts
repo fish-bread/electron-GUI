@@ -16,6 +16,7 @@ import { puppeteerProgressFunc } from '../../../general/allProgerss'
 import { v4 as uuidv4 } from 'uuid'
 import pLimit from 'p-limit'
 import BasePuppeteer from '../../../general/BasePuppeteer'
+import dayjs from 'dayjs'
 class PuppeteerCore extends BasePuppeteer {
   //启动
   runPuppeteer = async (data: puppeteerDataInter): Promise<void> => {
@@ -43,6 +44,10 @@ class PuppeteerCore extends BasePuppeteer {
         await this.exitPuppeteer()
         return
       }
+      puppeteerPrintFunc(
+        'info',
+        `原pixiv图片链接为${PageUrl.imgHref}, 图片api链接为${PageUrl.ajaxHref}`
+      )
       //查询图片函数
       const searchData = await this.searchPixivFunc(PageUrl)
       if (!searchData) {
@@ -191,6 +196,7 @@ class PuppeteerCore extends BasePuppeteer {
           //生成唯一uuid
           const taskId = uuidv4()
           //更新进度
+          const downTime = dayjs().format('YYYY-MM-DD HH:mm:ss.SSS')
           response.data.on('data', (chunk: Buffer) => {
             downloadedSize += chunk.length
             //计算进度
@@ -201,8 +207,10 @@ class PuppeteerCore extends BasePuppeteer {
             })
             // 计算实时网速
             const formattedSpeed = this.downloadNetSpeed(netSpeed, downloadedSize)
+            //发送消息
             puppeteerProgressFunc(
               'info',
+              downTime,
               `图片${fileName}正在下载,(${formattedSpeed})`,
               progress,
               taskId
@@ -213,7 +221,8 @@ class PuppeteerCore extends BasePuppeteer {
             const taskElapsedTimeSec = Number((taskElapsedTimeMs / 1000).toFixed(2)) // 转换为秒，并保留两位小数得到数字类型
             puppeteerProgressFunc(
               'closed',
-              `图片${fileName}下载完成,耗时${taskElapsedTimeSec}秒`,
+              downTime,
+              `图片:${fileName}下载完成,耗时${taskElapsedTimeSec}秒`,
               100,
               taskId
             )

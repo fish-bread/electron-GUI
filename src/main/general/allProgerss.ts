@@ -5,6 +5,7 @@ type ChannelType = 'puppeteerOutProgress' | 'pythonOutProgress'
 const createProgressSender = (channel: ChannelType) => {
   return (
     status: 'info' | 'error' | 'closed',
+    dataTime: string,
     message: string,
     progress: number,
     taskId: string
@@ -13,6 +14,7 @@ const createProgressSender = (channel: ChannelType) => {
     const targetWindow = allWindows.find((win) => win.id === 1)
     const msgData: allProgressInter = {
       status: status,
+      dataTime: dataTime,
       message: message,
       progress: progress,
       taskId: taskId

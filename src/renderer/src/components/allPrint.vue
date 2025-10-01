@@ -4,6 +4,7 @@ import { onMounted, ref, inject, Ref } from 'vue'
 import { watchThrottled, useElementSize } from '@vueuse/core'
 import { theme } from '@renderer/func/themeChange'
 import { allProgressInter, allMessageInter, UnifiedMessage } from '../../../types/mian'
+import {formatMessageWithLinks} from "@renderer/func/linkTextFunc";
 const messageListContainer = ref<HTMLElement | null>(null)
 const pythonPrintRef = ref<HTMLElement | null>(null)
 const viewportHeightInPixels = window.innerHeight
@@ -83,7 +84,10 @@ onMounted(() => {
                 {{ (item.data as allMessageInter).dataTime }}
               </div>
               <div class="message-text">
-                {{ (item.data as allMessageInter).message }}
+                <div
+                  v-dompurify-html="formatMessageWithLinks((item.data as allMessageInter).message)"
+                  class="message-text"
+                />
               </div>
             </div>
           </template>
@@ -92,7 +96,15 @@ onMounted(() => {
               <div class="status-text">
                 {{ getStatusText(item.data.status) }}
               </div>
-              {{ (item.data as allProgressInter).message }}
+              <div class="dataTime-text">
+                {{ (item.data as allProgressInter).dataTime }}
+              </div>
+              <div class="message-text">
+                <div
+                  v-dompurify-html="formatMessageWithLinks((item.data as allProgressInter).message)"
+                  class="message-text"
+                />
+              </div>
             </div>
             <n-progress
               :style="{

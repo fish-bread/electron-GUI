@@ -1,7 +1,7 @@
 {
-  "name": "electron-python",
+  "name": "electron-gui",
   "version": "1.0.0",
-  "description": "这是尝试用electron制作pythonGUI的项目",
+  "description": "这是尝试用electron制作pythonGUI和jsGUI的项目",
   "main": "./out/main/index.js",
   "author": "3434241933@qq.com",
   "homepage": "https://github.com/fish-bread/electron-python",
@@ -39,6 +39,7 @@
     "unplugin-auto-import": "^20.1.0",
     "unplugin-vue-components": "^29.0.0",
     "uuid": "^13.0.0",
+    "vue-dompurify-html": "^5.3.0",
     "vue-draggable-plus": "^0.6.0",
     "vue-router": "^4.5.1"
   },

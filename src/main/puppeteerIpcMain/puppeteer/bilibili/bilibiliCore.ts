@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { execSync } from 'child_process'
 import { puppeteerProgressFunc } from '../../../general/allProgerss'
 import pLimit from 'p-limit'
+import dayjs from 'dayjs'
 class bilibiliCore extends BasePuppeteer {
   runPuppeteer = async (data: puppeteerDataInter): Promise<void> => {
     try {
@@ -42,6 +43,7 @@ class bilibiliCore extends BasePuppeteer {
         await this.exitPuppeteer()
         return
       }
+      puppeteerPrintFunc('info', `原视频链接为${bilibiliHref}`)
       const bilibiliLink = await this.searchBilibiliFunc(bilibiliHref)
       if (!bilibiliLink) {
         await this.exitPuppeteer()
@@ -143,10 +145,7 @@ class bilibiliCore extends BasePuppeteer {
     const cleanAudioHref = audioHref.split('?')[0]
     const cleanVideoHref = videoHref.split('?')[0]
 
-    puppeteerPrintFunc(
-      'info',
-      `成功查询到音频网址${cleanAudioHref},视频${cleanVideoHref},请稍后`
-    )
+    puppeteerPrintFunc('info', `成功查询到音频网址${cleanAudioHref},视频${cleanVideoHref},请稍后`)
     return {
       videoHref: videoHref,
       audioHref: audioHref,
@@ -203,6 +202,7 @@ class bilibiliCore extends BasePuppeteer {
     //生成唯一uuid
     const taskId = uuidv4()
     //更新进度
+    const downTime = dayjs().format('YYYY-MM-DD HH:mm:ss.SSS')
     response.data.on('data', (chunk: Buffer) => {
       downloadedSize += chunk.length
       //计算进度
@@ -215,6 +215,7 @@ class bilibiliCore extends BasePuppeteer {
       const formattedSpeed = this.downloadNetSpeed(netSpeed, downloadedSize)
       puppeteerProgressFunc(
         'info',
+        downTime,
         `文件${fileName}.${fileType}正在下载,(${formattedSpeed})`,
         progress,
         taskId
@@ -225,7 +226,8 @@ class bilibiliCore extends BasePuppeteer {
       const taskElapsedTimeSec = Number((taskElapsedTimeMs / 1000).toFixed(2)) // 转换为秒，并保留两位小数得到数字类型
       puppeteerProgressFunc(
         'closed',
-        `文件${fileName}.${fileType}下载完成,耗时${taskElapsedTimeSec}秒`,
+        downTime,
+        `文件: ${fileName}.${fileType}下载完成,耗时${taskElapsedTimeSec}秒`,
         100,
         taskId
       )
