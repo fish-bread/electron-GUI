@@ -7,6 +7,7 @@ import ChevronLeft20Regular from '@vicons/fluent/ChevronLeft20Regular'
 import ArrowSync20Regular from '@vicons/fluent/ArrowSync20Regular'
 import { activeInter, viewInter } from '../../../types/mian'
 import Dismiss20Regular from '@vicons/fluent/Dismiss20Regular'
+import Add20Regular from '@vicons/fluent/Add20Regular'
 import { VueDraggable } from 'vue-draggable-plus'
 const PageMessage = ref<viewInter[]>([])
 const reloadRef = ref<HTMLButtonElement | null>(null)
@@ -89,6 +90,10 @@ const switchTab = (tabId: number): void => {
 const closeTab = (tabId: number): void => {
   window.api.closePageTab(tabId)
 }
+//打开bing页面
+const openBing = (): void => {
+  window.api.openChromePage('https://cn.bing.com/?mkt=zh-CN')
+}
 onMounted(async () => {
   //初始化页面
   const message = await window.api.getViewTab()
@@ -164,32 +169,45 @@ onMounted(async () => {
         </button>
       </div>
     </div>
-    <!--标签页-->
-    <VueDraggable
-      v-model="PageMessage"
-      class="head-center app-drag"
-      style="flex: 1; user-select: none"
-      :animation="150"
-    >
-      <div
-        v-for="item in PageMessage"
-        :key="item.id"
-        class="head-center-tab app-drag-disable"
-        :class="{ active: activeTabId === item.id }"
-        :title="item.title"
-        @click="switchTab(item.id)"
+    <div class="center app-drag">
+      <!--标签页-->
+      <VueDraggable
+        v-model="PageMessage"
+        class="head-center"
+        style="user-select: none"
+        :animation="150"
       >
-        <div style="max-width: 150px; overflow: hidden; text-overflow: ellipsis">
-          {{ item.title }}
+        <div
+          v-for="item in PageMessage"
+          :key="item.id"
+          class="head-center-tab app-drag-disable"
+          :class="{ active: activeTabId === item.id }"
+          :title="item.title"
+          @click="switchTab(item.id)"
+        >
+          <div style="max-width: 150px; overflow: hidden; text-overflow: ellipsis">
+            {{ item.title }}
+          </div>
+          <!--icon-->
+          <div
+            class="title-button cursorPointer"
+            title="关闭标签页"
+            @click.stop="closeTab(item.id)"
+          >
+            <n-icon :size="15">
+              <Dismiss20Regular />
+            </n-icon>
+          </div>
         </div>
-        <!--icon-->
-        <div class="title-button cursorPointer" title="关闭标签页" @click.stop="closeTab(item.id)">
-          <n-icon :size="15">
-            <Dismiss20Regular />
-          </n-icon>
-        </div>
+      </VueDraggable>
+      <!--添加新页面-->
+      <div class="newPage-button app-drag-disable" title="添加新页面" @click="openBing">
+        <n-icon size="26">
+          <Add20Regular />
+        </n-icon>
       </div>
-    </VueDraggable>
+    </div>
+
     <!--控制栏-->
     <ChromeWindowControl v-model="PageMessage" icon-size="20" :active-id="activeTabId" />
   </div>
@@ -236,44 +254,63 @@ onMounted(async () => {
       }
     }
   }
-  .head-center {
+  .center {
     @extend %head-box-display-row;
-    padding: 0 0 0 5px;
-    gap: 5px;
     transition: all 0.2s ease;
-    overflow-y: hidden;
-    .head-center-tab {
+    overflow-x: hidden;
+    flex: 1;
+    gap: 5px;
+    align-items: center;
+    .head-center {
       @extend %head-box-display-row;
-      overflow: hidden;
+      padding: 0 0 0 5px;
       gap: 5px;
-      padding: 3px 5px 3px 20px;
-      border-radius: 3px;
-      background-color: var(--tab-color);
-      max-width: 150px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      align-items: center;
-      font-size: 11px;
       transition: all 0.2s ease;
-      &.active {
-        background-color: var(--tab-active-color);
+      overflow-x: hidden;
+      .head-center-tab {
+        @extend %head-box-display-row;
+        overflow: hidden;
+        gap: 5px;
+        padding: 3px 5px 3px 20px;
+        border-radius: 3px;
+        background-color: var(--tab-color);
+        max-width: 150px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        align-items: center;
+        font-size: 11px;
+        transition: all 0.2s ease;
+        &.active {
+          background-color: var(--tab-active-color);
+        }
+        &:not(.active):hover {
+          background-color: var(--tab-not-active-color);
+        }
       }
-      &:not(.active):hover {
-        background-color: var(--tab-not-active-color);
+      .title-button {
+        box-sizing: border-box;
+        outline: unset;
+        border: none;
+        background: none;
+        transition: all 0.2s ease;
+        border-radius: 5px;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+          background-color: var(--button-hover-color);
+        }
       }
     }
-    .title-button {
+    .newPage-button {
+      width: 26px;
+      height: 26px;
       box-sizing: border-box;
-      outline: unset;
-      border: none;
-      background: none;
       transition: all 0.2s ease;
-      border-radius: 5px;
-      width: 20px;
-      height: 20px;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      border-radius: 3px;
       &:hover {
         background-color: var(--button-hover-color);
       }
