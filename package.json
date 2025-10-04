@@ -1,6 +1,6 @@
 {
   "name": "electron-gui",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "这是尝试用electron制作pythonGUI和jsGUI的项目",
   "main": "./out/main/index.js",
   "author": "3434241933@qq.com",
