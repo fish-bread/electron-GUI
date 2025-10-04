@@ -14,7 +14,7 @@ import { routerOpen } from '@renderer/router/routerFunc'
     :style="{
       backgroundColor: theme === null ? '#ffffff' : '#2c2c2c',
       boxShadow:
-        theme === null ? '0 0 5px 1px rgba(0, 0, 0, 0.3)' : '0 0 5px 1px rgba(50, 50, 50, 0.3)'
+        theme === null ? '0 0 1px 1px rgba(0, 0, 0, 0.3)' : '0 0 1px 1px rgba(50, 50, 50, 0.3)'
     }"
   >
     <!--左-->

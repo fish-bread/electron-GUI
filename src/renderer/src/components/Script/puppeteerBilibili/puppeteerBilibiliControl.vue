@@ -20,12 +20,16 @@ const killPuppeteer = (): void => {
 
 <template>
   <div class="bili-control">
-    <h3>bilibili爬虫控制台</h3>
-    <n-button @click="runPuppeteer">运行bilibili脚本</n-button>
-    <n-button @click="killPuppeteer">killBilibili脚本</n-button>
+    <div class="setting-container-column">
+      <h3>bilibili爬虫控制台</h3>
+      <div class="mini-flex">
+        <n-button @click="runPuppeteer">运行bilibili脚本</n-button>
+        <n-button @click="killPuppeteer">killBilibili脚本</n-button>
+      </div>
+    </div>
     <div class="setting-box">
-      <h3>无头模式</h3>
-      <n-switch v-model:value="headless" />
+        <h3>无头模式</h3>
+        <n-switch v-model:value="headless" />
     </div>
     <h3>bilibili视频或bv号网址</h3>
     <n-input v-model:value="href" placeholder="请输入你想搜索的bv号视频"></n-input>

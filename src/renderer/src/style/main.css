@@ -28,9 +28,38 @@ body, html {
 ::-webkit-scrollbar {
   background: var(--scrollbar-track-color);
   width: 10px;
-  transition: background 0.3s ease;
+  transition: background 0.2s ease;
 }
 ::-webkit-scrollbar-thumb {
   background: #888; /* 显式设置滑块颜色，避免继承 */
   border-radius: 20px;
+}
+/*控制台样式*/
+.setting-container {
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5px;
+  border-radius: 5px;
+}
+.setting-container-column {
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 5px;
+  border-radius: 5px;
+}
+.mini-flex {
+  display:flex;
+  gap: 10px;
+}
+.setting-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

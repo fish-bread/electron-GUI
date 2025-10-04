@@ -24,9 +24,13 @@ const killPuppeteer = async (): Promise<void> => {
 
 <template>
   <div class="home-control">
-    <h3>pixiv控制台</h3>
-    <n-button @click="runPuppeteer">运行pixiv脚本</n-button>
-    <n-button @click="killPuppeteer">killPixiv脚本</n-button>
+    <div class="setting-container-column">
+      <h3>pixiv控制台</h3>
+      <div class="mini-flex">
+        <n-button @click="runPuppeteer">运行pixiv脚本</n-button>
+        <n-button @click="killPuppeteer">killPixiv脚本</n-button>
+      </div>
+    </div>
     <div class="setting">
       <div class="setting-box">
         <h3>无头模式</h3>
@@ -52,11 +56,6 @@ const killPuppeteer = async (): Promise<void> => {
   flex-direction: row;
   justify-content: space-evenly;
   gap: 10px;
-}
-.setting-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 .agent {
   display: flex;

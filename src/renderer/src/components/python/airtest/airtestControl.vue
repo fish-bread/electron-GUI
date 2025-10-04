@@ -12,9 +12,13 @@ const kill_python = (): void => {
 
 <template>
   <div class="home-control">
-    <h3>airtest控制台</h3>
-    <n-button @click="python">启动Airtest</n-button>
-    <n-button @click="kill_python">killAirtest</n-button>
+    <div class="setting-container-column">
+      <h3>airtest控制台</h3>
+      <div class="mini-flex">
+        <n-button @click="python">启动Airtest</n-button>
+        <n-button @click="kill_python">killAirtest</n-button>
+      </div>
+    </div>
     <h3>airtest脚本预启动时间</h3>
     <n-input v-model:value="python_time" placeholder="请输入airtest预启动时间,默认3秒" />
   </div>

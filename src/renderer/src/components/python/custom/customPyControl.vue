@@ -27,12 +27,20 @@ const kill_python = (): void => {
 </script>
 
 <template>
-  <h3>自定义python控制台</h3>
-  <n-button @click="python">启动python</n-button>
-  <n-button @click="kill_python">killPython</n-button>
-  <h3>自定义文件运行路径</h3>
-  <n-button @click="choose_python">选择python路径</n-button>
-  <n-button @click="restore_python">还原python路径</n-button>
+  <div class="setting-container-column">
+    <h3>自定义python控制台</h3>
+    <div class="mini-flex">
+      <n-button @click="python">启动python</n-button>
+      <n-button @click="kill_python">killPython</n-button>
+    </div>
+  </div>
+  <div class="setting-container-column">
+    <h3>自定义文件运行路径</h3>
+    <div class="mini-flex">
+      <n-button @click="choose_python">选择python路径</n-button>
+      <n-button @click="restore_python">还原python路径</n-button>
+    </div>
+  </div>
   <h4>注:自定义脚本须自行解决中文打印乱码的问题</h4>
   <h4>推荐转化为utf-8编码</h4>
 </template>

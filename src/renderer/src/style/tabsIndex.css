@@ -2,8 +2,8 @@
   --button-hover-color: #ededed;
   --button-disable-color: #ffffff;
   --tab-color: #ffffff;
-  --tab-active-color: #9983ba;
-  --tab-not-active-color: #bbbbbb;
+  --tab-active-color: #d8ccee;
+  --tab-not-active-color: #eeeeee;
 }
 [data-theme="dark"] {
   --button-hover-color: #404040;

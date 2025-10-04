@@ -3,7 +3,7 @@ import Subtract20Regular from '@vicons/fluent/Subtract20Regular'
 import Maximize20Regular from '@vicons/fluent/Maximize20Regular'
 import Dismiss20Regular from '@vicons/fluent/Dismiss20Regular'
 import AnimalCat20Regular from '@vicons/fluent/AnimalCat20Regular'
-import { viewInter } from '../../../types/mian'
+import { viewInter } from '../../../../types/mian'
 const PageMessage = defineModel<viewInter[]>()
 //默认浏览器
 const pageBrowser = (tabId: number): void => window.api.pageBrowser(tabId)

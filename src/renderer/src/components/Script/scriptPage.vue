@@ -72,6 +72,7 @@ onMounted(() => {
   <div
     class="script-page"
     :style="{ borderRight: theme === null ? '1px solid #4e4e4e' : '1px solid  #2c2c2c' }"
+    :data-theme="theme === null ? 'light' : 'dark'"
   >
     <div class="script-box">
       <AllSelect name="js" />

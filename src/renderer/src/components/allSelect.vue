@@ -10,15 +10,10 @@ defineProps<{
 </script>
 
 <template>
-  <div class="js-select">
+  <div class="setting-container">
     <h3>{{ name }}脚本切换</h3>
     <n-select v-model:value="puppeteerSelect" :options="puppeteerOptions" />
   </div>
 </template>
 
-<style scoped>
-.js-select {
-  display: flex;
-  flex-direction: column;
-}
-</style>
+<style scoped></style>

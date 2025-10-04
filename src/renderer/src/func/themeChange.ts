@@ -7,6 +7,7 @@ export const theme = ref<GlobalTheme | null>(null)
 //自定义主题
 const lightThemeOverrides: GlobalThemeOverrides = {
   common: {
+    bodyColor: '#ffffff',
     primaryColor: '#8064a9',
     primaryColorHover: '#8d74b2',
     primaryColorPressed: '#735a98',
@@ -22,6 +23,7 @@ const lightThemeOverrides: GlobalThemeOverrides = {
 }
 const darkThemeOverrides: GlobalThemeOverrides = {
   common: {
+    bodyColor: '#242424',
     primaryColor: '#8064a9',
     primaryColorHover: '#8d74b2',
     primaryColorPressed: '#735a98',

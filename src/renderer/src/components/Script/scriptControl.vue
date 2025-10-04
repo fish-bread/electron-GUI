@@ -32,16 +32,20 @@ const clean_puppeteer = (): void => {
 
 <template>
   <div>
-    <h3>puppeteer控制台</h3>
-    <n-button @click="clean_puppeteer">清除控制台</n-button>
-    <h3>puppeteer浏览器启动路径</h3>
-    <n-button @click="choose_chrome">选择浏览器路径</n-button>
-    <n-button @click="restore_chrome">还原浏览器路径</n-button>
+    <div class="setting-container">
+      <h3>puppeteer打印台</h3>
+      <n-button pr @click="clean_puppeteer">清除打印台</n-button>
+    </div>
+    <div class="setting-container-column">
+      <h3>puppeteer浏览器启动路径</h3>
+      <div class="mini-flex">
+        <n-button @click="choose_chrome">选择浏览器路径</n-button>
+        <n-button @click="restore_chrome">还原浏览器路径</n-button>
+      </div>
+    </div>
     <h3>脚本预启动时间</h3>
     <n-input v-model:value="time" placeholder="请输入puppeteer预启动时间,默认3秒"></n-input>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

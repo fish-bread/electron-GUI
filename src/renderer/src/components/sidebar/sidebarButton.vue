@@ -16,7 +16,7 @@ const num = inject<Ref<number>>('HomeComponentNum')
 // 按钮配置数组
 const buttonItems: ButtonItem[] = [
   { icon: Home20Filled, text: '主页' },
-  { icon: Python, text: 'python' },
+  { icon: Python, text: 'py脚本' },
   { icon: JsSquare, text: 'js脚本' },
   { icon: Settings20Filled, text: '设置' },
 ]
@@ -52,39 +52,10 @@ const changHomeFunc = (index: number): void => {
 </template>
 
 <style scoped lang="scss">
-:root {
-  --sidebar-button-active-back: '#f2f0f6';
-}
 .sidebar-body {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  .sidebar-button {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: all 0.2s ease;
-    width: 100%;
-    border-left: 5px solid transparent;
-  }
-  .sidebar-button-active {
-    position: relative;
-    color: var(--sidebar-button-active-back) !important;
-  }
-  .sidebar-button-active::before {
-    content: '';
-    position: absolute;
-    left: -5px;
-    top: 0;
-    width: 10px;
-    height: 100%;
-    border-left: 5px solid var(--sidebar-button-active-back) !important;
 
-  }
-  .sidebar-button:hover {
-    border-left: 5px solid var(--sidebar-button-active-back) !important;
-    color: var(--sidebar-button-active-back);
-  }
 }
 </style>

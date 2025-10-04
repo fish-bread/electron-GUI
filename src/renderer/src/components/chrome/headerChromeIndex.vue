@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { theme } from '@renderer/func/themeChange'
-import ChromeWindowControl from '@renderer/components/chromeWindowControl.vue'
+import ChromeWindowControl from './chromeWindowControl.vue'
 import ChevronRight20Regular from '@vicons/fluent/ChevronRight20Regular'
 import ChevronLeft20Regular from '@vicons/fluent/ChevronLeft20Regular'
 import ArrowSync20Regular from '@vicons/fluent/ArrowSync20Regular'
-import { activeInter, viewInter } from '../../../types/mian'
+import { activeInter, viewInter } from '../../../../types/mian'
 import Dismiss20Regular from '@vicons/fluent/Dismiss20Regular'
 import Add20Regular from '@vicons/fluent/Add20Regular'
 import { VueDraggable } from 'vue-draggable-plus'

@@ -1,6 +1,7 @@
 import '@renderer/style/main.css'
 import '@renderer/style/printIndex.css'
 import '@renderer/style/tabsIndex.css'
+import '@renderer/style/sidebarButton.css'
 
 import { createApp } from 'vue'
 import router from './router'
