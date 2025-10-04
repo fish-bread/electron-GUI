@@ -6,7 +6,7 @@ import AnimalCat20Regular from '@vicons/fluent/AnimalCat20Regular'
 import { viewInter } from '../../../../types/mian'
 const PageMessage = defineModel<viewInter[]>()
 //默认浏览器
-const pageBrowser = (tabId: number): void => window.api.pageBrowser(tabId)
+const pageBrowser = (tabId: number): void => window.chromeApi.pageBrowser(tabId)
 //最大化
 const maxSizeFunc = (): void => window.api.maxSizeFunc()
 //最小化

@@ -94,8 +94,12 @@ onMounted(() => {
   height: calc(100vh - 50px);
   padding: 0 10px;
   min-width: 320px;
+  max-width: 320px;
 }
 .script-page::-webkit-scrollbar {
   width: 5px;
+}
+.script-box {
+  box-sizing: border-box;
 }
 </style>

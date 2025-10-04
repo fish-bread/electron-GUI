@@ -6,5 +6,7 @@ export const pythonApi = {
   choosePython: (): Promise<void> => ipcRenderer.invoke('choosePython'),
   getPythonPath: (): Promise<string> => ipcRenderer.invoke('getPythonPath'),
   restorePythonPath: (): Promise<string> => ipcRenderer.invoke('restorePythonPath'),
-  runPuppeteer: (): Promise<void> => ipcRenderer.invoke('runPuppeteer'),
+  getCustomPythonPath: (): Promise<string> => ipcRenderer.invoke('getCustomPythonPath'), //自定义python路径
+  runCustomPython: (): void => ipcRenderer.send('runCustomPython'), //自定义运行python
+  killCustomPython: (): void => ipcRenderer.send('killCustomPython'), //自定义killPython
 }

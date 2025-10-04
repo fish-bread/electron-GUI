@@ -8,7 +8,7 @@ const headless = ref<boolean>(true)
 const agent = ref<boolean>(true)
 //运行puppeteer
 const runPuppeteer = async (): Promise<void> => {
-  await window.api.runPuppeteer({
+  await window.pixivApi.runPuppeteer({
     time: Number(time.value),
     href: href.value,
     headless: headless.value,
@@ -18,7 +18,7 @@ const runPuppeteer = async (): Promise<void> => {
 }
 //killPuppeteer
 const killPuppeteer = async (): Promise<void> => {
-  await window.api.killPuppeteer()
+  await window.pixivApi.killPuppeteer()
 }
 </script>
 
@@ -47,6 +47,7 @@ const killPuppeteer = async (): Promise<void> => {
     </div>
     <h3>pixiv的图片pid/图片网址</h3>
     <n-input v-model:value="href" placeholder="请输入你想搜索的图片pid"></n-input>
+    <div>注: 请确保cookie未过期,过期或无效cookie可能会导致图片爬取不完整较低</div>
   </div>
 </template>
 

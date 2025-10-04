@@ -3,10 +3,10 @@ import { ref, inject, Ref } from 'vue'
 //注入
 const python_time = inject<Ref<string>>('time', ref('3'))
 const python = (): void => {
-  window.api.runPython(Number(python_time.value))
+  window.pythonApi.runPython(Number(python_time.value))
 }
 const kill_python = (): void => {
-  window.api.killPython()
+  window.pythonApi.killPython()
 }
 </script>
 

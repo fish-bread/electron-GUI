@@ -66,16 +66,16 @@ watch(
   }
 )
 const goback = (): void => {
-  window.api.goBack(activeTabId.value)
+  window.chromeApi.goBack(activeTabId.value)
 }
 const goForward = (): void => {
-  window.api.goForward(activeTabId.value)
+  window.chromeApi.goForward(activeTabId.value)
 }
 const reload = (): void => {
-  window.api.reload(activeTabId.value)
+  window.chromeApi.reload(activeTabId.value)
 }
 const stop = (): void => {
-  window.api.pageStop(activeTabId.value)
+  window.chromeApi.pageStop(activeTabId.value)
 }
 
 const animePageButton = (boolean: boolean): void => {
@@ -84,26 +84,26 @@ const animePageButton = (boolean: boolean): void => {
 // 切换标签页的方法
 const switchTab = (tabId: number): void => {
   activeTabId.value = tabId
-  window.api.changePageTab(tabId)
+  window.chromeApi.changePageTab(tabId)
 }
 // 关闭标签页的方法
 const closeTab = (tabId: number): void => {
-  window.api.closePageTab(tabId)
+  window.chromeApi.closePageTab(tabId)
 }
 //打开bing页面
 const openBing = (): void => {
-  window.api.openChromePage('https://cn.bing.com/?mkt=zh-CN')
+  window.chromeApi.openChromePage('https://cn.bing.com/?mkt=zh-CN')
 }
 onMounted(async () => {
   //初始化页面
-  const message = await window.api.getViewTab()
+  const message = await window.chromeApi.getViewTab()
   PageMessage.value = message.viewMessage
   activeTabId.value = message.activeId
   //更新页面
-  window.api.pageTitleUpdated(updateTitle)
-  window.api.pageReloaded(animePageButton)
+  window.chromeApi.pageTitleUpdated(updateTitle)
+  window.chromeApi.pageReloaded(animePageButton)
   //获取消息
-  window.api.pageMessage(updateTabs)
+  window.chromeApi.pageMessage(updateTabs)
 })
 </script>
 

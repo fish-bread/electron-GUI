@@ -42,10 +42,10 @@ const handlePythonOutputMessage = (message: allMessageInter): void => {
   })
 }
 const get_python_path = async (): Promise<void> => {
-  python_file.value = await window.api.getPythonPath()
+  python_file.value = await window.pythonApi.getPythonPath()
 }
 const get_custom_path = async (): Promise<void> => {
-  python_file.value = await window.api.getCustomPythonPath()
+  python_file.value = await window.pythonApi.getCustomPythonPath()
 }
 //监听num
 const watchNum = (): void => {
@@ -97,6 +97,7 @@ onMounted(() => {
   height: calc(100vh - 50px);
   padding: 0 10px;
   min-width: 320px;
+  max-width: 320px;
 }
 .python-page::-webkit-scrollbar {
   width: 5px;

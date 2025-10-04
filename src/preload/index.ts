@@ -3,20 +3,16 @@ import { electronAPI } from '@electron-toolkit/preload'
 import { pythonApi } from './pythonApi'
 import { PuppeteerPixivApi } from './puppeteerPixivApi'
 import { outPutApi } from './outputApi'
-import { pythonCustomApi } from './pythonCustomApi'
 import { globalSettingApi } from './globalSettingApi'
 import { puppeteerBilibiliApi } from './puppeteerBilibiliApi'
 import { chromeApi } from './chromeApi'
+import { globalPuppeteerApi } from './globalPuppeteerApi'
 
 // Custom APIs for renderer
 const api = {
-  ...pythonApi,
-  ...PuppeteerPixivApi,
-  ...puppeteerBilibiliApi,
-  ...pythonCustomApi,
   ...outPutApi,
   ...globalSettingApi,
-  ...chromeApi,
+  ...globalPuppeteerApi,
   maxSizeFunc: () => ipcRenderer.send('maxSizeFunc'), //最大化
   minimizeFunc: () => ipcRenderer.send('minimizeFunc'), //最小化
   closeWindowFunc: () => ipcRenderer.send('closeWindowFunc') //关闭
@@ -28,6 +24,10 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
+    contextBridge.exposeInMainWorld('chromeApi', chromeApi)
+    contextBridge.exposeInMainWorld('pythonApi', pythonApi)
+    contextBridge.exposeInMainWorld('pixivApi', PuppeteerPixivApi)
+    contextBridge.exposeInMainWorld('bilibiliApi', puppeteerBilibiliApi)
   } catch (error) {
     console.error(error)
   }
@@ -36,4 +36,8 @@ if (process.contextIsolated) {
   window.electron = electronAPI
   // @ts-ignore (define in dts)
   window.api = api
+  window.chromeApi = chromeApi
+  window.pythonApi = pythonApi
+  window.pixivApi = PuppeteerPixivApi
+  window.bilibiliApi = puppeteerBilibiliApi
 }

@@ -9,5 +9,5 @@ export const outPutApi = {
   },
   pythonOutput: (callback: (message: allMessageInter) => void): void => {
     ipcRenderer.on('pythonOutput', (_event, message) => callback(message))
-  },
+  }
 }

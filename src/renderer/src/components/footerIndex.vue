@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import MoeCounter from './moeCounter.vue'
-import { theme } from '@renderer/func/themeChange'
 </script>
 <template>
-  <div
-    class="footer-page"
-    :style="{
-      backgroundColor: theme === null ? '#ffffff' : '#101014'
-    }"
-  >
+  <div class="footer-page">
     <moe-counter />
     <div class="footer-box">
       <div>© Renovamen 2025</div>

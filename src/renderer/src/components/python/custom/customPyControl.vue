@@ -4,9 +4,9 @@ import { useMessage } from 'naive-ui'
 const message = useMessage()
 const python_file = inject<Ref<string>>('all_file', ref(''))
 const choose_python = async (): Promise<void> => {
-  const newPath = await window.api.choosePython()
+  const newPath = await window.pythonApi.choosePython()
   if (newPath.canceled) {
-    python_file.value = await window.api.getPythonPath()
+    python_file.value = await window.pythonApi.getPythonPath()
     message.error('未选择python启动路径')
   } else {
     console.log('文件路径', newPath)
@@ -15,14 +15,14 @@ const choose_python = async (): Promise<void> => {
   }
 }
 const restore_python = async (): Promise<void> => {
-  python_file.value = await window.api.restorePythonPath()
+  python_file.value = await window.pythonApi.restorePythonPath()
   message.success('路径还原成功')
 }
 const python = (): void => {
-  window.api.runCustomPython()
+  window.pythonApi.runCustomPython()
 }
 const kill_python = (): void => {
-  window.api.killCustomPython()
+  window.pythonApi.killCustomPython()
 }
 </script>
 

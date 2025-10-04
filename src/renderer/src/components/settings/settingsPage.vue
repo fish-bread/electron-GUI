@@ -14,26 +14,26 @@ const bilibiliCookie = ref<string>('')
 provide('bilibiliFilePath', bilibiliPath)
 provide('bilibiliCookie', bilibiliCookie)
 onMounted(async () => {
-  pixivPath.value = await window.api.getPixivFilePath()
-  pixivCookie.value = await window.api.getPixivCookie()
-  bilibiliPath.value = await window.api.getBilibiliFilePath()
-  bilibiliCookie.value = await window.api.getBilibiliCookie()
+  pixivPath.value = await window.pixivApi.getPixivFilePath()
+  pixivCookie.value = await window.pixivApi.getPixivCookie()
+  bilibiliPath.value = await window.bilibiliApi.getBilibiliFilePath()
+  bilibiliCookie.value = await window.bilibiliApi.getBilibiliCookie()
 })
 import puppeteerLocalSettings, { PuppeteerSettingsApi } from '@renderer/func/puppeteerLocalSetting'
 import { settingTitle } from '../../../../types/mian'
 import { theme } from '@renderer/func/themeChange'
 //pixiv
 const pixivApi: PuppeteerSettingsApi = {
-  changeFilePath: window.api.changePixivFilePath, // 你的Pixiv修改路径API
-  restorePath: window.api.restorePixivPath, // 你的Pixiv恢复路径API
-  changeCookie: window.api.changePixivCookie // 你的Pixiv修改Cookie API
+  changeFilePath: window.pixivApi.changePixivFilePath, // 你的Pixiv修改路径API
+  restorePath: window.pixivApi.restorePixivPath, // 你的Pixiv恢复路径API
+  changeCookie: window.pixivApi.changePixivCookie // 你的Pixiv修改Cookie API
 }
 const pixivSettings = new puppeteerLocalSettings(pixivApi, pixivPath, pixivCookie)
 //bilibili
 const BilibiliApi: PuppeteerSettingsApi = {
-  changeFilePath: window.api.setBilibiliFilePath, // 你的Pixiv修改路径API
-  restorePath: window.api.restoreBilibiliFilePath, // 你的Pixiv恢复路径API
-  changeCookie: window.api.setBilibiliCookie // 你的Pixiv修改Cookie API
+  changeFilePath: window.bilibiliApi.setBilibiliFilePath, // 你的Pixiv修改路径API
+  restorePath: window.bilibiliApi.restoreBilibiliFilePath, // 你的Pixiv恢复路径API
+  changeCookie: window.bilibiliApi.setBilibiliCookie // 你的Pixiv修改Cookie API
 }
 const bilibiliSettings = new puppeteerLocalSettings(BilibiliApi, bilibiliPath, bilibiliCookie)
 //标题
@@ -56,7 +56,11 @@ const changeShow = (index: number): void => {
 
 <template>
   <div class="setting-page">
-    <div class="setting-page-content">
+    <div
+      class="setting-page-content"
+      :style="{
+        borderRight: theme === null ? '1px solid #4e4e4e' : '1px solid  #2c2c2c'
+    }">
       <div
         v-for="(item, index) in setting_title"
         :key="index"
@@ -100,14 +104,13 @@ const changeShow = (index: number): void => {
   box-sizing: border-box;
   flex: 1;
   overflow: hidden;
-  margin-left: 10px;
   display: flex;
   flex-direction: row;
   gap: 10px;
 }
 .setting-page-content {
   box-sizing: border-box;
-  padding-top: 10px;
+  padding: 10px 10px 0 10px;
   display: flex;
   flex-direction: column;
   gap: 20px;
