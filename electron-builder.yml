@@ -1,5 +1,5 @@
 appId: fishbread.net
-productName: electron-python
+productName: electron-GUI
 directories:
   buildResources: build
 files:
@@ -13,13 +13,14 @@ asarUnpack:
   - resources/**
   - python/**
 win:
-  executableName: electron-python
+  executableName: electron-GUI
   icon: resources/icon2.png
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always
+  allowToChangeInstallationDirectory: true
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   extendInfo:
