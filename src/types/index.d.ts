@@ -3,9 +3,11 @@ import {
   puppeteerDataInter,
   pythonFilePath,
   allMessageInter,
-  allProgressInter, isGoInter, viewInter, activeInter, themeColor
-} from '../types/mian'
-import {ipcRenderer} from "electron";
+  allProgressInter,
+  viewInter,
+  activeInter,
+  themeColor
+} from './mian'
 declare global {
   interface Window {
     electron: ElectronAPI
@@ -28,7 +30,7 @@ declare global {
       getChromePath: () => Promise<string>
       restorePuppeteerPath: () => Promise<string>
       changePuppeteer: () => Promise<pythonFilePath>
-    },
+    }
     chromeApi: {
       //浏览器设置
       openChromePage: (href: string) => void
@@ -36,17 +38,17 @@ declare global {
       pageMessage: (callback: (message: activeInter) => void) => void
       pageReloaded: (callback: (boolean: boolean) => void) => void
       //页面基础操作
-      goBack: (tabId: number) => void,
-      goForward: (tabId: number) => void,
-      reload: (tabId: number) => void,
-      pageStop: (tabId: number) => void,
+      goBack: (tabId: number) => void
+      goForward: (tabId: number) => void
+      reload: (tabId: number) => void
+      pageStop: (tabId: number) => void
       //默认浏览器打开
-      pageBrowser: (tabId: number) => void,
+      pageBrowser: (tabId: number) => void
       //tab页设置
       getViewTab: () => Promise<activeInter>
-      changePageTab: (tabId: number) => void,
-      closePageTab: (tabId: number) => void,
-    },
+      changePageTab: (tabId: number) => void
+      closePageTab: (tabId: number) => void
+    }
     pythonApi: {
       //airtestPython
       runPython: (time: number) => void
@@ -58,7 +60,7 @@ declare global {
       choosePython: () => Promise<pythonFilePath>
       restorePythonPath: () => Promise<string>
       getCustomPythonPath: () => Promise<string>
-    },
+    }
     pixivApi: {
       //PixivPuppeteer爬虫
       runPuppeteer: (data: puppeteerDataInter) => Promise<void>
@@ -68,7 +70,7 @@ declare global {
       restorePixivPath: () => Promise<string>
       getPixivCookie: () => Promise<string>
       changePixivCookie: (cookie: string) => Promise<string>
-    },
+    }
     bilibiliApi: {
       //bilibiliPuppeteer爬虫
       runBilibiliPuppeteer: (data: puppeteerDataInter) => void
