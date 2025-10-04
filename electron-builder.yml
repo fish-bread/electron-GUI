@@ -14,8 +14,9 @@ asarUnpack:
   - python/**
 win:
   executableName: electron-GUI
-  icon: resources/icon2.png
+  icon: resources/icon3.png
 nsis:
+  oneClick: false
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
@@ -29,7 +30,7 @@ mac:
     - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
-  icon: resources/icon2.png
+  icon: resources/icon3.png
 dmg:
   artifactName: ${name}-${version}.${ext}
 linux:
@@ -39,7 +40,7 @@ linux:
     - deb
   maintainer: electronjs.org
   category: Utility
-  icon: resources/icon2.png
+  icon: resources/icon3.png
 appImage:
   artifactName: ${name}-${version}.${ext}
 npmRebuild: false
