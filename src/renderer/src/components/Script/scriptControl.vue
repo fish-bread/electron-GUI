@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, ref, Ref } from 'vue'
-import { useMessage } from 'naive-ui'
 import { allMessageInter } from '../../../../types/mian'
+import { useMessage } from 'naive-ui'
 const message = useMessage()
 //注入
 const mess = inject<Ref<allMessageInter[]>>('mess')
@@ -26,7 +26,10 @@ const restore_chrome = async (): Promise<void> => {
 }
 //清除控制台
 const clean_puppeteer = (): void => {
-  if (mess) mess.value = []
+  if (mess) {
+    mess.value = []
+    message.success('python控制台已清空')
+  }
 }
 </script>
 
