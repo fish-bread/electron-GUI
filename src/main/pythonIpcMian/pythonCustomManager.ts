@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron'
 import customPythonPath from '../pythonIpcMian/customPathon/CustomPythonPath'
 import { pythonFilePath } from '../../types/mian'
-import { pathDialog } from '../dialog/pythonDialog'
+import { pathDialog } from '../dialog/fileDialog'
 import { PythonShell } from 'python-shell'
 import { pythonPrintFunc } from '../general/allPrint'
 let PyShell: PythonShell | null = null

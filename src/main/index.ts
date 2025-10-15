@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, protocol } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { getLock } from './func/gotTheLock'
 import { registerPythonIpcHandlers, PyShell } from './pythonIpcMian/pythonProcessManager'
@@ -11,12 +11,29 @@ import BilibiliCore from './puppeteerIpcMain/puppeteer/bilibili/bilibiliCore'
 import PuppeteerCore from './puppeteerIpcMain/puppeteer/pixiv/pixivCore'
 import { registerChromeIpcHandlers } from './chromeIpcMain/chromeManager'
 import { closeChromeWindow, chromeId } from './chromeIpcMain/chrome/chromeFunc'
+import { sharpIpcHandlers } from './tool/sharpManager'
+import { localFileProtocol } from './func/localFileProtocol'
 // 检测并阻止多实例
 getLock()
+// 注册自定义协议
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'safe-local',
+    privileges: {
+      secure: true,
+      standard: true,
+      supportFetchAPI: true,
+      corsEnabled: true,
+      stream: true
+    }
+  }
+])
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  //注册自定义协议
+  localFileProtocol()
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 
@@ -26,7 +43,6 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
-
   // IPC 中间件
   //airtest的ipc函数
   registerPythonIpcHandlers()
@@ -40,6 +56,8 @@ app.whenReady().then(() => {
   registerChromeIpcHandlers()
   //全局设置获取
   allSettingManager()
+  //sharp图片处理
+  sharpIpcHandlers()
   //最大化或恢复窗体
   ipcMain.on('maxSizeFunc', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)

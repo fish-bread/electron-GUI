@@ -32,6 +32,7 @@ declare module 'vue' {
     NSelect: typeof import('naive-ui')['NSelect']
     NSwitch: typeof import('naive-ui')['NSwitch']
     NTooltip: typeof import('naive-ui')['NTooltip']
+    PageControl: typeof import('./src/components/pageControl.vue')['default']
     PuppeteerBilibiliControl: typeof import('./src/components/Script/puppeteerBilibili/puppeteerBilibiliControl.vue')['default']
     PuppeteerPixivControl: typeof import('./src/components/Script/puppeteerPixiv/puppeteerPixivControl.vue')['default']
     PythonControl: typeof import('./src/components/python/pythonControl.vue')['default']
@@ -44,7 +45,13 @@ declare module 'vue' {
     SettingPython: typeof import('./src/components/settings/settingPython.vue')['default']
     SettingScript: typeof import('./src/components/settings/settingScript.vue')['default']
     SettingsPage: typeof import('./src/components/settings/settingsPage.vue')['default']
+    SharpControl: typeof import('./src/components/sharpControl.vue')['default']
+    SharpFormatConversion: typeof import('./src/components/tool/sharp/sharpFormatConversion.vue')['default']
+    SharpHeaderSetting: typeof import('./src/components/tool/sharp/sharpHeaderSetting.vue')['default']
+    SharpImage: typeof import('./src/components/tool/sharp/sharpImage.vue')['default']
+    SharpTool: typeof import('./src/components/tool/sharp/sharpTool.vue')['default']
     SidebarButton: typeof import('./src/components/sidebar/sidebarButton.vue')['default']
+    ToolPage: typeof import('./src/components/tool/toolPage.vue')['default']
     WindowsControl: typeof import('./src/components/windowsControl.vue')['default']
   }
 }

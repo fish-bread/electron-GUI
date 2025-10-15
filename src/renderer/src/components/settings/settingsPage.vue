@@ -2,6 +2,7 @@
 import settingScript from '@renderer/components/settings/settingScript.vue'
 import settingsGlobal from '@renderer/components/settings/settingGlobal.vue'
 import settingPython from '@renderer/components/settings/settingPython.vue'
+import pageControl from '@renderer/components/pageControl.vue'
 import { ref, onMounted, provide } from 'vue'
 //pixiv
 const pixivPath = ref<string>('')
@@ -21,7 +22,7 @@ onMounted(async () => {
 })
 import puppeteerLocalSettings, { PuppeteerSettingsApi } from '@renderer/func/puppeteerLocalSetting'
 import { settingTitle } from '../../../../types/mian'
-import { theme } from '@renderer/func/themeChange'
+import { pageTitleInter } from '../../../../types/renderer'
 //pixiv
 const pixivApi: PuppeteerSettingsApi = {
   changeFilePath: window.pixivApi.changePixivFilePath, // 你的Pixiv修改路径API
@@ -41,43 +42,19 @@ const title = ref<settingTitle>({
   pixiv: 'pixiv',
   bilibili: 'bilibili'
 })
-//替换
-const setting_title = ref([
+//切换页面
+const setting_title = ref<pageTitleInter[]>([
   { title: '全局设置', value: 0 },
   { title: 'python设置', value: 1 },
   { title: 'pixiv设置', value: 2 },
   { title: 'bilibili设置', value: 3 }
 ])
 const num = ref<number>(0)
-const changeShow = (index: number): void => {
-  num.value = index
-}
 </script>
 
 <template>
   <div class="setting-page">
-    <div
-      class="setting-page-content"
-      :style="{
-        borderRight: theme === null ? '1px solid #4e4e4e' : '1px solid  #2c2c2c'
-    }">
-      <div
-        v-for="(item, index) in setting_title"
-        :key="index"
-        class="sidebar-button cursorPointer"
-        :class="{
-          'sidebar-button-active': num === index
-        }"
-        :style="{
-          '--sidebar-button-active-back': theme === null ? '#9983ba' : '#8064a9',
-          padding: '5px 3px',
-          fontSize: '15px',
-        }"
-        @click="changeShow(index)"
-      >
-        {{ item.title }}
-      </div>
-    </div>
+    <pageControl v-model:num="num" v-model:title="setting_title" />
     <div class="scroll-box">
       <settingsGlobal v-show="num === 0" />
       <settingPython v-show="num === 1" />
@@ -100,23 +77,10 @@ const changeShow = (index: number): void => {
 </template>
 
 <style scoped lang="scss">
-.setting-page {
-  box-sizing: border-box;
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-}
-.setting-page-content {
-  box-sizing: border-box;
-  padding: 10px 10px 0 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
 .scroll-box {
+  box-sizing: border-box;
   height: calc(100vh - 50px);
   overflow: auto;
+  padding-left: 10px;
 }
 </style>

@@ -7,6 +7,7 @@ import { globalSettingApi } from './globalSettingApi'
 import { puppeteerBilibiliApi } from './puppeteerBilibiliApi'
 import { chromeApi } from './chromeApi'
 import { globalPuppeteerApi } from './globalPuppeteerApi'
+import { sharpApi } from './sharpApi'
 
 // Custom APIs for renderer
 const api = {
@@ -15,7 +16,8 @@ const api = {
   ...globalPuppeteerApi,
   maxSizeFunc: () => ipcRenderer.send('maxSizeFunc'), //最大化
   minimizeFunc: () => ipcRenderer.send('minimizeFunc'), //最小化
-  closeWindowFunc: () => ipcRenderer.send('closeWindowFunc') //关闭
+  closeWindowFunc: () => ipcRenderer.send('closeWindowFunc'), //关闭
+  pathToFileURL: (filePath: string) => ipcRenderer.invoke('path-to-file-url', filePath) //文件
 }
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
@@ -28,6 +30,7 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('pythonApi', pythonApi)
     contextBridge.exposeInMainWorld('pixivApi', PuppeteerPixivApi)
     contextBridge.exposeInMainWorld('bilibiliApi', puppeteerBilibiliApi)
+    contextBridge.exposeInMainWorld('sharpApi', sharpApi)
   } catch (error) {
     console.error(error)
   }
@@ -40,4 +43,5 @@ if (process.contextIsolated) {
   window.pythonApi = pythonApi
   window.pixivApi = PuppeteerPixivApi
   window.bilibiliApi = puppeteerBilibiliApi
+  window.sharpApi = sharpApi
 }

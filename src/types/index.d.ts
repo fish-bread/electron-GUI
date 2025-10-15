@@ -8,6 +8,7 @@ import {
   activeInter,
   themeColor
 } from './mian'
+import {sharpDialogInter, SharpInter} from './sharp'
 declare global {
   interface Window {
     electron: ElectronAPI
@@ -30,6 +31,8 @@ declare global {
       getChromePath: () => Promise<string>
       restorePuppeteerPath: () => Promise<string>
       changePuppeteer: () => Promise<pythonFilePath>
+      //添加自定义文件
+      pathToFileURL: (filePath: string) => Promise<string>
     }
     chromeApi: {
       //浏览器设置
@@ -80,6 +83,10 @@ declare global {
       getBilibiliFilePath: () => Promise<string>
       setBilibiliFilePath: () => Promise<pythonFilePath>
       restoreBilibiliFilePath: () => Promise<string>
+    }
+    sharpApi: {
+      sharpImage: () => Promise<sharpDialogInter>
+      sharpImageChange: (filePath: string[]) => Promise<SharpInter>
     }
   }
 }

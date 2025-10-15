@@ -3,6 +3,7 @@ import Home20Filled from '@vicons/fluent/Home20Filled'
 import Python from '@vicons/fa/Python'
 import JsSquare from '@vicons/fa/JsSquare'
 import Settings20Filled from '@vicons/fluent/Settings20Filled'
+import BoxArrowUp20Filled from '@vicons/fluent/BoxArrowUp20Filled'
 import { inject, Ref } from 'vue'
 import { theme } from '@renderer/func/themeChange'
 // 定义按钮项的接口
@@ -18,6 +19,7 @@ const buttonItems: ButtonItem[] = [
   { icon: Home20Filled, text: '主页' },
   { icon: Python, text: 'py脚本' },
   { icon: JsSquare, text: 'js脚本' },
+  { icon: BoxArrowUp20Filled, text: '工具'},
   { icon: Settings20Filled, text: '设置' },
 ]
 
@@ -56,6 +58,5 @@ const changHomeFunc = (index: number): void => {
   display: flex;
   flex-direction: column;
   gap: 5px;
-
 }
 </style>

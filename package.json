@@ -1,6 +1,6 @@
 {
   "name": "electron-gui",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "这是尝试用electron制作pythonGUI和jsGUI的项目",
   "main": "./out/main/index.js",
   "author": "3434241933@qq.com",
@@ -36,6 +36,7 @@
     "puppeteer-core": "^24.19.0",
     "python-shell": "^5.0.0",
     "sass": "^1.92.1",
+    "sharp": "^0.34.4",
     "unplugin-auto-import": "^20.1.0",
     "unplugin-vue-components": "^29.0.0",
     "uuid": "^13.0.0",

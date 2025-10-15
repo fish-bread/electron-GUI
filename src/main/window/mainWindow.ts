@@ -8,6 +8,8 @@ export const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 830,
+    minWidth: 480,
+    minHeight: 480,
     show: false,
     autoHideMenuBar: true,
     titleBarStyle: 'hidden', //删除自定义
