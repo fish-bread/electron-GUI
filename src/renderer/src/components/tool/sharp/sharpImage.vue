@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { SharpFileInter } from '../../../../../types/sharp'
 import { theme } from '@renderer/func/themeChange'
-defineProps<{
+import { computed } from 'vue'
+const props = defineProps<{
+  state: boolean
   img: string
   data: SharpFileInter | null
 }>()
+const statusText = computed(() => {
+  return props.state ? '修改完成' : '待修改'
+})
 </script>
 
 <template>
@@ -21,6 +26,14 @@ defineProps<{
         backgroundColor: theme === null ? '#ffffff' : '#1a1a1a'
       }"
     >
+      <div
+        :class="{
+          closed: state,
+          warning: !state
+        }"
+      >
+        {{ statusText }}
+      </div>
       <div style="text-overflow: ellipsis">{{ data?.filePath }}</div>
       <div>图片的大小{{ data?.size }}</div>
     </div>
@@ -54,6 +67,18 @@ defineProps<{
     padding: 8px 0;
     overflow: hidden;
     transition: all 0.2s ease;
+  }
+  .error {
+    color: var(--error-color) !important;
+  }
+  .success {
+    color: var(--success-color) !important;
+  }
+  .closed {
+    color: var(--closed-color) !important;
+  }
+  .warning {
+    color: var(--warning-color) !important;
   }
 }
 </style>

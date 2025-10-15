@@ -11,10 +11,18 @@ const fileImg = ref<string[]>([])
 const showImgData = ref<showImgInter[] | null>(null)
 const userDialog = ref<sharpDialogInter | null>(null)
 //构建显示函数
-const showFunc = (fileData: SharpFileInter[] | null, fileImg: string[]): showImgInter[] | null => {
+const showFunc = (
+  success: boolean,
+  fileData: SharpFileInter[] | null,
+  fileImg: string[]
+): showImgInter[] | null => {
   if (fileData) {
     return fileData.map((file, index) => ({
-      fileData: file,
+      fileData: {
+        ...file,
+        filePath: file.filePath ? file.filePath.split(/[\\/]/).pop() || '' : null
+      },
+      success: success,
       imgPath: fileImg[index] || ''
     }))
   } else {
@@ -34,13 +42,14 @@ const choose = async (): Promise<void> => {
       console.log('文件路径', fileImg.value, '文件1', fileData.value[i].filePath)
     }
     //添加显示
-    showImgData.value = showFunc(fileData.value, fileImg.value)
+    showImgData.value = showFunc(false, fileData.value, fileImg.value)
     message.success('图片选择成功')
   }
 }
 //修改图片
 const change = async (): Promise<void> => {
-  if (fileData.value) {
+  message.loading('图片正在修改,请稍后')
+  if (fileData.value !== null) {
     const dataPath: (string | null)[] = fileData.value.map((list) => {
       return list.filePath
     })
@@ -57,7 +66,7 @@ const change = async (): Promise<void> => {
           console.log('文件路径', fileImg.value, '文件1', fileData.value[i].filePath)
         }
         //添加显示
-        showImgData.value = showFunc(fileData.value, fileImg.value)
+        showImgData.value = showFunc(success.success, fileData.value, fileImg.value)
         message.success('图片修改成功')
       }
     } else {
@@ -71,6 +80,7 @@ const clean = (): void => {
   fileImg.value = []
   fileData.value = []
   showImgData.value = []
+  message.success('文件清除成功')
 }
 </script>
 
@@ -85,6 +95,7 @@ const clean = (): void => {
           v-for="(item, index) in showImgData"
           v-show="fileData !== null"
           :key="index"
+          :state="item.success"
           :data="item.fileData"
           :img="item.imgPath"
         />

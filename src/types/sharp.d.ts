@@ -12,5 +12,6 @@ export interface sharpDialogInter {
 }
 export interface showImgInter {
   fileData: SharpFileInter | null
+  success: boolean
   imgPath: string
 }

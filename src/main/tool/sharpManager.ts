@@ -5,6 +5,7 @@ import { sharpDialogInter, SharpFileInter, SharpInter } from '../../types/sharp'
 import { fileData, formatSize } from './sharpFunc'
 import { pathsDialog } from '../dialog/filesDialog'
 import { Stats } from 'fs'
+import fs from 'fs'
 export const sharpIpcHandlers = (): void => {
   //返回文件路径级原文件大小
   ipcMain.handle('sharp-image', async (): Promise<sharpDialogInter> => {
@@ -49,10 +50,17 @@ export const sharpIpcHandlers = (): void => {
       for (let i = 0; i < filePath.length; i++) {
         //使用path模块解析路径
         const parsedPath = path.parse(filePath[i])
+        //构建输出目录路径
+        const outputDir = path.join(parsedPath.dir, 'output')
+        //检查并创建目录（如果不存在）
+        if (!fs.existsSync(outputDir)) {
+          //recursive: true 允许创建多级目录
+          fs.mkdirSync(outputDir, { recursive: true })
+        }
         //构建新文件名（原文件名 + _sharp + .png）
         const newFileName = `${parsedPath.name}_sharp.png`
         //组合完整输出路径（保持原目录）
-        outputPath.push(path.join(parsedPath.dir, newFileName))
+        outputPath.push(path.join(parsedPath.dir, 'output', newFileName))
         await sharp(filePath[i]).png().toFile(outputPath[i])
         //读取后文件
         stats = fileData(outputPath)
