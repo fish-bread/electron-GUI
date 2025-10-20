@@ -1,3 +1,7 @@
+export interface chooseTypeInter {
+  primitiveType: string
+  changeType: string
+}
 export interface SharpInter {
   fileData: SharpFileInter[] | null
   success: boolean

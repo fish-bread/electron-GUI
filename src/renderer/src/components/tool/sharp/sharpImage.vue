@@ -19,7 +19,9 @@ const statusText = computed(() => {
       backgroundColor: theme === null ? '#f8f9fa' : '#1a1a1a'
     }"
   >
-    <img class="show-image" :src="img" alt="" />
+    <div class="image-aspect-wrapper">
+      <img class="show-image" :src="img" alt="" />
+    </div>
     <div
       class="show-data"
       :style="{
@@ -34,8 +36,8 @@ const statusText = computed(() => {
       >
         {{ statusText }}
       </div>
-      <div style="text-overflow: ellipsis">{{ data?.filePath }}</div>
-      <div>图片的大小{{ data?.size }}</div>
+      <n-ellipsis style="max-width: 100%" class="filePath">{{ data?.filePath }}</n-ellipsis>
+      <div class="filesize">size:{{ data?.size }}</div>
     </div>
   </div>
 </template>
@@ -47,24 +49,35 @@ const statusText = computed(() => {
   box-sizing: border-box;
   padding: 12px;
   width: 200px;
-  height: 280px;
+  height: 210px;
   overflow: hidden;
   border-radius: 8px;
   transition: all 0.2s ease;
-  .show-image {
-    flex: 1;
+
+  /* 16:9 图片比例容器 */
+  .image-aspect-wrapper {
+    position: relative;
     width: 100%;
-    min-height: 120px;
-    max-height: 300px;
-    object-fit: contain;
+    height: 0;
+    padding-top: 56.25%; /* 16:9 比例 */
     border-radius: 6px;
     overflow: hidden;
-    transition: all 0.2s ease;
+    margin: 5px 0;
+    .show-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
   }
   .show-data {
     flex-shrink: 0;
     width: 100%;
-    padding: 8px 0;
+    padding: 5px 5px;
     overflow: hidden;
     transition: all 0.2s ease;
   }

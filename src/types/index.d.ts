@@ -8,7 +8,7 @@ import {
   activeInter,
   themeColor
 } from './mian'
-import {sharpDialogInter, SharpInter} from './sharp'
+import { sharpDialogInter, SharpInter } from './sharp'
 declare global {
   interface Window {
     electron: ElectronAPI
@@ -85,8 +85,12 @@ declare global {
       restoreBilibiliFilePath: () => Promise<string>
     }
     sharpApi: {
-      sharpImage: () => Promise<sharpDialogInter>
-      sharpImageChange: (filePath: string[]) => Promise<SharpInter>
+      sharpImage: (chooseType: string) => Promise<sharpDialogInter>
+      sharpImageChange: (
+        filePath: string[],
+        chooseType: string,
+        qualityLeave: number
+      ) => Promise<SharpInter>
     }
   }
 }

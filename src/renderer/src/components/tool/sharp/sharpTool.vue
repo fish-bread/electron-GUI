@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import sharpControl from '@renderer/components/sharpControl.vue'
-import sharpFormatConversion from './sharpFormatConversion.vue'
+import toolControl from '@renderer/components/toolControl.vue'
+import sharpFormat from './sharpFormat.vue'
+import sharpCompress from './sharpCompress.vue'
 import { pageTitleInter } from '../../../../../types/renderer'
 import { ref } from 'vue'
 //切换页面
 const setting_title = ref<pageTitleInter[]>([
   { title: '图片转化', value: 0 },
-  { title: 'python设置', value: 1 },
-  { title: 'pixiv设置', value: 2 },
-  { title: 'bilibili设置', value: 3 }
+  { title: '图片压缩', value: 1 },
 ])
 const num = ref<number>(0)
 </script>
 
 <template>
   <div class="sharp">
-    <sharpControl v-model:num="num" v-model:title="setting_title" />
-    <sharpFormatConversion v-show="num === 0" />
+    <toolControl v-model:num="num" v-model:title="setting_title" />
+    <sharpFormat v-show="num === 0" />
+    <sharpCompress v-show="num === 1" />
   </div>
 </template>
 

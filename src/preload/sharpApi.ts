@@ -1,6 +1,8 @@
 import { ipcRenderer } from 'electron'
+import { chooseTypeInter } from '../types/sharp'
 
 export const sharpApi = {
-  sharpImage: () => ipcRenderer.invoke('sharp-image'),
-  sharpImageChange: (filepath: string[]) => ipcRenderer.invoke('sharp-image-change', filepath),
+  sharpImage: (chooseType: chooseTypeInter) => ipcRenderer.invoke('sharp-image', chooseType),
+  sharpImageChange: (filepath: string[], chooseType: string, qualityLeave: number) =>
+    ipcRenderer.invoke('sharp-image-change', filepath, chooseType, qualityLeave),
 }
