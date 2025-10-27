@@ -12,9 +12,13 @@ export interface allProgressInter {
   progress: number
   taskId: string
 }
+export interface allSeparatorInter {
+  status: 'info'
+  message: string
+}
 export interface UnifiedMessage {
-  type: 'text' | 'progress'
-  data: allMessageInter | allProgressInter
+  type: 'text' | 'progress' | 'separator'
+  data: allMessageInter | allProgressInter | allSeparatorInter
 }
 export interface pythonFilePath {
   canceled: boolean

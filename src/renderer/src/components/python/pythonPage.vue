@@ -5,7 +5,7 @@ import AirtestControl from '@renderer/components/python/airtest/airtestControl.v
 import CustomPyControl from '@renderer/components/python/custom/customPyControl.vue'
 import PythonControl from '@renderer/components/python/pythonControl.vue'
 import { onMounted, provide, ref } from 'vue'
-import type { allMessageInter, UnifiedMessage } from '../../../../types/mian'
+import type { allMessageInter, allSeparatorInter, UnifiedMessage } from '../../../../types/mian'
 import AllSelect from '@renderer/components/allSelect.vue'
 import { watchThrottled } from '@vueuse/core'
 const mess = ref<UnifiedMessage[]>([])
@@ -28,7 +28,7 @@ provide('num', num)
 provide('options', puppeteerOptions)
 //设置路径名
 const pathName = ref<string>('python')
-provide('pathName',pathName)
+provide('pathName', pathName)
 //依赖
 provide('mess', mess)
 provide('all_file', python_file)
@@ -38,6 +38,13 @@ const handlePythonOutputMessage = (message: allMessageInter): void => {
   console.log('接收到pythonOutput消息:', message)
   mess.value.unshift({
     type: 'text',
+    data: message
+  })
+}
+const handleOutputSeparator = (message: allSeparatorInter): void => {
+  console.log('接收到SeparatorOutput消息:', message)
+  mess.value.unshift({
+    type: 'separator',
     data: message
   })
 }
@@ -67,7 +74,7 @@ const watchNum = (): void => {
 onMounted(() => {
   // 注册监听器，持续接收主进程发来的 pythonOutput 消息
   window.api.pythonOutput(handlePythonOutputMessage)
-
+  window.api.pythonSeparatorOutput(handleOutputSeparator)
   watchNum()
 })
 </script>

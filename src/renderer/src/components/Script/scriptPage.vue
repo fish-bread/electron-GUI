@@ -5,7 +5,12 @@ import PuppeteerPixivControl from '@renderer/components/Script/puppeteerPixiv/pu
 import puppeteerBilibiliControl from '@renderer/components/Script/puppeteerBilibili/puppeteerBilibiliControl.vue'
 import AllPrint from '@renderer/components/allPrint.vue'
 import { onMounted, provide, ref } from 'vue'
-import type { allMessageInter, allProgressInter, UnifiedMessage } from '../../../../types/mian'
+import type {
+  allMessageInter,
+  allProgressInter,
+  allSeparatorInter,
+  UnifiedMessage
+} from '../../../../types/mian'
 import { theme } from '@renderer/func/themeChange'
 const jsMess = ref<UnifiedMessage[]>([])
 const puppeteer_file = ref<string>()
@@ -38,6 +43,13 @@ const handleOutputMessage = (message: allMessageInter): void => {
     data: message
   })
 }
+const handleOutputSeparator = (message: allSeparatorInter): void => {
+  console.log('接收到SeparatorOutput消息:', message)
+  jsMess.value.unshift({
+    type: 'separator',
+    data: message
+  })
+}
 const handleProgressUpdate = (message: allProgressInter): void => {
   if (!message.taskId) return
   // 查找是否已存在该任务
@@ -64,6 +76,7 @@ onMounted(() => {
   // 注册监听器，持续接收主进程发来的 pythonOutput 消息
   window.api.puppeteerOutput(handleOutputMessage)
   window.api.puppeteerOutProgress(handleProgressUpdate)
+  window.api.puppeteerSeparatorOutput(handleOutputSeparator)
   get_chrome_path()
 })
 </script>

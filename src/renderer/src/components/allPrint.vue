@@ -115,6 +115,13 @@ onMounted(() => {
               :percentage="(item.data as allProgressInter).progress"
             />
           </template>
+          <template v-if="item.type === 'separator'">
+            <div class="separator-text">
+              <div>
+                ----------------------------{{ item.data.message }}----------------------------
+              </div>
+            </div>
+          </template>
         </li>
       </ul>
     </div>
@@ -167,5 +174,9 @@ li {
 .text-message {
   display: grid;
   grid-template-columns: 60px 190px auto;
+}
+.separator-text {
+  display: flex;
+  justify-content: center;
 }
 </style>

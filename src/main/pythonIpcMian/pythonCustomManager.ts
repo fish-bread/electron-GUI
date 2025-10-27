@@ -3,35 +3,12 @@ import customPythonPath from '../pythonIpcMian/customPathon/CustomPythonPath'
 import { pythonFilePath } from '../../types/mian'
 import { pathDialog } from '../dialog/fileDialog'
 import { PythonShell } from 'python-shell'
-import { pythonPrintFunc } from '../general/allPrint'
+import { pythonPrintFunc, pythonSeparatorPrintFunc } from '../general/allPrint'
 let PyShell: PythonShell | null = null
 export const registerCustomPythonIpcHandlers = (): void => {
-  //获取自定义python路径
-  ipcMain.handle('getCustomPythonPath', () => {
-    return customPythonPath.getPath()
-  })
-  //自定义选择python文件
-  ipcMain.handle('choosePython', async (): Promise<pythonFilePath> => {
-    try {
-      const pathFile = await pathDialog()
-      if (pathFile.filePaths[0]) {
-        customPythonPath.setLocalPath('customPythonPath', pathFile.filePaths[0])
-      }
-      return {
-        canceled: pathFile.canceled,
-        filePath: pathFile.filePaths[0]
-      }
-    } catch (e) {
-      console.error(e)
-      throw e
-    }
-  })
-  //还原python路径
-  ipcMain.handle('restorePythonPath', async (): Promise<string> => {
-    return customPythonPath.restorePythonScriptPathFunc()
-  })
   //运行自定义python脚本
   ipcMain.on('runCustomPython', () => {
+    pythonSeparatorPrintFunc('python自定义脚本')
     //检测是否存在进程
     if (PyShell) {
       pythonPrintFunc('error', 'python脚本正在执行,请勿重复启动')
@@ -85,5 +62,29 @@ export const registerCustomPythonIpcHandlers = (): void => {
     } else {
       pythonPrintFunc('info', 'python子进程未启动')
     }
+  })
+  //获取自定义python路径
+  ipcMain.handle('getCustomPythonPath', () => {
+    return customPythonPath.getPath()
+  })
+  //自定义选择python文件
+  ipcMain.handle('choosePython', async (): Promise<pythonFilePath> => {
+    try {
+      const pathFile = await pathDialog()
+      if (pathFile.filePaths[0]) {
+        customPythonPath.setLocalPath('customPythonPath', pathFile.filePaths[0])
+      }
+      return {
+        canceled: pathFile.canceled,
+        filePath: pathFile.filePaths[0]
+      }
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
+  })
+  //还原python路径
+  ipcMain.handle('restorePythonPath', async (): Promise<string> => {
+    return customPythonPath.restorePythonScriptPathFunc()
   })
 }

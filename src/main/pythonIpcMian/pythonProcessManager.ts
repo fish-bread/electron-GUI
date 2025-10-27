@@ -1,12 +1,13 @@
 //python进程
 import { PythonShell } from 'python-shell'
 import { ipcMain } from 'electron'
-import { pythonPrintFunc } from '../general/allPrint'
+import { pythonPrintFunc, pythonSeparatorPrintFunc } from '../general/allPrint'
 import airtestPythonPath from '../pythonIpcMian/airtestPython/airtestPythonPath'
 export let PyShell: PythonShell | null = null
 export const registerPythonIpcHandlers = (): void => {
   // 运行python
   ipcMain.on('runPython', async (_event, time): Promise<void> => {
+    pythonSeparatorPrintFunc('python脚本')
     //检测是否存在进程
     if (PyShell) {
       pythonPrintFunc('error', 'python脚本正在执行,请勿重复启动')

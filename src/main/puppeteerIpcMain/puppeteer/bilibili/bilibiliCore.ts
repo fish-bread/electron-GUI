@@ -7,7 +7,10 @@ import {
   searchBilibiliInter
 } from '../../../../types/mian'
 import BasePuppeteer from '../../../general/BasePuppeteer'
-import { puppeteerPrintFunc } from '../../../general/allPrint'
+import {
+  puppeteerPrintFunc,
+  puppeteerSeparatorPrintFunc,
+} from '../../../general/allPrint'
 import baseAxios from '../../../general/BaseAxios'
 import BilibiliPath from './bilibiliPath'
 import fs from 'fs'
@@ -20,6 +23,7 @@ import dayjs from 'dayjs'
 class bilibiliCore extends BasePuppeteer {
   runPuppeteer = async (data: puppeteerDataInter): Promise<void> => {
     try {
+      puppeteerSeparatorPrintFunc('bilibili脚本')
       //设置代理端口
       this.setPort(data.port)
       //获取浏览器路径

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import '@renderer/components/tool/style/tool.css'
 import sharpImage from '@renderer/components/tool/sharp/sharpImage.vue'
+import sharpProgress from './sharpProgress.vue'
 import { ref } from 'vue'
 import { useSharp } from '@renderer/components/tool/sharp/func/sharpFunc'
 const { choose, showImgData, fileData, primitiveType, changeType, change, clean } = useSharp()
@@ -15,6 +16,7 @@ const imgTypeList = ref([
     value: 'jpg'
   }
 ])
+const qualityLeave = ref<number>(100)
 </script>
 
 <template>
@@ -30,9 +32,10 @@ const imgTypeList = ref([
         <n-select v-model:value="changeType" :options="imgTypeList" />
       </div>
     </div>
+    <sharpProgress :quality-leave="qualityLeave" />
     <div style="display: flex; flex-direction: row; gap: 10px">
       <n-button @click="choose(primitiveType)">选择图片</n-button>
-      <n-button @click="change(changeType, 100)">修改图片</n-button>
+      <n-button @click="change(changeType, qualityLeave)">修改图片</n-button>
       <n-button @click="clean">清空图片</n-button>
     </div>
     <div class="img-list">

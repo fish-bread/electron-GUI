@@ -6,7 +6,8 @@ import {
   allProgressInter,
   viewInter,
   activeInter,
-  themeColor
+  themeColor,
+  allSeparatorInter
 } from './mian'
 import { sharpDialogInter, SharpInter } from './sharp'
 declare global {
@@ -17,6 +18,8 @@ declare global {
       pythonOutput: (callback: (message: allMessageInter) => void) => void
       puppeteerOutput: (callback: (message: allMessageInter) => void) => void
       puppeteerOutProgress: (callback: (message: allProgressInter) => void) => void
+      puppeteerSeparatorOutput: (callback: (message: allSeparatorInter) => void) => void
+      pythonSeparatorOutput: (callback: (message: allSeparatorInter) => void) => void
       //导航栏设置
       maxSizeFunc: () => void
       minimizeFunc: () => void

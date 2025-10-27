@@ -107,8 +107,8 @@ export const useSharp = (): UseSharpReturn => {
   //清除
   const clean = (): void => {
     fileImg.value = []
-    fileData.value = []
-    showImgData.value = []
+    fileData.value = null
+    showImgData.value = null
     message.success('文件清除成功')
   }
 

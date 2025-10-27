@@ -1,4 +1,7 @@
-import { puppeteerPrintFunc } from '../../../general/allPrint'
+import {
+  puppeteerPrintFunc,
+  puppeteerSeparatorPrintFunc,
+} from '../../../general/allPrint'
 import {
   pixivBodyInter,
   pixivHrefInter,
@@ -21,6 +24,7 @@ class PuppeteerCore extends BasePuppeteer {
   //启动
   runPuppeteer = async (data: puppeteerDataInter): Promise<void> => {
     try {
+      puppeteerSeparatorPrintFunc('pixiv脚本')
       //设置代理端口
       this.setPort(data.port)
       //获取浏览器路径
