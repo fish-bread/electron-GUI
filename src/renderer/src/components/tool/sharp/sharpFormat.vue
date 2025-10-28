@@ -66,6 +66,7 @@ const qualityLeave = ref<number>(100)
     box-sizing: border-box;
     display: inline-flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
   }
 }

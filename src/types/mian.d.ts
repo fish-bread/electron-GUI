@@ -32,6 +32,15 @@ export interface puppeteerDataInter {
   useProxy: boolean
   port: string
 }
+//puppeteerBilibili向主进程传值
+export interface puppeteerBilibiliDataInter {
+  time: number
+  href: string
+  headless: boolean
+  useProxy: boolean
+  port: string
+  deleteChoose: boolean
+}
 //cookie设置
 export interface cookieInter {
   cookie: string

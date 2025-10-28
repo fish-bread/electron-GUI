@@ -3,7 +3,7 @@ import {
   bilibiliFfmpegInter,
   cookieInter,
   netSpeedInter,
-  puppeteerDataInter,
+  puppeteerBilibiliDataInter,
   searchBilibiliInter
 } from '../../../../types/mian'
 import BasePuppeteer from '../../../general/BasePuppeteer'
@@ -21,7 +21,7 @@ import { puppeteerProgressFunc } from '../../../general/allProgerss'
 import pLimit from 'p-limit'
 import dayjs from 'dayjs'
 class bilibiliCore extends BasePuppeteer {
-  runPuppeteer = async (data: puppeteerDataInter): Promise<void> => {
+  runPuppeteer = async (data: puppeteerBilibiliDataInter): Promise<void> => {
     try {
       puppeteerSeparatorPrintFunc('bilibili脚本')
       //设置代理端口
@@ -92,6 +92,13 @@ class bilibiliCore extends BasePuppeteer {
           bilibiliLink.videoName
         )
         puppeteerPrintFunc('info', `ffmpeg合并完成,共耗时${ffmpegTime}秒`)
+        //是否删除原文件
+        if (data.deleteChoose) {
+          puppeteerPrintFunc('info', `正在删除原文件`)
+          fs.unlinkSync(videoResult.filePath)
+          fs.unlinkSync(audioResult.filePath)
+          puppeteerPrintFunc('info', `源文件删除完成完成`)
+        }
       }
       //关闭浏览器实例
       await this.exitPuppeteer()

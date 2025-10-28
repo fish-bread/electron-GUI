@@ -7,7 +7,7 @@ import { ref } from 'vue'
 //切换页面
 const tool_title = ref<pageTitleInter[]>([
   { title: 'sharp', value: 0 },
-  { title: 'ffmpeg', value: 1 },
+  { title: 'ffmpeg', value: 1 }
 ])
 const num = ref<number>(0)
 </script>

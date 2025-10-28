@@ -36,16 +36,19 @@ const qualityLeave = ref<number>(100)
 <style scoped lang="scss">
 .img-list {
   box-sizing: border-box;
-  width: 80%;
+  width: 70%;
+  height: 430px;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
   &::-webkit-scrollbar {
     height: 5px;
+    width: 5px;
   }
   .img-flex {
     box-sizing: border-box;
     display: inline-flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
   }
 }

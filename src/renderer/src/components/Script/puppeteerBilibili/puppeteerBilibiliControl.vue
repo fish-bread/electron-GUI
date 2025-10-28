@@ -4,13 +4,15 @@ const time = inject<Ref<string>>('time', ref(''))
 const port = inject<Ref<string>>('port', ref(''))
 const href = ref('')
 const headless = ref<boolean>(true)
+const deleteChoose = ref<boolean>(true)
 const runPuppeteer = (): void => {
   window.bilibiliApi.runBilibiliPuppeteer({
     time: Number(time.value),
     href: href.value,
     headless: headless.value,
     useProxy: false,
-    port: port.value
+    port: port.value,
+    deleteChoose: deleteChoose.value
   })
 }
 const killPuppeteer = (): void => {
@@ -27,9 +29,15 @@ const killPuppeteer = (): void => {
         <n-button @click="killPuppeteer">killBilibili脚本</n-button>
       </div>
     </div>
-    <div class="setting-box">
-      <h3>无头模式</h3>
-      <n-switch v-model:value="headless" />
+    <div class="setting">
+      <div class="setting-box">
+        <h3>无头模式</h3>
+        <n-switch v-model:value="headless" />
+      </div>
+      <div class="setting-box">
+        <h3>下载后删除原音频和视频文件</h3>
+        <n-switch v-model:value="deleteChoose" />
+      </div>
     </div>
     <h3>bilibili视频或bv号网址</h3>
     <n-input v-model:value="href" placeholder="请输入你想搜索的bv号视频"></n-input>
@@ -37,4 +45,11 @@ const killPuppeteer = (): void => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.setting {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 10px;
+}
+</style>

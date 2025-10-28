@@ -7,7 +7,8 @@ import {
   viewInter,
   activeInter,
   themeColor,
-  allSeparatorInter
+  allSeparatorInter,
+  puppeteerBilibiliDataInter
 } from './mian'
 import { sharpDialogInter, SharpInter } from './sharp'
 declare global {
@@ -79,7 +80,7 @@ declare global {
     }
     bilibiliApi: {
       //bilibiliPuppeteer爬虫
-      runBilibiliPuppeteer: (data: puppeteerDataInter) => void
+      runBilibiliPuppeteer: (data: puppeteerBilibiliDataInter) => void
       killBilibiliPuppeteer: () => void
       getBilibiliCookie: () => Promise<string>
       setBilibiliCookie: (cookie: string) => Promise<string>

@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron'
-import { puppeteerDataInter } from '../types/mian'
+import { puppeteerBilibiliDataInter } from '../types/mian'
 export const puppeteerBilibiliApi = {
-  runBilibiliPuppeteer: (data: puppeteerDataInter) =>
+  runBilibiliPuppeteer: (data: puppeteerBilibiliDataInter) =>
     ipcRenderer.send('runBilibiliPuppeteer', data),
   killBilibiliPuppeteer: () => ipcRenderer.send('killBilibiliPuppeteer'),
   getBilibiliCookie: () => ipcRenderer.invoke('getBilibiliCookie'),

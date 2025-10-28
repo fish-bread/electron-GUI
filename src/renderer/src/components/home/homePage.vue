@@ -16,6 +16,7 @@ const originalText = ref('欢迎访问我的博客网站 https://fishbread.net/ 
         目前的功能有根据pid爬取pixiv图片,根据bv号爬取bilibili视频,能够较好的实现使用electron窗体查看外部链接
       </h3>
       <div v-dompurify-html="formatMessageWithLinks(originalText)"></div>
+      <h3>第一次使用请先到设置中设置</h3>
       <FooterIndex />
     </div>
   </div>
