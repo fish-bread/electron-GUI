@@ -8,6 +8,7 @@ import { puppeteerBilibiliApi } from './puppeteerBilibiliApi'
 import { chromeApi } from './chromeApi'
 import { globalPuppeteerApi } from './globalPuppeteerApi'
 import { sharpApi } from './sharpApi'
+import { ru34Api } from './ru34Api'
 
 // Custom APIs for renderer
 const api = {
@@ -31,6 +32,7 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('pixivApi', PuppeteerPixivApi)
     contextBridge.exposeInMainWorld('bilibiliApi', puppeteerBilibiliApi)
     contextBridge.exposeInMainWorld('sharpApi', sharpApi)
+    contextBridge.exposeInMainWorld('ru34Api', ru34Api)
   } catch (error) {
     console.error(error)
   }
@@ -44,4 +46,5 @@ if (process.contextIsolated) {
   window.pixivApi = PuppeteerPixivApi
   window.bilibiliApi = puppeteerBilibiliApi
   window.sharpApi = sharpApi
+  window.ru34Api = ru34Api
 }

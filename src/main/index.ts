@@ -11,8 +11,9 @@ import BilibiliCore from './puppeteerIpcMain/puppeteer/bilibili/bilibiliCore'
 import PuppeteerCore from './puppeteerIpcMain/puppeteer/pixiv/pixivCore'
 import { registerChromeIpcHandlers } from './chromeIpcMain/chromeManager'
 import { closeChromeWindow, chromeId } from './chromeIpcMain/chrome/chromeFunc'
-import { sharpIpcHandlers } from './tool/sharpManager'
+import { sharpIpcHandlers } from './tool/sharp/sharpManager'
 import { localFileProtocol } from './func/localFileProtocol'
+import { ru34IpcHandlers } from './tool/ru34/ru34Manage'
 // 检测并阻止多实例
 getLock()
 // 注册自定义协议
@@ -44,6 +45,8 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
   // IPC 中间件
+  //ru34的ipc函数
+  ru34IpcHandlers()
   //airtest的ipc函数
   registerPythonIpcHandlers()
   //python自定义ipc函数

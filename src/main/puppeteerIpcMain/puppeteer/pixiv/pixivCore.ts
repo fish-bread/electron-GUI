@@ -159,7 +159,7 @@ class PuppeteerCore extends BasePuppeteer {
       fs.mkdirSync(downloadDir, { recursive: true })
     }
     //设置是否启用代理请求
-    const pixivAxiosFunc = useProxy ? baseAxios.agentAxios : baseAxios.noAgentAxios
+    const pixivAxiosFunc = baseAxios.setProxyRequest(useProxy)
     for (let i = 0; i < searchData.urlsArray.length; i++) {
       const promise = limit(async () => {
         try {

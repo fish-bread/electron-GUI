@@ -1,6 +1,6 @@
 {
   "name": "electron-gui",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "这是尝试用electron制作pythonGUI和jsGUI的项目",
   "main": "./out/main/index.js",
   "author": "3434241933@qq.com",
@@ -40,9 +40,11 @@
     "unplugin-auto-import": "^20.1.0",
     "unplugin-vue-components": "^29.0.0",
     "uuid": "^13.0.0",
+    "vidstack": "^1.12.13",
     "vue-dompurify-html": "^5.3.0",
     "vue-draggable-plus": "^0.6.0",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "3.0.0",

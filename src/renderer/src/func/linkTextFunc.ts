@@ -17,6 +17,6 @@ export const formatMessageWithLinks = (text: string): string => {
     }
 
     // 返回构建的<a>标签
-    return `<a href="${href}" target="_blank" rel="noopener noreferrer">${cleanUrl}</a>`
+    return `<a href="${href}" rel="noopener noreferrer">${cleanUrl}</a>`
   })
 }

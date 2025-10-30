@@ -11,6 +11,7 @@ import {
   puppeteerBilibiliDataInter
 } from './mian'
 import { sharpDialogInter, SharpInter } from './sharp'
+import { ApiResponse, ru34Request, TabsResponse } from './ru34'
 declare global {
   interface Window {
     electron: ElectronAPI
@@ -95,6 +96,10 @@ declare global {
         chooseType: string,
         qualityLeave: number
       ) => Promise<SharpInter>
+    }
+    ru34Api: {
+      ru34Search: (ru34Request: ru34Request) => Promise<ApiResponse>
+      ru34SearchTabs: (ru34Request: ru34Request) => Promise<TabsResponse[]>
     }
   }
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>你好</div>
+  <div>施工中</div>
 </template>
 
 <style scoped></style>

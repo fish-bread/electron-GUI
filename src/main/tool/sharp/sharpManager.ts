@@ -1,9 +1,9 @@
 import { ipcMain } from 'electron'
 import sharp from 'sharp'
 import path from 'path'
-import { sharpDialogInter, SharpFileInter, SharpInter } from '../../types/sharp'
+import { sharpDialogInter, SharpFileInter, SharpInter } from '../../../types/sharp'
 import { exportLeave, fileData, formatSize, qualityLeaveFunc } from './sharpFunc'
-import { pathsImgDialog } from '../dialog/filesDialog'
+import { pathsImgDialog } from '../../dialog/filesDialog'
 import { Stats } from 'fs'
 import fs from 'fs'
 export const sharpIpcHandlers = (): void => {

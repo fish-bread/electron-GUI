@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import '@renderer/components/tool/style/tool.css'
+import '@renderer/components/tool/sharp/style/tool.css'
 import sharpImage from '@renderer/components/tool/sharp/sharpImage.vue'
 import sharpProgress from './sharpProgress.vue'
 import { useSharp } from '@renderer/components/tool/sharp/func/sharpFunc'

@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { Stats } from 'fs'
-import { SharpFileInter } from '../../types/sharp'
+import { SharpFileInter } from '../../../types/sharp'
 export interface exportLeave {
   pngLeave: number
   jpgLeave: number

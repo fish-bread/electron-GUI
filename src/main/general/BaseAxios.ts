@@ -56,5 +56,9 @@ class BaseAxios {
   noAgentAxios: AxiosInstance = axios.create({
     timeout: 10000
   })
+  //选择是否使用代理
+  setProxyRequest = (useProxy: boolean): AxiosInstance => {
+    return useProxy ? this.agentAxios : this.noAgentAxios
+  }
 }
 export default new BaseAxios('7897')
