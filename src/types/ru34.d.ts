@@ -22,7 +22,11 @@ export interface Post {
   has_notes: boolean
   comment_count: number
 }
-
+export interface sendPost {
+  preview_url: string
+  sample_url: string
+  file_url: string
+}
 export interface ApiResponse {
   posts: Post[]
 }

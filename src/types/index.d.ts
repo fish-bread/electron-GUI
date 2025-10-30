@@ -11,7 +11,7 @@ import {
   puppeteerBilibiliDataInter
 } from './mian'
 import { sharpDialogInter, SharpInter } from './sharp'
-import { ApiResponse, ru34Request, TabsResponse } from './ru34'
+import { ApiResponse, ru34Request, TabsResponse, sendPost } from './ru34'
 declare global {
   interface Window {
     electron: ElectronAPI
@@ -38,6 +38,9 @@ declare global {
       changePuppeteer: () => Promise<pythonFilePath>
       //添加自定义文件
       pathToFileURL: (filePath: string) => Promise<string>
+      //添加资源页面显示
+      showResources: (filePath: sendPost) => Promise<void>
+      resourcesPath: (callback: (path: sendPost) => void) => void
     }
     chromeApi: {
       //浏览器设置

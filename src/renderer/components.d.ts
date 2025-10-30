@@ -14,6 +14,7 @@ declare module 'vue' {
     AllSelect: typeof import('./src/components/allSelect.vue')['default']
     ChromeWindowControl: typeof import('./src/components/chrome/chromeWindowControl.vue')['default']
     CustomPyControl: typeof import('./src/components/python/custom/customPyControl.vue')['default']
+    DefaultHeaderIndex: typeof import('./src/components/defaultHeaderIndex.vue')['default']
     Ffmpeg: typeof import('./src/components/tool/ffmpeg/ffmpeg.vue')['default']
     FfmpegTool: typeof import('./src/components/tool/ffmpeg/ffmpegTool.vue')['default']
     FooterIndex: typeof import('./src/components/footerIndex.vue')['default']

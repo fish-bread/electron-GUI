@@ -1,7 +1,6 @@
 import { allProgressInter } from '../../types/mian'
-import { BrowserWindow } from 'electron'
 type ChannelType = 'puppeteerOutProgress' | 'pythonOutProgress'
-
+import { getWindow } from '../func/windowFunc'
 const createProgressSender = (channel: ChannelType) => {
   return (
     status: 'info' | 'error' | 'closed',
@@ -10,8 +9,7 @@ const createProgressSender = (channel: ChannelType) => {
     progress: number,
     taskId: string
   ): void => {
-    const allWindows = BrowserWindow.getAllWindows()
-    const targetWindow = allWindows.find((win) => win.id === 1)
+    const targetWindow = getWindow(1)
     const msgData: allProgressInter = {
       status: status,
       dataTime: dataTime,

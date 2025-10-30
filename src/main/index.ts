@@ -14,6 +14,7 @@ import { closeChromeWindow, chromeId } from './chromeIpcMain/chrome/chromeFunc'
 import { sharpIpcHandlers } from './tool/sharp/sharpManager'
 import { localFileProtocol } from './func/localFileProtocol'
 import { ru34IpcHandlers } from './tool/ru34/ru34Manage'
+import { registerResourcesIpcHandlers } from './resourcesIpcMain/resourcesManage'
 // 检测并阻止多实例
 getLock()
 // 注册自定义协议
@@ -45,8 +46,6 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
   // IPC 中间件
-  //ru34的ipc函数
-  ru34IpcHandlers()
   //airtest的ipc函数
   registerPythonIpcHandlers()
   //python自定义ipc函数
@@ -57,10 +56,14 @@ app.whenReady().then(() => {
   registerBilibiliPuppeteerIpcHandlers()
   //chrome的ipc
   registerChromeIpcHandlers()
+  //资源窗体的ipc
+  registerResourcesIpcHandlers()
   //全局设置获取
   allSettingManager()
   //sharp图片处理
   sharpIpcHandlers()
+  //ru34的ipc函数
+  ru34IpcHandlers()
   //最大化或恢复窗体
   ipcMain.on('maxSizeFunc', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)

@@ -5,7 +5,7 @@ import { getWindow } from '../../func/windowFunc'
 import { createChildWindow, createChromeWindow } from '../../window/chromeWindow'
 //简单解决id问题
 export let chromeId: number = 2
-//修改id
+//增加id
 export const changeChromeId = (id: number): void => {
   chromeId += id
 }

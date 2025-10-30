@@ -16,7 +16,6 @@ body, html {
   cursor: pointer !important;
 }
 .app-drag {
-/*可拖动*/
   app-region: drag;
 }
 .app-drag-disable {

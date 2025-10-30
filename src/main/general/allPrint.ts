@@ -1,17 +1,14 @@
 // 获取窗体
 import dayjs from 'dayjs'
 import { allMessageInter, allSeparatorInter } from '../../types/mian'
-import { BrowserWindow } from 'electron'
+import { getWindow } from '../func/windowFunc'
 type ChannelType = 'pythonOutput' | 'puppeteerOutput'
 type SeparatorType = 'pythonSeparatorOutput' | 'puppeteerSeparatorOutput'
-const getWindow = (): Electron.BrowserWindow | undefined => {
-  const allWindows = BrowserWindow.getAllWindows()
-  return allWindows.find((win) => win.id === 1)
-}
+
 //工厂打印函数
 const createMessageSender = (channel: ChannelType) => {
   return (status: 'info' | 'warning' | 'error' | 'closed', message: string): void => {
-    const targetWindow = getWindow()
+    const targetWindow = getWindow(1)
 
     const msgData: allMessageInter = {
       status: status,
@@ -31,7 +28,7 @@ const createSeparatorSender = (SeparatorType: SeparatorType) => {
       status: 'info',
       message: message
     }
-    const targetWindow = getWindow()
+    const targetWindow = getWindow(1)
     if (targetWindow) {
       targetWindow.webContents.send(SeparatorType, msgData)
     }

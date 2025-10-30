@@ -1,22 +1,30 @@
 <script setup lang="ts">
-import { ApiResponse, Post } from '../../../../../types/ru34'
-import 'vidstack/bundle'
+import { ApiResponse, Post, sendPost } from '../../../../../types/ru34'
+defineProps<{
+  ru34Data: ApiResponse | null
+}>()
 // 格式化时间显示
 const formatTime = (timestamp: number): string => {
   return new Date(timestamp * 1000).toLocaleString()
+}
+//显示资源页面
+const showResource = (Post: Post): void => {
+  const sendPost: sendPost = {
+    preview_url: Post.preview_url,
+    sample_url: Post.sample_url,
+    file_url: Post.file_url,
+  }
+  window.api.showResources(sendPost)
 }
 // 获取视频缩略图或预览图
 const getThumbnailUrl = (post: Post): string => {
   return post.preview_url || post.sample_url || '/default-thumbnail.jpg'
 }
-defineProps<{
-  ru34Data: ApiResponse | null
-}>()
 </script>
 
 <template>
   <div class="api-result">
-    <h3>共获取 {{ ru34Data?.posts.length }} 个帖子</h3>
+    <h3 style="margin: 5px 0">共获取 {{ ru34Data?.posts.length }} 个帖子</h3>
     <div class="ru34-show-box">
       <div class="posts-grid">
         <div v-for="(post, index) in ru34Data?.posts" :key="post.id" class="post-card">
@@ -27,22 +35,20 @@ defineProps<{
             </span>
           </div>
           <div class="post-media">
-            <media-player
-              v-if="post.file_url.endsWith('.mp4')"
-              :src="post.file_url"
-              :poster="getThumbnailUrl(post)"
-            >
-              <media-provider></media-provider>
-              <media-video-layout></media-video-layout>
-            </media-player>
-            <img
-              v-else
-              :src="post.file_url"
-              :alt="`${post.file_url}显示失败,请检测网络`"
-              loading="lazy"
-            />
+            <div @click="showResource(post)">
+              <video
+                v-if="post?.file_url.endsWith('.mp4')"
+                :src="post?.file_url"
+                :poster="getThumbnailUrl(post)"
+              />
+              <img
+                v-else
+                :src="post?.file_url"
+                :alt="`${post?.file_url}显示失败,请检测网络`"
+                loading="lazy"
+              />
+            </div>
           </div>
-
           <div class="post-images">
             <div class="image-link">
               <strong>预览图:</strong>
@@ -89,18 +95,15 @@ defineProps<{
 <style scoped lang="scss">
 .api-result {
   margin-top: 20px;
-
   .ru34-show-box {
-    height: 700px;
+    height: 550px;
     width: 90%;
     overflow-y: auto;
     margin: 0 auto;
-
     &::-webkit-scrollbar {
       height: 5px;
       width: 5px;
     }
-
     .posts-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
@@ -110,61 +113,50 @@ defineProps<{
   }
 }
 .post-card {
-  border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
-  background: #f9f9f9;
+  background: var(--button-hover-color);
   transition: transform 0.2s;
-
+  overflow: hidden;
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
-
   .post-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 12px;
     padding-bottom: 8px;
-    border-bottom: 1px solid #eee;
-
     h4 {
       margin: 0;
-      color: #333;
       font-size: 16px;
     }
-
     .rating {
       padding: 4px 8px;
       border-radius: 4px;
       font-size: 12px;
       font-weight: bold;
       text-transform: uppercase;
-
       &.explicit {
         background-color: #ff4757;
         color: white;
       }
-
       &.questionable {
         background-color: #ffa502;
         color: white;
       }
-
       &.safe {
         background-color: #2ed573;
         color: white;
       }
     }
   }
-
   .post-media {
     margin-bottom: 12px;
     border-radius: 4px;
     overflow: hidden;
     background: #000;
-
     video,
     img {
       width: 100%;
@@ -174,10 +166,8 @@ defineProps<{
       object-fit: contain;
     }
   }
-
   .post-images {
     margin-bottom: 12px;
-
     .image-link {
       margin-bottom: 6px;
       font-size: 13px;
@@ -185,20 +175,16 @@ defineProps<{
   }
   .post-info {
     font-size: 14px;
-    color: #555;
-
     p {
       margin: 6px 0;
       line-height: 1.5;
     }
-
     .tags {
       display: inline-block;
-      background: #f0f0f0;
+      background: var(--tab-active-color);
       padding: 2px 6px;
       border-radius: 4px;
       font-size: 12px;
-      color: #666;
       line-height: 1.4;
     }
   }

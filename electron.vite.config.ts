@@ -27,7 +27,9 @@ export default defineConfig({
         }
       }),
       vidstack({
-        include: /components\/tool\/ru34\//
+        include: [
+          /src\/renderer\/src\/layouts\//,
+        ]
       }),
       AutoImport({
         imports: [
