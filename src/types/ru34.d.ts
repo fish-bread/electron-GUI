@@ -26,6 +26,7 @@ export interface sendPost {
   preview_url: string
   sample_url: string
   file_url: string
+  id: number
 }
 export interface ApiResponse {
   posts: Post[]

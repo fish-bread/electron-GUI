@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron'
-import { ApiResponse, ru34Request, TabsResponse } from '../../../types/ru34'
-import { SearchRu34Tabs } from './ru34Func'
+import { ApiResponse, ru34Request, sendPost, TabsResponse } from '../../../types/ru34'
+import ru34Class from './ru34Func'
 import baseAxios from '../../general/BaseAxios'
 
 export const ru34IpcHandlers = (): void => {
@@ -27,7 +27,7 @@ export const ru34IpcHandlers = (): void => {
   ipcMain.handle(
     'ru34SearchTabs',
     async (_event, ru34Request: ru34Request): Promise<TabsResponse[]> => {
-      const data = SearchRu34Tabs(ru34Request.tabs)
+      const data = ru34Class.SearchRu34Tabs(ru34Request.tabs)
       console.log('数据', data)
       try {
         const ru34AxiosFunc = baseAxios.setProxyRequest(ru34Request.useProxy)
@@ -44,4 +44,12 @@ export const ru34IpcHandlers = (): void => {
       }
     }
   )
+  //添加收藏到本地
+  ipcMain.handle('ru34AddFavorite', (_event, postData: sendPost): boolean => {
+    return ru34Class.addFavoriteList(postData)
+  })
+  //初始化历史收藏
+  ipcMain.handle('favoriteList', (): sendPost[] => {
+    return ru34Class.searchLocalFavoriteList()
+  })
 }

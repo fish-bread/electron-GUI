@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject, ref } from 'vue'
-import { ApiResponse, TabsResponse } from '../../../../../types/ru34'
+import { ApiResponse, TabsResponse } from '../../../../../../types/ru34'
 import { watchDebounced } from '@vueuse/core'
 import { useMessage } from 'naive-ui'
 const message = useMessage()

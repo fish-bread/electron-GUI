@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ApiResponse, Post, sendPost } from '../../../../../types/ru34'
+import { ApiResponse, Post, sendPost } from '../../../../../../types/ru34'
 defineProps<{
   ru34Data: ApiResponse | null
 }>()
@@ -13,6 +13,7 @@ const showResource = (Post: Post): void => {
     preview_url: Post.preview_url,
     sample_url: Post.sample_url,
     file_url: Post.file_url,
+    id: Post.id
   }
   window.api.showResources(sendPost)
 }
@@ -23,7 +24,7 @@ const getThumbnailUrl = (post: Post): string => {
 </script>
 
 <template>
-  <div class="api-result">
+  <div v-if="ru34Data" class="api-result">
     <h3 style="margin: 5px 0">共获取 {{ ru34Data?.posts.length }} 个帖子</h3>
     <div class="ru34-show-box">
       <div class="posts-grid">
@@ -69,7 +70,6 @@ const getThumbnailUrl = (post: Post): string => {
               </a>
             </div>
           </div>
-
           <div class="post-info">
             <p><strong>尺寸:</strong> {{ post.width }} × {{ post.height }} 像素</p>
             <p><strong>评分:</strong> {{ post.score }}</p>

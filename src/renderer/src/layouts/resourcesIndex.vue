@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import 'vidstack/bundle'
-import defaultHeaderIndex from '@renderer/components/defaultHeaderIndex.vue'
+import defaultHeaderIndex from '@renderer/components/resourcesHeaderIndex.vue'
 import { onBeforeMount, onMounted, ref } from 'vue'
 import { sendTheme } from '@renderer/func/themeChange'
 import { sendPost } from '../../../types/ru34'
@@ -22,7 +22,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <defaultHeaderIndex icon-size="20" />
+  <defaultHeaderIndex icon-size="20" :post-data="post" />
   <div>
     资源地址<a :href="post?.file_url">{{ post?.file_url }}</a>
   </div>

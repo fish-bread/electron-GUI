@@ -11,8 +11,8 @@ const searchTabs = ref<Array<string>>([])
 const activeTabIds = ref<Set<string>>(new Set())
 const agent = ref<boolean>(true)
 import { ApiResponse, TabsResponse } from '../../../../../types/ru34'
-import ru34List from '@renderer//components/tool/ru34/ru34List.vue'
-import ru34Tabs from '@renderer//components/tool/ru34/ru34Tabs.vue'
+import ru34List from '@renderer//components/tool/ru34/components/ru34List.vue'
+import ru34Tabs from '@renderer//components/tool/ru34/components/ru34Tabs.vue'
 watch(
   () => ru34Data.value,
   (newVal, oldVal) => {
@@ -36,7 +36,7 @@ watch(
       v-model:options="options"
     />
     <!--显示盒子-->
-    <ru34List v-if="ru34Data" :ru34-data="ru34Data" />
+    <ru34List :ru34-data="ru34Data" />
   </div>
 </template>
 
