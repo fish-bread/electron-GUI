@@ -77,6 +77,6 @@ export const registerPixivPuppeteerIpcHandlers = (): void => {
   })
   //修改pixivCookie
   ipcMain.handle('changePixivCookie', async (_event, cookie: string): Promise<string> => {
-    return PixivCookie.setLocalCookie(cookie)
+    return PixivCookie.setLocalCookie(cookie, 'pixivCookie')
   })
 }

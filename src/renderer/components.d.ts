@@ -41,6 +41,7 @@ declare module 'vue' {
     NTag: typeof import('naive-ui')['NTag']
     NTooltip: typeof import('naive-ui')['NTooltip']
     PageControl: typeof import('./src/components/pageControl.vue')['default']
+    PixivTool: typeof import('./src/components/tool/pixiv/pixivTool.vue')['default']
     PuppeteerBilibiliControl: typeof import('./src/components/Script/puppeteerBilibili/puppeteerBilibiliControl.vue')['default']
     PuppeteerPixivControl: typeof import('./src/components/Script/puppeteerPixiv/puppeteerPixivControl.vue')['default']
     PythonControl: typeof import('./src/components/python/pythonControl.vue')['default']

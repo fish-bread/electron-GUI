@@ -17,7 +17,6 @@ const safeChangeCookie = computed({
 
 <template>
   <div class="puppeteer-setting">
-    <h2>puppeteer设置</h2>
     <h3>{{ title }}爬虫设置</h3>
     <div class="pixiv-cookie">
       <n-tooltip :show-arrow="false" trigger="hover">

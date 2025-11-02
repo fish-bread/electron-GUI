@@ -21,7 +21,7 @@ export const registerBilibiliPuppeteerIpcHandlers = (): void => {
   })
   //修改cookie
   ipcMain.handle('setBilibiliCookie', async (_event, cookie: string): Promise<string> => {
-    return BilibiliCookie.setLocalCookie(cookie)
+    return BilibiliCookie.setLocalCookie(cookie, 'bilibiliCookie')
   })
   //获取文件path
   ipcMain.handle('getBilibiliFilePath', async (): Promise<string> => {

@@ -41,6 +41,8 @@ declare global {
       //添加资源页面显示
       showResources: (filePath: sendPost) => Promise<void>
       resourcesPath: (callback: (path: sendPost) => void) => void
+      //获取pixiv
+      getPixiv: (pid: string) => Promise<PixivIllustInfo>
     }
     chromeApi: {
       //浏览器设置

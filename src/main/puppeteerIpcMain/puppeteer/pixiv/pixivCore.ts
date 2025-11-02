@@ -1,7 +1,4 @@
-import {
-  puppeteerPrintFunc,
-  puppeteerSeparatorPrintFunc,
-} from '../../../general/allPrint'
+import { puppeteerPrintFunc, puppeteerSeparatorPrintFunc } from '../../../general/allPrint'
 import {
   pixivBodyInter,
   pixivHrefInter,

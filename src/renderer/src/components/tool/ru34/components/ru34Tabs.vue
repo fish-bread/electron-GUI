@@ -92,6 +92,7 @@ const clearAllTabs = (): void => {
   if (activeTabIds.value !== undefined) {
     activeTabIds.value.clear()
     searchTabs.value = []
+    message.success('清空成功')
   }
 }
 </script>

@@ -2,7 +2,7 @@ import BaseCookie from '../../../general/BaseCookie'
 
 class BilibiliCookie extends BaseCookie {
   constructor() {
-    super()
+    super('bilibiliCookie')
   }
 }
 export default new BilibiliCookie()
